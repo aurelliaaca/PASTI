@@ -14,4 +14,7 @@ Route::get('/login/user', function () {
     return view('user');
 });
 
+Route::get('/dashboard_mhs', function () {
+    return view('dashboard_mhs');
+});
 
