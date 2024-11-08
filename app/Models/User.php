@@ -24,6 +24,8 @@ class User extends Authenticatable
      */
     public $fillable = [
         'name',
+        'username', //baru
+        'level', //baru
         'email',
         'password',
     ];
