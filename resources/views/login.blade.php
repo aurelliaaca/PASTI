@@ -33,17 +33,19 @@
     <p class="text-white text-center mb-6">
         Universitas Diponegoro
     </p>
-    <form>
+    <form action="{{ url('proses_login') }}" method="POST" id="logForm">
+        @csrf
         <div class="mb-4">
-        <input class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Username" type="text"/>
+            <input type="email" name="email" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Email" required />
         </div>
         <div class="mb-6">
-        <input class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Password" type="password"/>
+            <input type="password" name="password" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Password" required />
         </div>
         <button class="w-full bg-yellow-500 text-white p-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300" type="submit">
-        Login
+            Login
         </button>
     </form>
+
     <div class="text-center mt-4">
         <a class="text-white underline" href="#">
         forgot your password?
