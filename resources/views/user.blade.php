@@ -21,7 +21,7 @@
                 background-position: center;
             }
     </style>
-</head>
+ </head>
 <body class="min-h-screen bg-pattern flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
     <div class="bg-teal-700 bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md">
     <div class="flex justify-center mb-6">
@@ -33,21 +33,25 @@
     <p class="text-white text-center mb-6">
         Universitas Diponegoro
     </p>
-    <form>
-        <div class="mb-4">
-        <input class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Username" type="text"/>
+    <p class="text-white text-lg text-center mb-6">
+    Login sebagai :
+    </p>
+    <div class="flex justify-center space-x-10">
+    <div class="text-center">
+        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-4">
+            <i class="fas fa-user text-4xl text-teal-700"></i>
         </div>
-        <div class="mb-6">
-        <input class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Password" type="password"/>
-        </div>
-        <button class="w-full bg-yellow-500 text-white p-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300" type="submit">
-        Login
+        <button class="bg-yellow-500 text-white px-6 py-2 rounded-full">
+            Dosen
         </button>
-    </form>
-    <div class="text-center mt-4">
-        <a class="text-white underline" href="#">
-        forgot your password?
-        </a>
+    </div>
+    <div class="text-center">
+        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-8">
+            <i class="fas fa-user text-4xl text-teal-700"></i>
+        </div>
+        <button class="bg-yellow-500 text-white px-6 py-2 rounded-full">
+            Ketua Prodi
+        </button>
     </div>
     </div>
 </body>
