@@ -38,18 +38,18 @@
     </p>
     <div class="flex justify-center space-x-10">
     <div class="text-center">
-        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-4">
+        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-9">
             <i class="fas fa-user text-4xl text-teal-700"></i>
         </div>
-        <button class="bg-yellow-500 text-white px-6 py-2 rounded-full">
+        <button class="bg-yellow-500 text-white px-11 py-2 rounded-full">
             Dosen
         </button>
     </div>
     <div class="text-center">
-        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-8">
+        <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 ml-12">  
             <i class="fas fa-user text-4xl text-teal-700"></i>
         </div>
-        <button class="bg-yellow-500 text-white px-6 py-2 rounded-full">
+        <button class="bg-yellow-500 text-white px-6 py-2 rounded-full ml-4">
             Ketua Prodi
         </button>
     </div>
