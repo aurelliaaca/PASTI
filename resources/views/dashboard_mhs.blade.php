@@ -69,10 +69,10 @@
                 <p class="text-sm">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-red-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-trash"></i> Hapus
                 </button>
-                <button class="bg-blue-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-eye"></i> Tinjau
                 </button>
               </div>
@@ -83,10 +83,10 @@
                 <p class="text-sm">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-red-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-trash"></i> Hapus
                 </button>
-                <button class="bg-blue-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-eye"></i> Tinjau
                 </button>
               </div>
@@ -97,16 +97,17 @@
                 <p class="text-sm">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-red-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-trash"></i> Hapus
                 </button>
-                <button class="bg-blue-500 p-2 rounded-lg">
+                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
                   <i class="fas fa-eye"></i> Tinjau
                 </button>
               </div>
             </div>
           </div>
         </div>
+
 
         <!-- IRS Button -->
         <div class="flex justify-center mt-8 h-16">
