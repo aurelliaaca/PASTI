@@ -11,8 +11,10 @@ class LoginController extends Controller
     public function index()
     {
         if ($user = Auth::user()) {
-            if ($user->role == 'kaprodi') {
+            if ($user->role == '7') {
                 return redirect()->intended('user');
+            } elseif ($user->role == '1'){
+                return redirect()->intended('dashboard_mhs');
             }
         } 
         return view('login');
@@ -33,7 +35,9 @@ class LoginController extends Controller
             $user = Auth::user();
             if ($user->role == '7') { // kalo dia kaprodi + dosen
                 return redirect()->route('user');
-            } 
+            } elseif ($user->role == '1'){
+                return redirect()->intended('dashboard_mhs');
+            }
             return redirect()->intended('dashboard');
         }
         return redirect('login')
