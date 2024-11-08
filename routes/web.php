@@ -1,17 +1,11 @@
 <?php
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController; // atau controller yang menangani halaman user
 
-use Illuminate\Support\Facades\Route;
+// Routes auth
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::get('/login/user', function () {
-    return view('user');
-});
-
-
+// Route untuk halaman user
+Route::get('/user', [HomeController::class, 'index'])->name('user')->middleware('auth');
