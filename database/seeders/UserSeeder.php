@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
                 'userid' => '5',
                 'password' => 'kamaruddin123',
                 'email' => 'kamaruddin@dosen.com',
-                'role' => '7'
+                'role' => '7' // nyoba
             ],
             [
                 'userid' => '6',
