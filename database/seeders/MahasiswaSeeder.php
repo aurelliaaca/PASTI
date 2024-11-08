@@ -21,7 +21,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '081559569409',
                 'email' => 'dhela@students.com',
                 'alamat' => 'Jl. Bulusan Utara No. 41, Tembalang, Semarang',
-                'dosenwali' => '123456789012345678' // Example NIP for dosenwali
+                'dosenwali' => '197505152005012001' 
             ],
             [
                 'nama' => 'Tera Makna Pratiwi',
@@ -30,8 +30,26 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '0829989569409',
                 'email' => 'tera@students.com',
                 'alamat' => 'Jl. Banjarsari Selatan No. 90, Tembalang, Semarang',
-                'dosenwali' => '987654321098765432' // Example NIP for dosenwali
+                'dosenwali' => '197505152005012001' 
             ],
+            [
+                'nama' => 'Aurellia Putri Budi',
+                'nim' => '24060123140168',
+                'smt' => 3,
+                'telp' => '082876569889',
+                'email' => 'aurel@students.com',
+                'alamat' => 'Jl. Mulawarman, Tembalang, Semarang',
+                'dosenwali' => '198910182005012002'
+            ],
+            [
+                'nama' => 'Nabila Najma Manika',
+                'nim' => '24060123140172',
+                'smt' => 3,
+                'telp' => '085899577422',
+                'email' => 'nabila@students.com',
+                'alamat' => 'Jl. Bulusan Selatan No. 90, Tembalang, Semarang',
+                'dosenwali' => '198910182005012002'
+            ]
         ];
         DB::table('mahasiswa')->insert($mahasiswa);
     }
