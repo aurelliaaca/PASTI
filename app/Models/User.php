@@ -28,6 +28,7 @@ class User extends Authenticatable
         'level', //baru
         'email',
         'password',
+        'role',
     ];
     public $timestamps = false;
 
