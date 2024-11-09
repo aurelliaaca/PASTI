@@ -27,6 +27,13 @@ class DosenSeeder extends Seeder
                 'telp' => '089876543066',
                 'email' => 'azizah@dosen.com',
                 'alamat' => 'Jl. Setia Budi No. 11 Banyumanik, Semarang'
+            ],
+            [
+                'nama' => 'Prof. Dr. Priyo, S.SI., M.T.',
+                'nip' => '196303161988101001',
+                'telp' => '087665433211',
+                'email' => 'priyo@dosen.com',
+                'alamat' => 'Jl. Setia Budi No. 88 Banyumanik, Semarang'
             ]
         ];
         DB::table('dosen')->insert($dosen);

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('kode', 8)->primary();
             $table->integer('sks');
+            $table->string('status', 7);
+            $table->integer('semester');
         });
     }
 
