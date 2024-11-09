@@ -108,14 +108,27 @@
           </div>
         </div>
 
+        <!-- Container for Centered Buttons -->
+        <div class="col-span-3 flex justify-center space-x-4 mt-8">
+            <!-- Periode Akses IRS Button -->
+            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
+                <i class="fas fa-file-alt text-3xl"></i>
+                <span class="text-3xl">Periode Akses IRS</span>
+            </button>
 
-        <!-- IRS Button -->
-        <div class="flex justify-center mt-8 h-16">
-          <button class="absolute left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white px-10 py-5 rounded-lg flex items-center space-x-2">
-            <i class="fas fa-file-alt text-3xl"></i>
-            <span class="text-3xl">IRS</span>
-          </button>
+            <!-- Ruangan Button -->
+            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
+                <i class="fas fa-building text-3xl"></i>
+                <span class="text-3xl">Ruangan</span>
+            </button>
+
+            <!-- Data Mahasiswa Button -->
+            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
+                <i class="fas fa-user text-3xl"></i>
+                <span class="text-3xl">Data Mahasiswa</span>
+            </button>
         </div>
+
       </div>
     </div>
   </div>

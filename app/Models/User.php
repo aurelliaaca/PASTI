@@ -51,4 +51,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // //baru 
+    // public function mahasiswa()
+    // {
+    //     return $this->hasOne(Mahasiswa::class, 'email', 'email');
+    // }
 }
