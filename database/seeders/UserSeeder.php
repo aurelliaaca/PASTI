@@ -16,40 +16,44 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'userid' => '1',
                 'password' => 'dhela123',
                 'email' => 'dhela@students.com',
                 'role' => '1'
             ],
             [
-                'userid' => '2',
                 'password' => 'tera123',
                 'email' => 'tera@students.com',
                 'role' => '1'
             ],
             [
-                'userid' => '3',
                 'password' => 'aurel123',
                 'email' => 'aurel@students.com',
                 'role' => '1'
             ],
             [
-                'userid' => '4',
                 'password' => 'nabila123',
                 'email' => 'nabila@students.com',
                 'role' => '1'
             ],
             [
-                'userid' => '5',
                 'password' => 'kamaruddin123',
                 'email' => 'kamaruddin@dosen.com',
-                'role' => '7' // nyoba
+                'role' => '7' 
             ],
             [
-                'userid' => '6',
                 'password' => 'azizah123',
                 'email' => 'azizah@students.com',
                 'role' => '2'
+            ],
+            [
+                'password' => 'dinal123',
+                'email' => 'dinal@bak.com',
+                'role' => '3'
+            ],
+            [
+                'password' => 'priyol123',
+                'email' => 'priyo@bak.com',
+                'role' => '6'
             ]
         ];
 
