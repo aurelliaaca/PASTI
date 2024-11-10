@@ -47,17 +47,18 @@
                     <p>: S1 Informatika</p>
                 </div>
                 </div>
-                <div class="flex justify-between mt-4">
-                <div>
-                    <p class="text-lg font-bold">IPK</p>
-                    <p class="text-2xl">3.67</p>
-                </div>
-                <div>
-                    <p class="text-lg font-bold">SKS</p>
-                    <p class="text-2xl">90</p>
-                </div>
-                </div>
             </div>
+
+                <div class="flex justify-between mt-4 space-x-10">
+                <div>
+                    <p class="text-center font-bold text-2xl">IPK</p>
+                    <p class="text-center text-2xl">3.67</p>
+                </div>
+                <div>
+                    <p class="text-center font-bold text-2xl">SKS</p>
+                    <p class="text-center text-2xl">90</p>
+                </div>
+                </div>
             </div>
         </div>
         
@@ -66,42 +67,57 @@
           <div class="space-y-4">
             <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
               <div>
-                <p class="text-sm">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
+                  <i class="far fa-envelope text-2xl"></i>
+              </div>
+              <div>
+                <p class="text-sm text-justify  pl-3.5 pr-4">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-trash"></i> Hapus
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Hapus</span>
+                  <i class="far fa-trash-alt"></i>
                 </button>
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-eye"></i> Tinjau
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Tinjau</span>
+                  <i class="far fa-paper-plane"></i>
                 </button>
               </div>
             </div>
             
             <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
               <div>
-                <p class="text-sm">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
+                <i class="far fa-envelope text-2xl"></i>
+              </div>
+              <div>
+                <p class="text-sm text-justify  pl-3.5 pr-4">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-trash"></i> Hapus
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Hapus</span>
+                  <i class="far fa-trash-alt"></i>
                 </button>
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-eye"></i> Tinjau
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Tinjau</span>
+                  <i class="far fa-paper-plane"></i>
                 </button>
               </div>
             </div>
             
             <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
               <div>
-                <p class="text-sm">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
+              <i class="far fa-envelope text-2xl"></i>
+              </div>
+              <div>
+                <p class="text-sm text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-trash"></i> Hapus
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Hapus</span>
+                  <i class="far fa-trash-alt"></i>
                 </button>
-                <button class="bg-white text-green-900 p-2 rounded-lg border border-green-900">
-                  <i class="fas fa-eye"></i> Tinjau
+                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                  <span class="text-sm">Tinjau</span>
+                  <i class="far fa-paper-plane"></i> 
                 </button>
               </div>
             </div>
@@ -109,23 +125,23 @@
         </div>
 
         <!-- Container for Centered Buttons -->
-        <div class="col-span-3 flex justify-center space-x-4 mt-8">
+        <div class="col-span-3 flex justify-center space-x-4 mt-4">
             <!-- Periode Akses IRS Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-file-alt text-3xl"></i>
-                <span class="text-3xl">Periode Akses IRS</span>
+                <i class="far fa-clock text-3xl"></i>
+                <span class="text-2xl">Periode Akses IRS</span>
             </button>
 
             <!-- Ruangan Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-building text-3xl"></i>
-                <span class="text-3xl">Ruangan</span>
+                <i class="far fa-building text-3xl"></i>
+                <span class="text-2xl">Ruangan</span>
             </button>
 
             <!-- Data Mahasiswa Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-user text-3xl"></i>
-                <span class="text-3xl">Data Mahasiswa</span>
+                <i class="far fa-user text-3xl"></i>
+                <span class="text-2xl">Data Mahasiswa</span>
             </button>
         </div>
 
