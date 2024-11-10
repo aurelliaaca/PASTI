@@ -56,3 +56,4 @@ class LoginController extends Controller
             return Redirect('login');
         }        
     }
+    
