@@ -10,3 +10,4 @@ class KaprodiController extends Controller
         return view('user');
     }
 }
+
