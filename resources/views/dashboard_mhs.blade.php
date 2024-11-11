@@ -75,7 +75,7 @@
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Hapus</span>
-                  <i class="fasr fa-trash"></i>
+                  <i class="far fa-trash-alt"></i>
                 </button>
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
@@ -94,7 +94,7 @@
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash"></i>
+                  <i class="far fa-trash-alt"></i>
                 </button>
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
@@ -113,7 +113,7 @@
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash"></i>
+                  <i class="far fa-trash-alt"></i>
                 </button>
                 <button class="bg-white text-teal-800 p-2 rounded-lg flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
