@@ -105,7 +105,7 @@
             
             <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
               <div>
-              <i class="far fa-envelope text-2xl"></i>
+                <i class="far fa-envelope text-2xl"></i>
               </div>
               <div>
                 <p class="text-sm text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
