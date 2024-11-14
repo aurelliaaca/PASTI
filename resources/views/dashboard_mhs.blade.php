@@ -24,7 +24,7 @@
     <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
-        <!-- Left Section (Profile) -->
+        <!-- Left Section (Profil) -->
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
             <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
