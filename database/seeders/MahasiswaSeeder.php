@@ -21,7 +21,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '081559569409',
                 'email' => 'dhela@students.com',
                 'alamat' => 'Jl. Bulusan Utara No. 41, Tembalang, Semarang',
-                'prodi' => 'S1 Informatika',
+                'prodi' => 'S1 Informatika', //baru
                 'dosenwali' => '197505152005012001' 
             ],
             [
