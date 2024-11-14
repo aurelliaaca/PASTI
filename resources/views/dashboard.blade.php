@@ -7,7 +7,7 @@
     <title>PASTI - Universitas Diponegoro</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bgPASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
+<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <img class="mx-auto h-24 w-auto" src="{{asset('image/LogoUNDIP.png')}}" alt="Universitas Diponegoro Logo">
