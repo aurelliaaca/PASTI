@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+
+@section('content')
 <html>
 <head>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -138,3 +143,4 @@
   </div>
 </body>
 </html>
+@endsection
