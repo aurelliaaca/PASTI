@@ -21,6 +21,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '081559569409',
                 'email' => 'dhela@students.com',
                 'alamat' => 'Jl. Bulusan Utara No. 41, Tembalang, Semarang',
+                'prodi' => 'S1 Informatika',
                 'dosenwali' => '197505152005012001' 
             ],
             [
@@ -30,6 +31,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '0829989569409',
                 'email' => 'tera@students.com',
                 'alamat' => 'Jl. Banjarsari Selatan No. 90, Tembalang, Semarang',
+                'prodi' => 'S1 Informatika',
                 'dosenwali' => '197505152005012001' 
             ],
             [
@@ -39,6 +41,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '082876569889',
                 'email' => 'aurel@students.com',
                 'alamat' => 'Jl. Mulawarman, Tembalang, Semarang',
+                'prodi' => 'S1 Informatika',
                 'dosenwali' => '198910182005012002'
             ],
             [
@@ -48,6 +51,7 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '085899577422',
                 'email' => 'nabila@students.com',
                 'alamat' => 'Jl. Bulusan Selatan No. 90, Tembalang, Semarang',
+                'prodi' => 'S1 Informatika',
                 'dosenwali' => '198910182005012002'
             ]
         ];
