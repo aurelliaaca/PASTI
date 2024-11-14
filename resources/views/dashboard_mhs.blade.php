@@ -24,10 +24,10 @@
     <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
-        <!-- Left Section (Profil) -->
+        <!-- Left Section (Profile) -->
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
-            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
+            <img alt="Profile Picture" class="rounded-full mb-4" src="https://storage.googleapis.com/a1aa/image/jEeIR1lbHdSRFyx09qwUYuweRpeBrz74XEEmmYOUVr1iAzdnA.jpg" width="100" height="100"/>
             <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
             <div class="text-left w-full">
                 <div class="space-y-2">
