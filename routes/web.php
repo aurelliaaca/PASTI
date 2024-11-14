@@ -35,4 +35,3 @@ Route::get('/login/user', function () {
 Route::get('/dashboard_mhs', function () {
     return view('dashboard_mhs');
 });
-
