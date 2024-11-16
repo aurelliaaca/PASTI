@@ -47,4 +47,3 @@ Route::get('/dashboard_kp', function () {
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
 });
-
