@@ -27,24 +27,29 @@
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
-                    <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">Saddam Dharmawan, S.Kom, M.kom</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-[140px] font-semibold">NIP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">199108130090</p>                                                                                                                                     
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">saddam@lecture.undip.ac.id</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">085778323467</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">PRODI</p>
-                    <p>: S1 Informatika</p>
+                    <p class="w-[140px] font-semibold">PRODI</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">S1 Informatika</p>
                 </div>
                 </div>
             </div>
@@ -58,8 +63,8 @@
               <div>
                   <i class="far fa-envelope text-2xl"></i>
               </div>
-              <div>
-                <p class="text-sm text-justify  pl-3.5 pr-4">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
+              <div class="flex-1 pl-3.5 pr-4 text-left">
+                <p class="text-sm">[29/06 - 11.00] Dekan - Menyetujui Jadwal Perkuliahan.</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -77,8 +82,8 @@
               <div>
                 <i class="far fa-envelope text-2xl"></i>
               </div>
-              <div>
-                <p class="text-sm text-justify  pl-3.5 pr-4">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
+              <div class="flex-1 pl-3.5 pr-4 text-left">
+                <p class="text-sm">[25/06 - 09.30] Dekan - Menolak Jadwal Perkuliahan.</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -92,45 +97,27 @@
               </div>
             </div>
             
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div>
-                <p class="text-sm text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i> 
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
-            <!-- Periode Akses IRS Button -->
+            <!-- Penjadwalan Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-clock text-3xl"></i>
-                <span class="text-2xl">Periode Akses IRS</span>
+                <i class="far fa-calendar alt text-3xl"></i>
+                <span class="text-2xl">Penjadwalan</span>
             </button>
 
-            <!-- Ruangan Button -->
+            <!-- Mata kuliah Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-building text-3xl"></i>
-                <span class="text-2xl">Ruangan</span>
+                <i class="fas fa-book text-3xl"></i>
+                <span class="text-2xl">Mata Kuliah</span>
             </button>
 
-            <!-- Data Mahasiswa Button -->
+            <!-- Monitoring IRS Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-user text-3xl"></i>
-                <span class="text-2xl">Data Mahasiswa</span>
+                <i class="fas fa-chart-line text-3xl"></i>
+                <span class="text-2xl">Monitoring IRS</span>
             </button>
         </div>
 

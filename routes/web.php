@@ -39,3 +39,11 @@ Route::get('/dashboard_mhs', function () {
 Route::get('/dashboard_bak', function () {
     return view('dashboard_bak');
 });
+
+Route::get('/dashboard_kp', function () {
+    return view('dashboard_kp');
+});
+
+Route::get('/kp_penjadwalan', function () {
+    return view('kp_penjadwalan');
+});
