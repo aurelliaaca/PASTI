@@ -39,3 +39,16 @@ Route::get('/dashboard_mhs', function () {
 Route::get('/dashboard_bak', function () {
     return view('dashboard_bak');
 });
+
+Route::get('/dashboard_dosen', function () {
+    return view('dashboard_dosen');
+});
+
+Route::get('/dashboard_dekan', function () {
+    return view('dashboard_dekan');
+});
+
+Route::get('/mhs_pengisianirs', function () {
+    return view('mhs_pengisianirspage');
+});
+
