@@ -16,49 +16,38 @@
   <div class="max-w-7xl mx-auto p-4 min-h-screen">
     
     <!-- Main Content Section -->
-    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
+    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4 min-h-[60vh]">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
         <!-- Left Section (Profile) -->
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
-            <img alt="Profile Picture" class="rounded-full mb-4" src="https://storage.googleapis.com/a1aa/image/jEeIR1lbHdSRFyx09qwUYuweRpeBrz74XEEmmYOUVr1iAzdnA.jpg" width="100" height="100"/>
+            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
             <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
                     <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p>: Prof. Dr. Niken Wayuhni, S.Si., M.T.</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-24 font-semibold">NIP</p>
+                    <p>: 199108120015</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p>: niken@lecture.undip.ac.id</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p>: 085221267834</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">PRODI</p>
-                    <p>: S1 Informatika</p>
+                    <p class="w-24 font-semibold">FAKULTAS</p>
+                    <p>: Sains dan Matematika</p>
                 </div>
                 </div>
             </div>
-
-                <div class="flex justify-between mt-4 space-x-10">
-                <div>
-                    <p class="text-center font-bold text-2xl">IPK</p>
-                    <p class="text-center text-2xl">3.67</p>
-                </div>
-                <div>
-                    <p class="text-center font-bold text-2xl">SKS</p>
-                    <p class="text-center text-2xl">90</p>
-                </div>
-                </div>
             </div>
         </div>
         
@@ -69,8 +58,8 @@
               <div>
                   <i class="far fa-envelope text-2xl"></i>
               </div>
-              <div>
-                <p class="text-sm text-justify  pl-3.5 pr-4">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
+              <div class="flex-1">
+                <p class="text-sm text-left pl-3.5 pr-4">[11/07 - 15.33] Kaprodi Informatika - Mengajukan Jadwal Kuliah.</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -88,8 +77,8 @@
               <div>
                 <i class="far fa-envelope text-2xl"></i>
               </div>
-              <div>
-                <p class="text-sm text-justify  pl-3.5 pr-4">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
+              <div class="flex-1">
+                <p class="text-sm text-left pl-3.5 pr-4">[8/07 - 08.46] Kaprodi Matematika - Merevisi Jadwal Kuliah.</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -107,8 +96,8 @@
               <div>
                 <i class="far fa-envelope text-2xl"></i>
               </div>
-              <div>
-                <p class="text-sm text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
+              <div class="flex-1">
+                <p class="text-sm text-left pl-3.5 pr-4">[4/07 - 12.52] Kaprodi Biologi - Mengajukan Jadwal Kuliah.</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -128,14 +117,14 @@
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
             <!-- Periode Akses IRS Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-check text-3xl"></i>
+                <i class="fa fa-handshake text-3xl"></i>
                 <span class="text-2xl">Persetujuan</span>
             </button>
 
             <!-- Data Mahasiswa Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-user text-3xl"></i>
-                <span class="text-2xl">Monitor Jadwal Kuliah</span>
+                <i class="fa fa-users text-3xl"></i>
+                <span class="text-2xl">Monitoring Jadwal Kuliah</span>
             </button>
         </div>
 

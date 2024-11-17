@@ -29,7 +29,7 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NAMA</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">Saddam Dharmawan, S.Kom, M.kom</p>
+                    <p class="w-full">Saddam Dharmawan, S.Kom, M.Kom</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NIP</p>

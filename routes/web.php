@@ -44,6 +44,14 @@ Route::get('/dashboard_kp', function () {
     return view('dashboard_kp');
 });
 
+Route::get('/dashboard_dekan', function () {
+    return view('dashboard_dekan');
+});
+
+Route::get('/dashboard_dosen', function () {
+    return view('dashboard_dosen');
+});
+
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
 });
