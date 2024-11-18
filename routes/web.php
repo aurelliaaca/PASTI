@@ -56,3 +56,7 @@ Route::get('/dashboard_dosen', function () {
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
 });
+
+Route::get('/mhs_pengisianirspage', function () {
+    return view('mhs_pengisianirspage');
+})->name('mhs_pengisianirspage');
