@@ -48,17 +48,6 @@
                 </div>
                 </div>
             </div>
-
-                <div class="flex justify-between mt-4 space-x-10">
-                <div>
-                    <p class="text-center font-bold text-2xl">IPK</p>
-                    <p class="text-center text-2xl">3.67</p>
-                </div>
-                <div>
-                    <p class="text-center font-bold text-2xl">SKS</p>
-                    <p class="text-center text-2xl">90</p>
-                </div>
-                </div>
             </div>
         </div>
         

@@ -132,10 +132,10 @@
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
             <!-- IRS Button -->
-            <button class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2">
+            <a href="{{ route('mhs_pengisianirspage') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2">
                 <i class="far fa-file-alt text-3xl"></i>
                 <span class="text-2xl">IRS</span>
-            </button>
+            </a>
         </div>
 
       </div>
