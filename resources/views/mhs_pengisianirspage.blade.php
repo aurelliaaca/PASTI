@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+
+@section('content')
 <!-- Belum selesai -->
 <html>
 <head>
@@ -17,6 +22,7 @@
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
   <div class="max-w-7xl mx-auto p-4 min-h-screen">
   
+
   <!-- header -->
   <div class="grid grid-cols-8 gap-0 w-full mb-4">
 
@@ -236,6 +242,31 @@
         </div>
       </div>
       
+      <!-- Jadwal Table -->
+      <div class="mt-8">
+                <h2 class="text-xl font-semibold mb-4 text-center">Jadwal Kuliah</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full border text-center">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="border px-4 py-2">No</th>
+                                <th class="border px-4 py-2">Nama Mata Kuliah</th>
+                                <th class="border px-4 py-2">Kode</th>
+                                <th class="border px-4 py-2">SKS</th>
+                                <th class="border px-4 py-2">Hari</th>
+                                <th class="border px-4 py-2">Jam</th>
+                                <th class="border px-4 py-2">Kelas</th>
+                                <th class="border px-4 py-2">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwalTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
     </div>
   </div>
 </div>
@@ -250,3 +281,4 @@
 
 </body>
 </html>
+@endsection
