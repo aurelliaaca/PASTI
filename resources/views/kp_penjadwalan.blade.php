@@ -27,114 +27,170 @@
         </button>
     </div>
     
-    <!-- Main Content Section -->
-    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-        
-        <!-- Left Section (Profile) -->
-        <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
-            <div class="flex flex-col items-center">
-            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
-            <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
-            <div class="text-left w-full">
-                <div class="space-y-2">
-                <div class="flex">
-                    <p class="w-[140px] font-semibold">NAMA</p>
-                    <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">Saddam Dharmawan, S.Kom, M.kom</p>
+    <!-- main content -->
+    <main class="flex-grow p-5">
+            <!-- Form Section -->
+            <div class="max-w-4xl mx-auto bg-teal-700 p-6 rounded-lg shadow-lg">
+                <h2 class="text-white text-xl font-semibold mb-4">Tambah Jadwal Kuliah</h2>
+                <form id="jadwalForm">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-white block font-medium mb-2">Nama Mata Kuliah</label>
+                            <select id="namaMk" class="w-full p-2 border rounded">
+                                <option value="" disabled selected>Pilih Mata Kuliah</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Kode Mata Kuliah</label>
+                            <input type="text" id="kodeMk" class="w-full p-2 border rounded" readonly>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">SKS</label>
+                            <input type="number" id="sksMk" class="w-full p-2 border rounded" readonly>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Semester</label>
+                            <input type="number" id="semesterMk" class="w-full p-2 border rounded" readonly>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Kelas</label>
+                            <select id="kelasMk" class="w-full p-2 border rounded">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Jam Mulai</label>
+                            <input type="time" id="jamMulai" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Jam Selesai</label>
+                            <input type="time" id="jamSelesai" class="w-full p-2 border rounded" readonly>
+                        </div>
+                        <div>
+                            <label class="text-white block font-medium mb-2">Hari</label>
+                            <select id="hari" class="w-full p-2 border rounded">
+                                <option value="Senin">Senin</option>
+                                <option value="Selasa">Selasa</option>
+                                <option value="Rabu">Rabu</option>
+                                <option value="Kamis">Kamis</option>
+                                <option value="Jumat">Jumat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" id="addJadwal" class="mt-4 w-full bg-green-500 text-white py-2 rounded hover:bg-green-700">Tambah Jadwal</button>
+                </form>
+            </div>
+
+            <!-- Jadwal Table -->
+            <div class="mt-8">
+                <div class="col-span-3 bg-amber-400 text-white p-2 rounded-tl rounded-tr">
+                <h2 class="text-xl font-semibold mb-4 text-center">Jadwal Kuliah</h2>
                 </div>
-                <div class="flex">
-                    <p class="w-[140px] font-semibold">NIP</p>
-                    <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">199108130090</p>                                                                                                                                     
-                </div>
-                <div class="flex">
-                    <p class="w-[140px] font-semibold">EMAIL</p>
-                    <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">saddam@lecture.undip.ac.id</p>
-                </div>
-                <div class="flex">
-                    <p class="w-[140px] font-semibold">NO. TELP</p>
-                    <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">085778323467</p>
-                </div>
-                <div class="flex">
-                    <p class="w-[140px] font-semibold">PRODI</p>
-                    <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">S1 Informatika</p>
-                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full border text-center table-auto">
+                        <thead class="bg-teal-700 text-white">
+                            <tr>
+                                <th class="border px-4 py-2">No</th>
+                                <th class="border px-4 py-2">Nama Mata Kuliah</th>
+                                <th class="border px-4 py-2">Kode</th>
+                                <th class="border px-4 py-2">SKS</th>
+                                <th class="border px-4 py-2">Hari</th>
+                                <th class="border px-4 py-2">Jam</th>
+                                <th class="border px-4 py-2">Kelas</th>
+                                <th class="border px-4 py-2">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwalTable" class="text-gray-800">
+                            <!-- Dynamic content here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            </div>
-        </div>
-        
-        <!-- Right Section (Notifications) -->
-        <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
-          <div class="space-y-4">
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                  <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1 pl-3.5 pr-4 text-left">
-                <p class="text-sm">[29/06 - 11.00] Dekan - Menyetujui Jadwal Perkuliahan.</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1 pl-3.5 pr-4 text-left">
-                <p class="text-sm">[25/06 - 09.30] Dekan - Menolak Jadwal Perkuliahan.</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i>
-                </button>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-
-        <!-- Container for Centered Buttons -->
-        <div class="col-span-3 flex justify-center space-x-4 mt-4">
-            <!-- Penjadwalan Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-calendar alt text-3xl"></i>
-                <span class="text-2xl">Penjadwalan</span>
-            </button>
-
-            <!-- Mata kuliah Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-book text-3xl"></i>
-                <span class="text-2xl">Mata Kuliah</span>
-            </button>
-
-            <!-- Monitoring IRS Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-chart-line text-3xl"></i>
-                <span class="text-2xl">Monitoring IRS</span>
-            </button>
-        </div>
-
-      </div>
+        </main>
     </div>
-  </div>
+
+    <script>
+        // Dummy Data
+        const mataKuliahData = [
+            { kode: "MK001", nama: "Matematika", sks: 3, semester: 1 },
+            { kode: "MK002", nama: "Fisika", sks: 2, semester: 2 },
+            { kode: "MK003", nama: "Kimia", sks: 3, semester: 3 },
+        ];
+        const jadwalData = [];
+
+        // Populate Mata Kuliah Dropdown
+        const namaMkSelect = document.getElementById("namaMk");
+        mataKuliahData.forEach((mk) => {
+            const option = document.createElement("option");
+            option.value = mk.kode;
+            option.textContent = mk.nama;
+            option.dataset.kode = mk.kode;
+            option.dataset.sks = mk.sks;
+            option.dataset.semester = mk.semester;
+            namaMkSelect.appendChild(option);
+        });
+
+        // Populate Mata Kuliah Details on Selection
+        namaMkSelect.addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            document.getElementById("kodeMk").value = selectedOption.dataset.kode;
+            document.getElementById("sksMk").value = selectedOption.dataset.sks;
+            document.getElementById("semesterMk").value = selectedOption.dataset.semester;
+        });
+
+        // Add Jadwal
+        const addJadwalBtn = document.getElementById("addJadwal");
+        const jadwalTable = document.getElementById("jadwalTable");
+
+        addJadwalBtn.addEventListener("click", () => {
+            const nama = namaMkSelect.options[namaMkSelect.selectedIndex]?.text || "";
+            const kode = document.getElementById("kodeMk").value;
+            const sks = document.getElementById("sksMk").value;
+            const semester = document.getElementById("semesterMk").value;
+            const kelas = document.getElementById("kelasMk").value;
+            const hari = document.getElementById("hari").value;
+            const jamMulai = document.getElementById("jamMulai").value;
+            const jamSelesai = document.getElementById("jamSelesai").value;
+
+            if (!nama || !kode || !sks || !kelas || !hari || !jamMulai) {
+                Swal.fire("Error", "Semua field harus diisi!", "error");
+                return;
+            }
+
+            jadwalData.push({ nama, kode, sks, semester, kelas, hari, jam: `${jamMulai} - ${jamSelesai}` });
+            renderJadwal();
+        });
+
+        // Render Jadwal Table with alternating background colors
+        function renderJadwal() {
+            jadwalTable.innerHTML = "";
+            jadwalData.forEach((jadwal, index) => {
+                const row = document.createElement("tr");
+                // Set alternating background colors (light gray for odd rows)
+                row.classList.add(index % 2 === 0 ? "bg-gray-50" : "bg-gray-100", "hover:bg-gray-200");
+                row.innerHTML = `
+                    <td class="border px-4 py-2">${index + 1}</td>
+                    <td class="border px-4 py-2">${jadwal.nama}</td>
+                    <td class="border px-4 py-2">${jadwal.kode}</td>
+                    <td class="border px-4 py-2">${jadwal.sks}</td>
+                    <td class="border px-4 py-2">${jadwal.hari}</td>
+                    <td class="border px-4 py-2">${jadwal.jam}</td>
+                    <td class="border px-4 py-2">${jadwal.kelas}</td>
+                    <td class="border px-4 py-2">
+                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700" onclick="deleteJadwal(${index})">Hapus</button>
+                    </td>
+                `;
+                jadwalTable.appendChild(row);
+            });
+        }
+
+        // Delete Jadwal
+        function deleteJadwal(index) {
+            jadwalData.splice(index, 1);
+            renderJadwal();
+        }
+    </script>
 </body>
 </html>
