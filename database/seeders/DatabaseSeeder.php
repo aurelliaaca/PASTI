@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             DekanSeeder::class,
             KetuaProdiSeeder::class,
             MatkulSeeder::class,
-            RuanganSeeder::class
+            RuanganSeeder::class,
+            JadwalSeeder::class
         ]);
     }
 }

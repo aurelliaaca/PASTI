@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('ruang', 5)->primary();
             $table->string('gedung', 1);
             $table->string('fakultas', 50);
+            $table->integer('kapasitas');
         });
     }
 
