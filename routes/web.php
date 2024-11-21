@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function(){
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::get('/dashboard_mhs', [UserController::class, 'index'])->name('dashboard_mhs');
 Route::get('/dk_persetujuan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuan');
+Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
 
 Route::get('/login', function () {
     return view('login');
@@ -47,7 +48,7 @@ Route::get('/dashboard_kp', function () {
 
 Route::get('/dashboard_dekan', function () {
     return view('dashboard_dekan');
-});
+})->name('dashboard_dekan');
 
 Route::get('/dashboard_dosen', function () {
     return view('dashboard_dosen');
@@ -60,3 +61,7 @@ Route::get('/kp_penjadwalan', function () {
 Route::get('/mhs_pengisianirspage', function () {
     return view('mhs_pengisianirspage');
 })->name('mhs_pengisianirspage');
+
+Route::get('/user1', function () {
+    return view('user1');
+})->name('user1');
