@@ -18,5 +18,6 @@ class Ruangan extends Model
         'ruang',
         'gedung',
         'fakultas',
+        'kapasitas',
     ];
 }
