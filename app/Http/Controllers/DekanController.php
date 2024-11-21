@@ -10,4 +10,9 @@ class DekanController extends Controller
     {
         return view('dk_persetujuan');
     }
+
+    public function showMonitoring()
+    {
+        return view('dk_monitoring');
+    }
 }
