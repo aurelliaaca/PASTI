@@ -19,36 +19,43 @@ class RuanganSeeder extends Seeder
                 'ruang' => 'E101',
                 'gedung'=> 'E',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '100'
             ],
             [
                 'ruang' => 'E102',
                 'gedung'=> 'E',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ],
             [
                 'ruang' => 'E103',
                 'gedung'=> 'E',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ],
             [
                 'ruang' => 'A303',
                 'gedung'=> 'A',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ],
             [
                 'ruang' => 'A302',
                 'gedung'=> 'A',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ],
             [
                 'ruang' => 'K202',
                 'gedung'=> 'K',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ],
             [
                 'ruang' => 'K201',
                 'gedung'=> 'K',
                 'fakultas'=> 'Fakultas Sains dan Matematika',
+                'kapasitas' => '50'
             ]
         ];
         DB::table('ruangan')->insert($ruangan);

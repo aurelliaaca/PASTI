@@ -41,18 +41,18 @@ class UserSeeder extends Seeder
                 'role' => '7' 
             ],
             [
-                'password' => 'azizah123',
-                'email' => 'azizah@students.com',
-                'role' => '2'
-            ],
-            [
                 'password' => 'dinal123',
                 'email' => 'dinal@bak.com',
                 'role' => '3'
             ],
             [
                 'password' => 'priyol123',
-                'email' => 'priyo@bak.com',
+                'email' => 'priyo@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'niken123',
+                'email' => 'niken@dekan.com',
                 'role' => '6'
             ]
         ];
