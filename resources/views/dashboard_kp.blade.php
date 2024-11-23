@@ -109,10 +109,10 @@
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
             <!-- Penjadwalan Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-calendar alt text-3xl"></i>
+            <a href="{{ route('kp_penjadwalan') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2">
+                <i class="far fa-calendar text-3xl"></i>
                 <span class="text-2xl">Penjadwalan</span>
-            </button>
+            </a>
 
             <!-- Mata kuliah Button -->
             <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
@@ -121,10 +121,11 @@
             </button>
 
             <!-- Monitoring IRS Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-chart-line text-3xl"></i>
-                <span class="text-2xl">Monitoring IRS</span>
-            </button>
+            <a href="{{ route('dk_monitoring') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="fa fa-users text-3xl"></i>
+                <span class="text-2xl">Monitoring Jadwal Kuliah</span>
+            </a>
+        </div>
         </div>
 
       </div>
