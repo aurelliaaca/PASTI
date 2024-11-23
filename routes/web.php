@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DekanController;
+use App\Http\Controllers\DosenController;
+
 
 Route::get('/', function () {
     return view('login');
@@ -57,6 +59,21 @@ Route::get('/dashboard_dosen', function () {
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
 });
+
+Route::get('/pa_perwalian', function () {
+    return view('pa_perwalian');
+})->name('pa_perwalian');
+
+// NYOBA MAKSIMAL
+// Route::get('/perwalian', [DosenController::class, 'index'])->name('perwalian.index');
+
+Route::get('/pa_persetujuan', function () {
+    return view('pa_persetujuan');
+})->name('pa_persetujuan');
+
+Route::get('/pa_irsmahasiswa', function () {
+    return view('pa_irsmahasiswa');
+})->name('pa_irsmahasiswa');
 
 Route::get('/mhs_pengisianirspage', function () {
     return view('mhs_pengisianirspage');

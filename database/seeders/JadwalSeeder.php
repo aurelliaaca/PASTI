@@ -125,12 +125,12 @@ class JadwalSeeder extends Seeder
                 'pengampu1' => 'Sri Utami, S.Kom., M.Kom.',
                 'pengampu2' => 'Teguh Prakoso, S.Si., M.Kom.'
             ],
-            [
+            [ 
                 'jadwalid' => 'SI_B_2024',
-                'jam_mulai' => '15:40:00',
+                'jam_mulai' => '09:40:00',
                 'ruangan' => 'E103',
                 'kelas' => 'B',
-                'hari' => 'Rabu',
+                'hari' => 'Selasa',
                 'kodemk' => 'PAIK6503',
                 'kuota' => 50,
                 'koordinator' => 'Prof. Bambang Hartono, S.Si., M.Kom',
@@ -142,7 +142,7 @@ class JadwalSeeder extends Seeder
                 'jam_mulai' => '09:40:00',
                 'ruangan' => 'E103',
                 'kelas' => 'C',
-                'hari' => 'Kamis',
+                'hari' => 'Senin',
                 'kodemk' => 'PAIK6503',
                 'kuota' => 50,
                 'koordinator' => 'Prof. Bambang Hartono, S.Si., M.Kom',
@@ -151,7 +151,7 @@ class JadwalSeeder extends Seeder
             ],
             [
                 'jadwalid' => 'SI_D_2024',
-                'jam_mulai' => '15:40:00',
+                'jam_mulai' => '09:40:00',
                 'ruangan' => 'E103',
                 'kelas' => 'D',
                 'hari' => 'Kamis',
@@ -164,9 +164,33 @@ class JadwalSeeder extends Seeder
             // ML
             [
                 'jadwalid' => 'ML_A_2024',
-                'jam_mulai' => '15:40:00',
+                'jam_mulai' => '09:40:00',
                 'ruangan' => 'A303',
                 'kelas' => 'A',
+                'hari' => 'Selasa',
+                'kodemk' => 'PAIK6505',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu1' => 'Aditya Kurniawan, S.Si., M.Kom.',
+                'pengampu2' => 'Anita Maharani, S.Kom., M.T.'
+            ],
+            [
+                'jadwalid' => 'ML_B_2024',
+                'jam_mulai' => '09:40:00',
+                'ruangan' => 'A303',
+                'kelas' => 'B',
+                'hari' => 'Kamis',
+                'kodemk' => 'PAIK6505',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu1' => 'Aditya Kurniawan, S.Si., M.Kom.',
+                'pengampu2' => 'Anita Maharani, S.Kom., M.T.'
+            ],
+            [
+                'jadwalid' => 'ML_C_2024',
+                'jam_mulai' => '09:40:00',
+                'ruangan' => 'A303',
+                'kelas' => 'C',
                 'hari' => 'Rabu',
                 'kodemk' => 'PAIK6505',
                 'kuota' => 50,
@@ -174,7 +198,164 @@ class JadwalSeeder extends Seeder
                 'pengampu1' => 'Aditya Kurniawan, S.Si., M.Kom.',
                 'pengampu2' => 'Anita Maharani, S.Kom., M.T.'
             ],
-
+            [
+                'jadwalid' => 'ML_D_2024',
+                'jam_mulai' => '09:40:00',
+                'ruangan' => 'A303',
+                'kelas' => 'D',
+                'hari' => 'Senin',
+                'kodemk' => 'PAIK6505',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu1' => 'Aditya Kurniawan, S.Si., M.Kom.',
+                'pengampu2' => 'Anita Maharani, S.Kom., M.T.'
+            ],
+            //PBP
+            [
+                'jadwalid' => 'PBP_A_2024',
+                'jam_mulai' => '07:00:00',
+                'ruangan' => 'E101',
+                'kelas' => 'A',
+                'hari' => 'Kamis',
+                'kodemk' => 'PAIK6501',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Lestari Widyanigrum, S.Kom., M.Kom.',
+                'pengampu1' => 'Setiawan Saputra, S.Kom., M.Kom.',
+                'pengampu2' => 'Arif Wibowo, S.Kom., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'PBP_B_2024',
+                'jam_mulai' => '13:00:00',
+                'ruangan' => 'E101',
+                'kelas' => 'B',
+                'hari' => 'Kamis',
+                'kodemk' => 'PAIK6501',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Lestari Widyanigrum, S.Kom., M.Kom.',
+                'pengampu1' => 'Setiawan Saputra, S.Kom., M.Kom.',
+                'pengampu2' => 'Arif Wibowo, S.Kom., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'PBP_C_2024',
+                'jam_mulai' => '13:00:00',
+                'ruangan' => 'E101',
+                'kelas' => 'C',
+                'hari' => 'Rabu',
+                'kodemk' => 'PAIK6501',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Lestari Widyanigrum, S.Kom., M.Kom.',
+                'pengampu1' => 'Setiawan Saputra, S.Kom., M.Kom.',
+                'pengampu2' => 'Arif Wibowo, S.Kom., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'PBP_D_2024',
+                'jam_mulai' => '07:00:00',
+                'ruangan' => 'E101',
+                'kelas' => 'D',
+                'hari' => 'Rabu',
+                'kodemk' => 'PAIK6501',
+                'kuota' => 50,
+                'koordinator' => 'Dr. Lestari Widyanigrum, S.Kom., M.Kom.',
+                'pengampu1' => 'Setiawan Saputra, S.Kom., M.Kom.',
+                'pengampu2' => 'Arif Wibowo, S.Kom., M.Kom.'
+            ],
+            // KJI
+            [
+                'jadwalid' => 'KJI_A_2024',
+                'jam_mulai' => '09:40:00',
+                'ruangan' => 'E102',
+                'kelas' => 'A',
+                'hari' => 'Jumat',
+                'kodemk' => 'PAIK6506',
+                'kuota' => 50,
+                'koordinator' => 'Rahma Adhani, S.Si., M.T.',
+                'pengampu1' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu2' => 'Aditya Kurniawan, S.Si., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'KJI_B_2024',
+                'jam_mulai' => '07:00:00',
+                'ruangan' => 'E102',
+                'kelas' => 'B',
+                'hari' => 'Jumat',
+                'kodemk' => 'PAIK6506',
+                'kuota' => 50,
+                'koordinator' => 'Rahma Adhani, S.Si., M.T.',
+                'pengampu1' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu2' => 'Aditya Kurniawan, S.Si., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'KJI_C_2024',
+                'jam_mulai' => '13:00:00',
+                'ruangan' => 'E102',
+                'kelas' => 'C',
+                'hari' => 'Jumat',
+                'kodemk' => 'PAIK6506',
+                'kuota' => 50,
+                'koordinator' => 'Rahma Adhani, S.Si., M.T.',
+                'pengampu1' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu2' => 'Aditya Kurniawan, S.Si., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'KJI_D_2024',
+                'jam_mulai' => '13:00:00',
+                'ruangan' => 'E102',
+                'kelas' => 'D',
+                'hari' => 'Kamis',
+                'kodemk' => 'PAIK6506',
+                'kuota' => 50,
+                'koordinator' => 'Rahma Adhani, S.Si., M.T.',
+                'pengampu1' => 'Dr. Indah Permatasari, S.Si., M.T.',
+                'pengampu2' => 'Aditya Kurniawan, S.Si., M.Kom.'
+            ],
+            [
+                'jadwalid' => 'KWU_A_2024',
+                'jam_mulai' => '07:00:00',
+                'ruangan' => 'E103',
+                'kelas' => 'A',
+                'hari' => 'Jumat',
+                'kodemk' => 'UNW00007',
+                'kuota' => 50,
+                'koordinator' => 'Prof. Dimas Surya, S.Si., M.Kom.',
+                'pengampu1' => 'Rizky Pratama, S.Si., M.Kom.',
+                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
+            ],
+            [
+                'jadwalid' => 'KWU_B_2024',
+                'jam_mulai' => '13:00:00',
+                'ruangan' => 'E103',
+                'kelas' => 'B',
+                'hari' => 'Jumat',
+                'kodemk' => 'UNW00007',
+                'kuota' => 50,
+                'koordinator' => 'Prof. Dimas Surya, S.Si., M.Kom.',
+                'pengampu1' => 'Rizky Pratama, S.Si., M.Kom.',
+                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
+            ],
+            [
+                'jadwalid' => 'KWU_C_2024',
+                'jam_mulai' => '07:00:00',
+                'ruangan' => 'E103',
+                'kelas' => 'C',
+                'hari' => 'Kamis',
+                'kodemk' => 'UNW00007',
+                'kuota' => 50,
+                'koordinator' => 'Prof. Dimas Surya, S.Si., M.Kom.',
+                'pengampu1' => 'Rizky Pratama, S.Si., M.Kom.',
+                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
+            ],
+            [
+                'jadwalid' => 'KWU_D_2024',
+                'jam_mulai' => '09:40:00',
+                'ruangan' => 'E103',
+                'kelas' => 'D',
+                'hari' => 'Jumat',
+                'kodemk' => 'UNW00007',
+                'kuota' => 50,
+                'koordinator' => 'Prof. Dimas Surya, S.Si., M.Kom.',
+                'pengampu1' => 'Rizky Pratama, S.Si., M.Kom.',
+                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
+            ]
         ];
         DB::table('jadwal_mata_kuliah')->insert($jadwal);
     }

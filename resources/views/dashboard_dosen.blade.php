@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+
+@section('content')
 <html>
 <head>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -73,10 +78,10 @@
                 <p class="text-sm text-justify  pl-3.5 pr-4">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+              <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2" onclick="deleteNotification(this)">
                   <span class="text-sm">Hapus</span>
                   <i class="far fa-trash-alt"></i>
-                </button>
+              </button>
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
                   <i class="far fa-paper-plane"></i>
@@ -92,10 +97,10 @@
                 <p class="text-sm text-justify  pl-3.5 pr-4">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+              <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2" onclick="deleteNotification(this)">
                   <span class="text-sm">Hapus</span>
                   <i class="far fa-trash-alt"></i>
-                </button>
+              </button>
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
                   <i class="far fa-paper-plane"></i>
@@ -111,10 +116,10 @@
                 <p class="text-sm text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.</p>
               </div>
               <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+              <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2" onclick="deleteNotification(this)">
                   <span class="text-sm">Hapus</span>
                   <i class="far fa-trash-alt"></i>
-                </button>
+              </button>
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
                   <span class="text-sm">Tinjau</span>
                   <i class="far fa-paper-plane"></i> 
@@ -126,21 +131,33 @@
 
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
-            <!-- Periode Akses IRS Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-check text-3xl"></i>
-                <span class="text-2xl">Persetujuan IRS</span>
-            </button>
+            <!-- Mahasiswa Perwalian-->
+            <a href="{{ route('pa_perwalian') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <i class="far fa-user text-3xl"></i>
+              <span class="text-2xl">Mahasiswa Perwalian</span>
+          </a>
 
-            <!-- Data Mahasiswa Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="far fa-user text-3xl"></i>
-                <span class="text-2xl">Mahasiswa Perwalian</span>
-            </button>
+            <!-- Data IRS Mahasiswa Perwalian -->
+            <a href="{{ route('pa_persetujuan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <i class="far fa-check text-3xl"></i>
+              <span class="text-2xl">Persetujuan IRS</span>
+            </a>
         </div>
+        
+        
 
       </div>
     </div>
   </div>
+  <script>
+  function deleteNotification(button) {
+    // Menemukan div notifikasi terdekat (parent) yang ingin dihapus
+    var notification = button.closest('.bg-teal-800');
+    // Menghapus div notifikasi
+    notification.remove();
+  }
+  </script>
+  </script>
 </body>
 </html>
+@endsection
