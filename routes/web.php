@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\BAKController;
+use App\Http\Controllers\RuanganController;
 
 
 Route::get('/', function () {
@@ -29,6 +30,13 @@ Route::get('/dashboard_mhs', [UserController::class, 'index'])->name('dashboard_
 Route::get('/dk_persetujuan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuan');
 Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
 Route::get('/bak_jadwal', [BAKController::class, 'showJadwal'])->name('bak_jadwal');
+Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
+
+Route::prefix('ruangan')->name('ruangan.')->group(function () {
+    Route::post('/store', [RuanganController::class, 'store'])->name('store');
+    Route::get('/', [RuanganController::class, 'index'])->name('index');
+    Route::delete('/{id}', [RuanganController::class, 'destroy'])->name('destroy');
+});
 
 Route::get('/login', function () {
     return view('login');

@@ -142,10 +142,10 @@
             </a>
 
             <!-- Ruangan Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
+            <a href="{{ route('bak_ruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-amber-600">
                 <i class="far fa-building text-3xl"></i>
                 <span class="text-2xl">Ruangan</span>
-            </button>
+            </a>
         </div>
       </div>
     </div>
