@@ -33,19 +33,19 @@
                 <div class="space-y-2">
                 <div class="flex">
                     <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p>: Ahliz Dinal Bahtiar</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-24 font-semibold">NIP</p>
+                    <p>: 199108140170</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p>: dinal@bak.undip.ac.id</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p>: 085778322566</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">PRODI</p>
@@ -132,17 +132,15 @@
         </div>
 
         <!-- Container for Centered Buttons -->
-
-
         <div class="col-span-3 flex justify-center space-x-4">
             <!-- Periode Akses IRS Button -->
-            <a href="{{ route('bak_jadwal') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-amber-600">
-              <i class="fa fa-laptop text-3xl"></i>
+            <a href="{{ route('bak_jadwal') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <i class="fas fa-hourglass-half text-3xl"></i>
               <span class="text-2xl">Periode Akses IRS</span>
             </a>
 
             <!-- Ruangan Button -->
-            <a href="{{ route('bak_ruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-amber-600">
+            <a href="{{ route('bak_ruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="far fa-building text-3xl"></i>
                 <span class="text-2xl">Ruangan</span>
             </a>

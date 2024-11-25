@@ -76,7 +76,7 @@
       <span class="font-medium">Kembali</span>
     </a>
     <!-- Container -->
-    <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-5">
+    <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-1">
       <!-- Content -->
       <div id="content-ruangan" class="p-4">
         <div class="flex justify-between items-center">
