@@ -10,18 +10,21 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-image: url('{{ asset('image/bg_PASTI1.png') }}');
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: linear-gradient(to right, #02979D, #FFBB1C); /* gradien dari teal ke amber */
+            background-size: cover;
+            background-repeat: repeat;
+            height: max-content; /* membuat tinggi halaman 100% dari viewport */
+            margin: 0; /* menghapus margin default dari body */
+        }
   </style>
 </head>
 <!-- Background -->
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
-  <div class="max-w-7xl mx-auto p-4 min-h-screen">
+  <div class="max-w-7xl mx-auto min-h-screen">
   
+
   <!-- header -->
   <div class="flex w-full mb-4">
     <!-- Back Button -->
@@ -105,6 +108,19 @@
                 </div>
             </div>
 
+                <!-- Dropdown Pilihan Mata Kuliah -->
+            <div class="w-full mt-4">
+                <select id="matkul-dropdown" class="w-full p-4 rounded bg-white text-teal-800 text-xs">
+                    <option value="">-- Pilih Mata Kuliah --</option>
+                    <option value="1">Pengembangan Berbasis Platform</option>
+                    <option value="2">Komputasi Tersebar Paralel</option>
+                    <option value="3">Sistem Informasi</option>
+                    <option value="4">Algoritma dan Struktur Data</option>
+                    <option value="5">Jaringan Komputer</option>
+                    <option value="6">Database</option>
+                </select>
+            </div>
+
             <div class="grid grid-cols-1 w-full flex space-x-2">
                 <button class="bg-white text-teal-700 w-full p-2 rounded items-center space-x-2">
                     <span class="text-base font-semibold">PILIHAN MATA KULIAH</span>
@@ -155,97 +171,26 @@
 <div class="col-span-6">
     <!-- IRS Content -->
     <div class="IRS">
-        <div class="bg-white text-teal-900 p-4 rounded-lg">
+        <div class="bg-teal-800/80 text-teal-900 p-4 rounded-lg">
             <div class="space-y-0">
-                <!-- Waktu & Hari -->
-                <div class="grid grid-cols-8 gap-0 w-full border-[1px] border-teal-700">
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center  border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">WAKTU</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">SENIN</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">SELASA</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">RABU</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">KAMIS</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">JUMAT</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center font-semibold italic">SABTU</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center">
-                            <p class="text-[11px] text-center font-semibold italic">MINGGU</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Jam 06.00 -->
-                <div class="grid grid-cols-8 gap-0 w-full border-[1px] border-t-0 border-teal-700">
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center  border-r-[1px] border-teal-700">
-                            <p class="text-[11px] text-center">06.00</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700">
-                        <p class="text-[11px] text-center font-semibold italic"></p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center border-r-[1px] border-teal-700"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-0 w-full">
-                        <div class="flex col-span-1 text-teal-700 p-2 items-center justify-center"></div>
-                    </div>
-                </div>
+                <!-- Main Content -->
+            <div class="overflow-x-auto rounded-lg">
+                <table class="table-auto w-full text-center rounded-lg border-collapse">
+                    <thead>
+                        <tr class="bg-teal-100/80">
+                            <th class="px-4 py-2 border-r border-teal-500">Nama Mata Kuliah</th>
+                            <th class="px-4 py-2 border-r border-teal-500">Kode</th>
+                            <th class="px-4 py-2 border-r border-teal-500">SKS</th>                            <th class="px-4 py-2 border-r border-teal-500">SKS</th>
+                            <th class="px-4 py-2 border-r border-teal-500">Hari</th>
+                            <th class="px-4 py-2 border-r border-teal-500">Jam</th>
+                            <th class="px-4 py-2 border-r border-teal-500">Kelas</th>
+                            <th class="px-4 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jadwalTableBody">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -267,6 +212,9 @@
                 </div>
             </div>
         </div>
+      </div>
+        </main>
+    </div>
     </div>
 </div>
 
