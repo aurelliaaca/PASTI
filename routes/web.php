@@ -60,7 +60,7 @@ Route::get('/dashboard_dosen', function () {
 
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
-});
+})->name('kp_penjadwalan');
 
 Route::get('/pa_perwalian', function () {
     return view('pa_perwalian');
