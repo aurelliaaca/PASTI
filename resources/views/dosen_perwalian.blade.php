@@ -58,7 +58,7 @@
                         <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
                         <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     <tr>
                         <td class="px-6 py-4">
@@ -75,7 +75,7 @@
                         <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
                         <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a>  </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a>  </td>
                     </tr>
                     
                 </tbody>
