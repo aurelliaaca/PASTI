@@ -33,27 +33,27 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NAMA</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full text-justify"{{ $mahasiswa->nama }}</p>
+                    <p class="w-full text-justify">Ahlis Dinal Bahtiar</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NIM</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">{{ $mahasiswa->nim }}</p>                                                                                                                                     
+                    <p class="w-full">24060122130088</p>                                                                                                                                     
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">EMAIL</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">{{ $mahasiswa->email }}</p>
+                    <p class="w-full">dinal@students.com</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NO. TELP</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">{{ $mahasiswa->telp }}</p>
+                    <p class="w-full">085737843467</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">PRODI</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">{{ $mahasiswa->ptodi }}</p>
+                    <p class="w-full">S1 Informatika</p>
                 </div>
                 <div class="col-span-1 bg-white p-[0.5px] rounded-lg">
                 </div>
@@ -150,7 +150,7 @@
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4">
             <!-- IRS Button -->
-            <a href="{{ route('mhs_pengisianirspage') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ route('mhs_pengisianirspage') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2">
                 <i class="far fa-file-alt text-3xl"></i>
                 <span class="text-2xl">IRS</span>
             </a>
