@@ -114,10 +114,10 @@
             </a>
 
             <!-- Mata kuliah Button -->
-            <button class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-book text-3xl"></i>
+            <a href="{{ route('kp_matakuliah') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="fa fa-book text-3xl"></i>
                 <span class="text-2xl">Mata Kuliah</span>
-            </button>
+            </a>
 
             <!-- Monitoring IRS Button -->
             <a href="{{ route('dk_monitoring') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
