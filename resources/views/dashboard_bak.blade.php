@@ -17,7 +17,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
+<body class="min-h-screen">
     
     <!-- Main Content Section -->
     <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
@@ -141,7 +141,7 @@
             <!-- Periode Akses IRS Button -->
             <a href="{{ route('bak_jadwal') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
               <i class="fas fa-hourglass-half text-3xl"></i>
-              <span class="text-2xl">Periode Akses IRS</span>
+              <span class="text-2xl">Jadwal</span>
             </a>
 
             <!-- Ruangan Button -->
