@@ -56,7 +56,7 @@
                         </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
                         <td class="px-6 py-4 text-center"> Belum Disetujui </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     <tr>
                         <td class="px-6 py-4">
@@ -72,7 +72,7 @@
                         </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
                         <td class="px-6 py-4 text-center"> Disetujui pada 19/08/2024 </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     
                 </tbody>

@@ -39,6 +39,8 @@ class LoginController extends Controller
     
         if (Auth::attempt($kredensil)) {
             $user = Auth::user();
+            session()->flash('success', 'Login berhasil! Selamat datang.');
+
             if ($user->role == '7') {
                 return redirect()->intended('user');
             } elseif ($user->role == '1') {

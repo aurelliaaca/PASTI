@@ -24,32 +24,50 @@
  </head>
 <body class="min-h-screen bg-pattern flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
     <div class="bg-teal-700 bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md">
-    <div class="flex justify-center mb-6">
-    <img alt="University logo" class="h-24" height="120" src="{{ asset('image/LogoUNDIP.png') }}" width="80"/>
-    </div>
-    <h1 class="text-3xl font-bold text-yellow-500 text-center mb-2">
-        PASTI
-    </h1>
-    <p class="text-white text-center mb-6">
-        Universitas Diponegoro
-    </p>
-    <p class="text-white text-lg text-center mb-6">
-    Login sebagai :
-    </p>
-    <div class="flex justify-center space-x-10">
-        <div class="text-center">
-            <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">
-                <i class="fas fa-user text-4xl text-teal-700"></i>
+        @if(session('success'))
+            <div id="alert" class="alert alert-success bg-green-500 text-white p-4 rounded-lg mb-4">
+                <strong>Sukses!</strong> {{ session('success') }}
             </div>
-            <button class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600">
+            <script>
+                setTimeout(function() {
+                    document.getElementById('alert').style.display = 'none';
+                }, 3000);
+            </script>
+        @endif
+
+        <div class="flex justify-center mb-6">
+            <img alt="University logo" class="h-24" height="120" src="{{ asset('image/LogoUNDIP.png') }}" width="80"/>
+            <a href="{{ route('Dosen') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
                 Dosen
-            </button>
+            </a>
         </div>
-        <div class="text-center">
-            <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">  
-                <i class="fas fa-user text-4xl text-teal-700"></i>
+        <h1 class="text-3xl font-bold text-yellow-500 text-center mb-2">
+            PASTI
+        </h1>
+        <p class="text-white text-center mb-6">
+            Universitas Diponegoro
+        </p>
+        <p class="text-white text-lg text-center mb-6">
+            Login sebagai :
+        </p>
+        <div class="flex justify-center space-x-10">
+            <div class="text-center">
+                <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">
+                    <i class="fas fa-user text-4xl text-teal-700"></i>
+                </div>
+                <button class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600">
+                    Dosen
+                </button>
             </div>
-            <a href="{{ route('dashboard_kp') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+            <div class="text-center">
+                <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">  
+                    <i class="fas fa-user text-4xl text-teal-700"></i>
+                </div>
+                <a href="{{ route('dashboard_kp') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+                    Ketua Prodi
+                </a>
+            </div>
+            <a href="{{ route('Ketua_Prodi') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
                 Ketua Prodi
             </a>
         </div>

@@ -18,6 +18,18 @@
   </style>
 </head>
 <body class="min-h-screen">
+    <!-- Menambahkan alert sukses -->
+    @if(session('success'))
+        <div id="alert" class="alert alert-success bg-green-500 text-white p-4 rounded-lg mb-4">
+            <strong>Success!</strong> {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('alert').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
     <!-- Main Content Section -->
     <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
     <div class="flex items-center">
