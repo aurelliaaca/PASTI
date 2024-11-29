@@ -19,10 +19,9 @@
   </style>
 </head>
 <body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
-  <div class="max-w-7xl mx-auto p-4 min-h-screen">
     
     <!-- Main Content Section -->
-    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
+    <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
         <!-- Left Section (Profile) -->
@@ -35,7 +34,7 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NAMA</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">Saddam Dharmawan, S.Kom, M.Kom</p>
+                    <p class="w-full text-justify">Saddam Dharmawan, S.Kom, M.Kom</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NIP</p>

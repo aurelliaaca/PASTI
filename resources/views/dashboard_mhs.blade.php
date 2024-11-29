@@ -17,8 +17,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
-    
+<body class="min-h-screen">
     <!-- Main Content Section -->
     <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
     <div class="flex items-center">
@@ -32,24 +31,41 @@
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
-                    <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full text-justify"{{ $mahasiswa->nama }}</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-[140px] font-semibold">NIM</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $mahasiswa->nim }}</p>                                                                                                                                     
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $mahasiswa->email }}</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $mahasiswa->telp }}</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">PRODI</p>
-                    <p>: S1 Informatika</p>
+                    <p class="w-[140px] font-semibold">PRODI</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $mahasiswa->ptodi }}</p>
+                </div>
+                <div class="col-span-1 bg-white p-[0.5px] rounded-lg">
+                </div>
+                <div class="col-span-2 text-white flex items-center p-0 pt-1 w-full rounded-lg">
+                    <div class="flex flex-grow justify-center items-center flex-col">
+                        <p class="font-semibold text-center">IPK</p>
+                        <p class="font-semibold text-center text-2xl">3,67</p>
+                    </div>
+                    <div class="flex flex-grow justify-center items-center flex-col">
+                        <p class="font-semibold text-center">SKS</p>
+                        <p class="font-semibold text-center text-2xl">97</p>
+                    </div>
                 </div>
                 </div>
             </div>

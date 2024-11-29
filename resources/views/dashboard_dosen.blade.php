@@ -18,52 +18,45 @@
   </style>
 </head>
 <body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
-  <div class="max-w-7xl mx-auto p-4 min-h-screen">
     
     <!-- Main Content Section -->
-    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
+    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-4 rounded-lg shadow-lg w-full">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
         <!-- Left Section (Profile) -->
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
-            <img alt="Profile Picture" class="rounded-full mb-4" src="https://storage.googleapis.com/a1aa/image/jEeIR1lbHdSRFyx09qwUYuweRpeBrz74XEEmmYOUVr1iAzdnA.jpg" width="100" height="100"/>
+            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
             <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
-                    <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full text-justify">Sandy Setya, S.Kom, M.Kom</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-[140px] font-semibold">NIP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">19910887935</p>                                                                                                                                     
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">sandy@lecture.undip.ac.id</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">085778387546</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">PRODI</p>
-                    <p>: S1 Informatika</p>
+                    <p class="w-[140px] font-semibold">PRODI</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">S1 Informatika</p>
                 </div>
                 </div>
             </div>
-
-                <div class="flex justify-between mt-4 space-x-10">
-                <div>
-                    <p class="text-center font-bold text-2xl">IPK</p>
-                    <p class="text-center text-2xl">3.67</p>
-                </div>
-                <div>
-                    <p class="text-center font-bold text-2xl">SKS</p>
-                    <p class="text-center text-2xl">90</p>
-                </div>
-                </div>
             </div>
         </div>
         

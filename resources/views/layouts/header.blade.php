@@ -3,16 +3,19 @@
         <!-- Header Component -->
         <header class="bg-gradient-to-r from-teal-800 to-teal-600 p-4 flex items-center justify-between rounded-xl">
             <div class="flex items-center">
-                <!-- Logo and Title -->
-                <img alt="University logo" class="h-12 w-11 mr-4" src="{{ asset('image/LogoUNDIP.png') }}"/>
-                <div>
-                    <div class="text-amber-400 font-black italic text-xl">
-                        PASTI
+                <!-- Logo and Title as a Button -->
+                <!-- masih pake previous harusnya kembali ke dashboard -->
+                <a href="{{ url()->previous() }}" class="flex items-center">
+                    <img alt="University logo" class="h-12 w-11 mr-4 cursor-pointer" src="{{ asset('image/LogoUNDIP.png') }}"/>
+                    <div>
+                        <div class="text-amber-400 font-black italic text-xl cursor-pointer">
+                            PASTI
+                        </div>
+                        <div class="text-white text-sm cursor-pointer">
+                            Universitas Diponegoro
+                        </div>
                     </div>
-                    <div class="text-white text-sm">
-                        Universitas Diponegoro
-                    </div>
-                </div>
+                </a>
             </div>
 
             <!-- Page Route Display -->
