@@ -92,3 +92,7 @@ Route::get('/mhs_pengisianirspage', function () {
 Route::get('/user1', function () {
     return view('user1');
 })->name('user1');
+
+Route::get('/kp_matakuliah', function () {
+    return view('kp_matakuliah');
+})->name('kp_matakuliah');

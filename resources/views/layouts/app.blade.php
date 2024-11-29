@@ -10,6 +10,9 @@
 </head>
 <body class="font-roboto">
 
+  <!-- Include error partial -->
+  @include('layouts.nointernet')
+
   <!-- Include Header -->
   @include('layouts.header')
 

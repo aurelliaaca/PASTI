@@ -32,24 +32,29 @@
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
-                    <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Ahliz Dinal Bahtiar</p>
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full text-justify">Benny, S.Kom</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIP</p>
-                    <p>: 199108140170</p>
+                    <p class="w-[140px] font-semibold">NIP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">19910986543</p>                                                                                                                                     
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: dinal@bak.undip.ac.id</p>
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">benny@staff.undip.ac.id</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 085778322566</p>
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">085778654346</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">PRODI</p>
-                    <p>: S1 Informatika</p>
+                    <p class="w-[140px] font-semibold">PRODI</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">S1 Informatika</p>
                 </div>
                 </div>
             </div>

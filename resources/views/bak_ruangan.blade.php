@@ -81,8 +81,8 @@
       <div id="content-ruangan" class="p-4">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-teal-800">RUANG KELAS</h2>
-          <button type="button" class="btn btn-warning btn-icon-text" data-toggle="modal" data-target="#addRuanganModal">
-            <i class="fas fa-sliders-h me-2 text-teal-800"></i> <strong class="text-teal-800">ADD</strong>
+          <button type="button" class="btn bg-teal-500 btn-icon-text" data-toggle="modal" data-target="#addRuanganModal">
+            <i class="fas fa-plus me-2 text-white"></i> <strong class="text-white">Tambah Ruangan</strong>
           </button>
         </div>
         <div class="border rounded-md mt-2 p-4">
@@ -96,19 +96,19 @@
                       <table class="table table-striped table-hover">
                         <thead>
                           <tr>
-                            <th style="width: 32%;">
+                            <th class="font-bold"xt- style="width: 32%;">
                               KAPRODI
                             </th>
-                            <th style="width: 18%;">
+                            <th class="font-bold" style="width: 18%;">
                               DEPARTEMEN
                             </th>
-                            <th style="width: 17%;">
+                            <th class="font-bold" style="width: 17%;">
                               RUANG
                             </th>
-                            <th style="width: 20%;">
+                            <th class="font-bold" style="width: 20%;">
                               KAPASITAS
                             </th>
-                            <th style="width: 12%;">
+                            <th class="font-bold" style="width: 12%;">
                               AKSI
                             </th>
                           </tr>
@@ -121,8 +121,8 @@
                             <td>{{ $r->ruang }}</td>
                             <td style="padding-left: 35px;">{{ $r->kapasitas }}</td>
                             <td>
-                              <button onclick="deleteRuangan({{ $r->id }})" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i>
+                              <button onclick="deleteRuangan({{ $r->id }})" class="btn btn-warning btn-sm">
+                                <i class="far fa-trash-alt"></i>
                               </button>
                             </td>
                           </tr>
@@ -186,8 +186,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-success" onclick="submitForm()">Simpan</button>
+            <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn bg-teal-500 text-white" onclick="submitForm()">Simpan</button>
           </div>
         </div>
       </div>
@@ -207,8 +207,8 @@
             <p>Apakah Anda ingin menghapus data ini?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-success" id="confirmDelete">Hapus</button>
+            <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn bg-teal-500 text-white" id="confirmDelete">Hapus</button>
           </div>
         </div>
       </div>

@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
     <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         
         body {
@@ -53,48 +55,53 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="text-white block font-medium mb-2">Nama Mata Kuliah</label>
-                                <select id="namaMk" class="bg-teal-100/90 w-full p-2 border rounded">
+                                <select id="namaMk" class="w-full p-2 border rounded">
                                     <option value="" disabled selected>Pilih Mata Kuliah</option>
                                     <!-- Mata Kuliah Options -->
                                 </select>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Kode Mata Kuliah</label>
+                                <label class="text-white block font-medium mb-2">Kode Mata Kuliah</label>
                                 <input type="text" id="kodeMk" class="w-full p-2 border rounded" readonly>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">SKS</label>
+                                <label class="text-white block font-medium mb-2">SKS</label>
                                 <input type="number" id="sksMk" class="w-full p-2 border rounded" readonly>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Semester</label>
+                                <label class="text-white block font-medium mb-2">Semester</label>
                                 <input type="number" id="semesterMk" class="w-full p-2 border rounded" readonly>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Kelas</label>
+                                <label class="text-white block font-medium mb-2">Kelas</label>
                                 <select id="kelasMk" class="w-full p-2 border rounded">
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Ruang</label>
+                                <label class="text-white block font-medium mb-2">Ruang</label>
                                 <select id="ruangKls" class="w-full p-2 border rounded">
                                     <option value="E101">E101</option>
                                     <option value="A303">A303</option>
+                                    <option value="E103">E103</option>
+                                    <option value="E102">E102</option>
+
                                 </select>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Jam Mulai</label>
+                                <label class="text-white block font-medium mb-2">Jam Mulai</label>
                                 <input type="time" id="jamMulai" class="w-full p-2 border rounded">
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Jam Selesai</label>
+                                <label class="text-white block font-medium mb-2">Jam Selesai</label>
                                 <input type="time" id="jamSelesai" class="w-full p-2 border rounded" readonly>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Hari</label>
+                                <label class="text-white block font-medium mb-2">Hari</label>
                                 <select id="hari" class="w-full p-2 border rounded">
                                     <option value="Senin">Senin</option>
                                     <option value="Selasa">Selasa</option>
@@ -104,7 +111,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-teal-900 block font-medium mb-2">Dosen</label>
+                                <label class="text-white block font-medium mb-2">Dosen</label>
                                 <select id="dosenSelect" class="w-full p-2 border rounded" multiple>
                                     <!-- Dosen Options -->
                                     <option value="Dosen1">Sonny Wia, S.Kom., M.Kom</option>
@@ -117,7 +124,7 @@
 
 
                         </div>
-                        <button type="button" id="addJadwal" class="mt-4 w-full bg-green-500 text-white py-2 rounded hover:bg-green-700">Tambah Jadwal</button>
+                        <button type="button" id="addJadwal" class="mt-4 w-full bg-amber-400 text-white py-2 rounded-lg hover:bg-orange-400">Tambah Jadwal</button>
                     </form>
                 </div>
             </div>
@@ -125,7 +132,13 @@
             <!-- Jadwal Kuliah -->
             <div class="jadwalKuliah" style="display: none;">
                 <div class="bg-white text-teal-900 p-4 rounded-lg">
-                    <h2 class="text-xl font-bold text-teal-800 mb-2">Jadwal Kuliah</h2>
+                    <h2 class="text-xl font-bold text-teal-800 mb-2">STATUS JADWAL KULIAH: BELUM DIAJUKAN</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <div></div> <!-- Placeholder untuk mengatur posisi -->
+                        <button class="bg-amber-500 text-white p-2 rounded flex items-center space-x-2 rounded-lg hover:bg-orange-400">
+                            <span class="text-sm">Ajukan Jadwal</span>
+                        </button>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full border text-center table-auto">
                             <thead class="bg-teal-700 text-white">
@@ -153,7 +166,7 @@
             <!-- Penetapan -->
             <div class="penetapan" style="display: none;">
                 <div class="bg-white text-teal-900 p-4 rounded-lg">
-                    <h2 class="text-xl font-bold text-teal-800 mb-2">Penetapan Jadwal Kosong</h2>
+                    <h2 class="text-xl font-bold text-teal-800 mb-2">Penetapan Jadwal Kuliah</h2>
                     <div class="overflow-x-auto">
                         <table class="w-full border text-center table-auto">
                             <thead class="bg-teal-700 text-white">
@@ -257,10 +270,27 @@
                 semesterMk.value = selectedMk.semester;
             }
         });
+        
+        // Tambahkan Event Listener untuk menghitung jam selesai berdasarkan jam mulai dan jumlah SKS
+        document.getElementById("jamMulai").addEventListener("change", function () {
+            const sks = parseInt(sksMk.value) || 0; // Ambil jumlah SKS
+            const jamMulai = this.value;
+
+            if (jamMulai && sks > 0) {
+                const [hours, minutes] = jamMulai.split(":").map(Number);
+                const totalMinutes = hours * 60 + minutes + sks * 50; // Tambahkan durasi sesuai SKS
+                const jamSelesaiHours = Math.floor(totalMinutes / 60);
+                const jamSelesaiMinutes = totalMinutes % 60;
+
+                // Atur nilai jam selesai pada form
+                document.getElementById("jamSelesai").value = 
+                    `${jamSelesaiHours.toString().padStart(2, '0')}:${jamSelesaiMinutes.toString().padStart(2, '0')}`;
+            }
+        });
+
 
         addJadwalBtn.addEventListener("click", () => {
-            const selectedDosen = Array.from(dosenSelect.selectedOptions).map(option => option.value);
-            // Validate selected dosen
+            const selectedDosen = Array.from(dosenSelect.selectedOptions).map(option => option.textContent); // Mengambil nama dosen lengkap
             const dosenError = document.getElementById("dosenError");
 
             // Validasi untuk memilih minimal 1 dosen dan maksimal 3 dosen
@@ -280,16 +310,34 @@
             const hari = document.getElementById("hari").value;
             const jamMulai = document.getElementById("jamMulai").value;
             const jamSelesai = document.getElementById("jamSelesai").value;
-            
 
             if (!nama || !kode || !sks || !kelas || !ruang || !hari || !jamMulai || !selectedDosen) {
                 alert("Semua field harus diisi!");
                 return;
             }
 
-            jadwalData.push({ nama, kode, sks, semester, kelas, ruang, hari, jam: `${jamMulai} - ${jamSelesai}`, dosen: selectedDosen});
+            jadwalData.push({ 
+                nama, 
+                kode, 
+                sks, 
+                semester, 
+                kelas, 
+                ruang, 
+                hari, 
+                jam: `${jamMulai} - ${jamSelesai}`, 
+                dosen: selectedDosen // Menyimpan nama dosen lengkap
+            });
             renderJadwal();
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Jadwal berhasil ditambahkan.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#4CAF50'
+            });
         });
+
+
 
         function renderJadwal() {
             jadwalTable.innerHTML = "";

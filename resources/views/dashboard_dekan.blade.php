@@ -18,10 +18,9 @@
   </style>
 </head>
 <body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
-  <div class="max-w-7xl mx-auto p-4 min-h-screen">
     
     <!-- Main Content Section -->
-    <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4 min-h-[60vh]">
+    <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
         
         <!-- Left Section (Profile) -->
@@ -32,24 +31,29 @@
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
-                    <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Prof. Dr. Niken Wayuhni, S.Si., M.T.</p>
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full text-justify">Prof. Dr. Niken Wayuhni, S.Si., M.T.</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIP</p>
-                    <p>: 199108120015</p>
+                    <p class="w-[140px] font-semibold">NIP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">199108120015</p>                                                                                                                                     
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: niken@lecture.undip.ac.id</p>
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">niken@lecture.undip.ac.id</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 085221267834</p>
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">085221267834</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">FAKULTAS</p>
-                    <p>: Sains dan Matematika</p>
+                    <p class="w-[140px] font-semibold">PRODI</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">S1 Informatika</p>
                 </div>
                 </div>
             </div>

@@ -19,6 +19,8 @@ class LoginController extends Controller
                 return redirect()->intended('user1');
             } elseif ($user->role == '3'){
                 return redirect()->intended('dashboard_bak');
+            } elseif ($user->role == '2') {
+                return redirect()->intended('dashboard_dosen');
             }
         } 
         return view('login');
@@ -45,6 +47,8 @@ class LoginController extends Controller
                 return redirect()->intended('user1');
             } elseif ($user->role == '3') {
                 return redirect()->intended('dashboard_bak');
+            } elseif ($user->role == '2') {
+                return redirect()->intended('dashboard_dosen');
             }
         }
         return redirect('login')
