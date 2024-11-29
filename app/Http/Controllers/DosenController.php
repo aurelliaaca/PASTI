@@ -16,17 +16,17 @@ class DosenController extends Controller
 
     public function showPerwalian()
     {
-        return view('pa_perwalian');
+        return view('dosen_perwalian');
     }
 
     public function showPersetujuanIRS()
     {
-        return view('pa_persetujuan');
+        return view('dosen_persetujuan');
     }
 
     public function showIRSMahasiswa()
     {
-        return view('pa_irsmahasiswa');
+        return view('dosen_irsmahasiswa');
     }
 
     // public function index()

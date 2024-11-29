@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Perwalian')
+@section('title', 'Persetujuan')
 
 @section('content')
 <html>
@@ -25,7 +25,7 @@
     <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-4">
         <!-- Konten Header -->
         <h1 class="text-2xl font-semibold text-teal-800 mb-4 text-center flex items-center justify-left space-x-2">
-            <span>Mahasiswa Perwalian</span>
+            <span>Status IRS Mahasiswa Perwalian</span>
         </h1>
         <div class="min-h-screen bg-white-800 py-5">
             <!-- Tambahkan kelas w-full agar tabel mengikuti lebar penuh -->
@@ -35,14 +35,13 @@
                         <tr class="text-black text-center">
                             <th class="font-semibold text-sm uppercase px-6 py-4"> Nama </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4"> NIM </th>
-                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Status </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Semester </th>
-                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> SKS </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Status </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4"> </th>
                         </tr>
                     </thead>
                 <tbody class="divide-y divide-gray-200">
-
+                <!-- Masih data boongan -->
                     <tr>
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
@@ -55,10 +54,9 @@
                         <td class="px-6 py-4">
                             <p class=""> 216780745628374 </p>
                         </td>
-                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="#" class="text-purple-800 hover:underline">Lihat</a> </td>
+                        <td class="px-6 py-4 text-center"> Belum Disetujui </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     <tr>
                         <td class="px-6 py-4">
@@ -72,10 +70,9 @@
                         <td class="px-6 py-4">
                             <p class=""> 216780745628374 </p>
                         </td>
-                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="#" class="text-purple-800 hover:underline">Lihat</a> </td>
+                        <td class="px-6 py-4 text-center"> Disetujui pada 19/08/2024 </td>
+                        <td class="px-6 py-4 text-center"> <a href="{{ route('dosen_irsmahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     
                 </tbody>
