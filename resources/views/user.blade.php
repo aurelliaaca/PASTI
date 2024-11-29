@@ -37,6 +37,9 @@
 
         <div class="flex justify-center mb-6">
             <img alt="University logo" class="h-24" height="120" src="{{ asset('image/LogoUNDIP.png') }}" width="80"/>
+            <a href="{{ route('Dosen') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+                Dosen
+            </a>
         </div>
         <h1 class="text-3xl font-bold text-yellow-500 text-center mb-2">
             PASTI
@@ -64,6 +67,9 @@
                     Ketua Prodi
                 </a>
             </div>
+            <a href="{{ route('Ketua_Prodi') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+                Ketua Prodi
+            </a>
         </div>
     </div>
 </body>
