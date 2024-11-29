@@ -27,25 +27,25 @@
         <!-- Left Section (Profile) -->
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
-            <img alt="Profile Picture" class="rounded-full mb-4" src="https://storage.googleapis.com/a1aa/image/jEeIR1lbHdSRFyx09qwUYuweRpeBrz74XEEmmYOUVr1iAzdnA.jpg" width="100" height="100"/>
+            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
             <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
             <div class="text-left w-full">
                 <div class="space-y-2">
                 <div class="flex">
                     <p class="w-24 font-semibold">NAMA</p>
-                    <p>: Muhammad Faiq As-sajad</p>
+                    <p>: Prof. Dr. Priyo, S.Si., M.T.</p>
                 </div>
                 <div class="flex">
-                    <p class="w-24 font-semibold">NIM</p>
-                    <p>: 14050122120168</p>
+                    <p class="w-24 font-semibold">NIP</p>
+                    <p>: 196303161988101001</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">EMAIL</p>
-                    <p>: mfaiq@student.undip.ac.id</p>
+                    <p>: priyo@dosen.com</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">NO. TELP</p>
-                    <p>: 086934762034</p>
+                    <p>: 087665433211</p>
                 </div>
                 <div class="flex">
                     <p class="w-24 font-semibold">PRODI</p>
@@ -53,17 +53,6 @@
                 </div>
                 </div>
             </div>
-
-                <div class="flex justify-between mt-4 space-x-10">
-                <div>
-                    <p class="text-center font-bold text-2xl">IPK</p>
-                    <p class="text-center text-2xl">3.67</p>
-                </div>
-                <div>
-                    <p class="text-center font-bold text-2xl">SKS</p>
-                    <p class="text-center text-2xl">90</p>
-                </div>
-                </div>
             </div>
         </div>
         
@@ -132,13 +121,13 @@
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
             <!-- Mahasiswa Perwalian-->
-            <a href="{{ route('pa_perwalian') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ route('dosen_perwalian') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
               <i class="far fa-user text-3xl"></i>
               <span class="text-2xl">Mahasiswa Perwalian</span>
           </a>
 
             <!-- Data IRS Mahasiswa Perwalian -->
-            <a href="{{ route('pa_persetujuan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ route('dosen_persetujuan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
               <i class="far fa-check text-3xl"></i>
               <span class="text-2xl">Persetujuan IRS</span>
             </a>

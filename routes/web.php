@@ -64,26 +64,26 @@ Route::get('/dashboard_dekan', function () {
 
 Route::get('/dashboard_dosen', function () {
     return view('dashboard_dosen');
-});
+})->name('dashboard_dosen');
 
 Route::get('/kp_penjadwalan', function () {
     return view('kp_penjadwalan');
 })->name('kp_penjadwalan');
 
-Route::get('/pa_perwalian', function () {
-    return view('pa_perwalian');
-})->name('pa_perwalian');
+Route::get('/dosen_perwalian', function () {
+    return view('dosen_perwalian');
+})->name('dosen_perwalian');
 
 // NYOBA MAKSIMAL
 // Route::get('/perwalian', [DosenController::class, 'index'])->name('perwalian.index');
 
-Route::get('/pa_persetujuan', function () {
-    return view('pa_persetujuan');
-})->name('pa_persetujuan');
+Route::get('/dosen_persetujuan', function () {
+    return view('dosen_persetujuan');
+})->name('dosen_persetujuan');
 
-Route::get('/pa_irsmahasiswa', function () {
-    return view('pa_irsmahasiswa');
-})->name('pa_irsmahasiswa');
+Route::get('/dosen_irsmahasiswa', function () {
+    return view('dosen_irsmahasiswa');
+})->name('dosen_irsmahasiswa');
 
 Route::get('/mhs_pengisianirspage', function () {
     return view('mhs_pengisianirspage');
