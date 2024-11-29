@@ -24,9 +24,10 @@
 
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
         <!-- Back Button -->
-    <a href="{{ url()->previous() }}" class="absolute top-15 left-7 bg-teal-800 text-white p-2 rounded-full hover:bg-teal-700">
-      <i class="fas fa-arrow-left text-xl"></i>
-    </a>
+        <a href="{{ url()->previous() }}" class="absolute top-38 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <i class="fas fa-arrow-left"></i>
+            <span class="font-medium">Kembali</span>
+        </a>
     <div class="max-w-7xl mx-auto p-4 min-h-screen">
 
         <!-- Header dengan Tombol -->

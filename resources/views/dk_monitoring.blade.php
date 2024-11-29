@@ -22,8 +22,9 @@
 
 <body class="relative">
     <!-- Back Button -->
-    <a href="{{ url()->previous() }}" class="absolute top-15 left-7 bg-teal-800 text-white p-2 rounded-full hover:bg-teal-700">
-      <i class="fas fa-arrow-left text-xl"></i>
+    <a href="{{ url()->previous() }}" class="absolute top-38 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+        <i class="fas fa-arrow-left"></i>
+        <span class="font-medium">Kembali</span>
     </a>
 
     <div class="container bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-2 min-h-[600px]">

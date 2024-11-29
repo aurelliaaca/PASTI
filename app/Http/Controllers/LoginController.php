@@ -37,16 +37,15 @@ class LoginController extends Controller
     
         if (Auth::attempt($kredensil)) {
             $user = Auth::user();
-            if ($user->role == '7') { // kalo dia kaprodi + dosen
-                return redirect()->route('user');
-            } elseif ($user->role == '1'){
+            if ($user->role == '7') {
+                return redirect()->intended('user');
+            } elseif ($user->role == '1') {
                 return redirect()->intended('dashboard_mhs');
-            } elseif ($user->role == '6'){
+            } elseif ($user->role == '6') {
                 return redirect()->intended('user1');
-            } elseif ($user->role == '3'){
+            } elseif ($user->role == '3') {
                 return redirect()->intended('dashboard_bak');
             }
-            return redirect()->intended('dashboard');
         }
         return redirect('login')
             ->withInput()

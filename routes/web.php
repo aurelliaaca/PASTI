@@ -56,7 +56,7 @@ Route::get('/dashboard_bak', function () {
 
 Route::get('/dashboard_kp', function () {
     return view('dashboard_kp');
-});
+})->name('dashboard_kp');
 
 Route::get('/dashboard_dekan', function () {
     return view('dashboard_dekan');
