@@ -8,37 +8,33 @@ class RuanganController extends Controller
 {
     public function index()
     {
-        $ruangkelas = RuangKelas::all();
-        return view('bak_ruangan', compact('ruangkelas'));
+        $ruangan = Ruangan::all();
+        return view('bak_ruangan', compact('ruangan'));
     }
 
 
     public function store(Request $request)
-    { //gedungnya diilangin
+    {
         $request->validate([
-            'kaprodi' => 'required',
-            'departemen' => 'required',
-            'ruangan' => 'required',
+            'ruang' => 'required',
             'kapasitas' => 'required|numeric',
         ]);
 
-        $ruangkelas = RuangKelas::create([
-            'kaprodi' => $request->kaprodi,
-            'departemen' => $request->departemen,
-            'ruang' => $request->ruangan,
+        $ruangan = Ruangan::create([
+            'ruang' => $request->ruang,
             'kapasitas' => $request->kapasitas,
         ]);
 
         return response()->json([
             'success' => true,
-            'data' => $ruangkelas
+            'data' => $ruangan
         ]);
     }
 
     public function destroy($id)
     {
         try {
-            $ruangan = RuangKelas::findOrFail($id);
+            $ruangan = Ruangan::findOrFail($id);
             $ruangan->delete();
             
             return response()->json([

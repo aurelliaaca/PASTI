@@ -2,15 +2,14 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-class RuangKelas extends Model
+class Ruangan extends Model
 {
     use HasFactory;
-    protected $table = 'ruang_kelas';
+    protected $table = 'ruangan';
     public $timestamps = false;
     
     protected $fillable = [ //gedungnya diilangin
         'ruang',
-        'prodi',
         'kapasitas'
     ];
 }
