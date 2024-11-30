@@ -24,15 +24,15 @@
     <!-- Existing header and navigation remains the same -->
     <!-- Header dengan Tombol -->
     <div class="flex w-full mb-4">
-      <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".IRS">
-        <span class="font-semibold italic text-center">IRS</span>
+      <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".BuatIRS">
+        <span class="font-semibold italic text-center">Buat IRS</span>
       </button>
-      <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".KRS">
-        <span class="font-semibold italic text-center">KRS</span>
+      <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".IRS">
+        <span class="font-semibold italic text-center">IRS</span>
       </button>
     </div>
     
-    <div class="IRS">
+    <div class="BuatIRS">
     <!-- Main Content Section -->
     <div class="flex justify-center grid grid-cols-8 gap-4 w-full">
       <!-- Left Section (Profile) -->
@@ -150,7 +150,7 @@
   </div>
 
   <!-- KRS -->
-  <div class="KRS">
+  <div class="IRS">
 
   </div>
 
@@ -159,7 +159,7 @@
   <script>
   document.addEventListener('DOMContentLoaded', function () {
             const buttons = document.querySelectorAll('.btn');
-            const sections = document.querySelectorAll('.IRS, .KRS');
+            const sections = document.querySelectorAll('.BuatIRS, .IRS');
 
             function toggleContent(filter) {
                 sections.forEach(section => {
@@ -188,10 +188,10 @@
                 });
             });
 
-            const defaultButton = document.querySelector('.btn[data-filter=".IRS"]');
+            const defaultButton = document.querySelector('.btn[data-filter=".BuatIRS"]');
             if (defaultButton) {
                 defaultButton.classList.add('bg-amber-400');
-                toggleContent('.IRS');
+                toggleContent('.BuatIRS');
             }
         });
 
@@ -319,7 +319,7 @@
 $('#ajukan-btn').click(function() {
     if (selectedCourses.size > 0) {
         // Menampilkan mata kuliah yang diajukan di bagian KRS
-        const krsContent = Array.from(selectedCourses).map(id => {
+        const irsContent = Array.from(selectedCourses).map(id => {
             const course = courseData.find(c => c.id === id);
             return `
             <div class="flex items-center bg-teal-100 text-teal-700 p-2 mb-2 rounded-lg">
@@ -334,11 +334,11 @@ $('#ajukan-btn').click(function() {
         }).join('');
 
         // Menampilkan daftar mata kuliah yang diajukan di KRS
-        $('.KRS').html(`
+        $('.IRS').html(`
             <div class="bg-teal-800/80 text-white p-4 rounded-lg">
                 <h3 class="text-xl font-semibold">Mata Kuliah yang Diajukan:</h3>
                 <div class="mt-4">
-                    ${krsContent}
+                    ${irsContent}
                 </div>
             </div>
         `);

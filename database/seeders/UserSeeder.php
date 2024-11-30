@@ -26,6 +26,21 @@ class UserSeeder extends Seeder
                 'role' => '1'
             ],
             [
+                'password' => 'farid123',
+                'email' => 'farid@students.com',
+                'role' => '1'
+            ],
+            [
+                'password' => 'qaynan123',
+                'email' => 'qaynan@students.com',
+                'role' => '1'
+            ],
+            [
+                'password' => 'dzu123',
+                'email' => 'dzu@students.com',
+                'role' => '1'
+            ],
+            [
                 'password' => 'aurel123',
                 'email' => 'aurel@students.com',
                 'role' => '1'
@@ -52,8 +67,48 @@ class UserSeeder extends Seeder
             ],
             [
                 'password' => 'niken123',
-                'email' => 'niken@dekan.com',
+                'email' => 'niken@dosen.com',
                 'role' => '6'
+            ],
+            [
+                'password' => 'azizah123',
+                'email' => 'azizah@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'dio123',
+                'email' => 'dio@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'anita123',
+                'email' => 'anita@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'sri123',
+                'email' => 'sri@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'lestari123',
+                'email' => 'lestari@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'rahma123',
+                'email' => 'rahma@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'indah123',
+                'email' => 'indah@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'password' => 'ahmad123',
+                'email' => 'ahmad@dosen.com',
+                'role' => '2'
             ]
         ];
 

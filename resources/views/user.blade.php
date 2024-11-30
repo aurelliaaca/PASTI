@@ -37,9 +37,6 @@
 
         <div class="flex justify-center mb-6">
             <img alt="University logo" class="h-24" height="120" src="{{ asset('image/LogoUNDIP.png') }}" width="80"/>
-            <a href="{{ route('Dosen') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
-                Dosen
-            </a>
         </div>
         <h1 class="text-3xl font-bold text-yellow-500 text-center mb-2">
             PASTI
@@ -48,29 +45,25 @@
             Universitas Diponegoro
         </p>
         <p class="text-white text-lg text-center mb-6">
-            Login sebagai :
+        Login sebagai :
         </p>
         <div class="flex justify-center space-x-10">
-            <div class="text-center">
-                <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">
-                    <i class="fas fa-user text-4xl text-teal-700"></i>
-                </div>
-                <button class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600">
-                    Dosen
-                </button>
+        <div class="text-center">
+            <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">
+                <i class="fas fa-user text-4xl text-teal-700"></i>
             </div>
-            <div class="text-center">
-                <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">  
-                    <i class="fas fa-user text-4xl text-teal-700"></i>
-                </div>
-                <a href="{{ route('dashboard_kp') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
-                    Ketua Prodi
-                </a>
-            </div>
-            <a href="{{ route('Ketua_Prodi') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
-                Ketua Prodi
+            <a href="{{ route('Dosen') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+                Dosen
             </a>
         </div>
-    </div>
+        <div class="text-center">
+            <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">  
+                <i class="fas fa-user text-4xl text-teal-700"></i>
+            </div>
+            <a href="{{ route('Ketua_Prodi') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full inline-block hover:bg-yellow-600">
+                Kaprodi
+            </a>
+        </div>
+        </div>
 </body>
 </html>

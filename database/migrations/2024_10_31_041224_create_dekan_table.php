@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('dekan', function (Blueprint $table) {
             $table->string('nip', 18)->primary();
             $table->string('fakultas', 50);
+
+            $table->foreign('nip')->references('nip')->on('dosen')->ondelete('cascade');
         });
     }
 

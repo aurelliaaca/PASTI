@@ -55,7 +55,7 @@
                             <p class=""> 216780745628374 </p>
                         </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> Belum Disetujui </td>
+                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-yellow-600 px-2 rounded-full"> Belum Disetujui </span> </td>
                         <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     <tr>
@@ -71,7 +71,7 @@
                             <p class=""> 216780745628374 </p>
                         </td>
                         <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> Disetujui pada 19/08/2024 </td>
+                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 px-2 rounded-full"> Disetujui </span> </td>
                         <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
                     </tr>
                     
