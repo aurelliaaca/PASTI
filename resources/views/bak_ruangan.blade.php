@@ -66,22 +66,16 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
   </style>
 </head>
 <body class="relative">
-    <!-- Back Button -->
-    <a href="{{ url()->previous() }}" class="absolute top-25 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-      <i class="fas fa-arrow-left"></i>
-      <span class="font-medium">Kembali</span>
-    </a>
     <!-- Container -->
-    <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-1">
+    <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-1" style="min-height: 600px;">
       <!-- Content -->
       <div id="content-ruangan" class="p-4">
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold text-teal-800">RUANG KELAS</h2>
-          <button type="button" class="btn bg-teal-500 btn-icon-text" data-toggle="modal" data-target="#addRuanganModal">
+          <h2 class="text-lg font-semibold text-teal-800">RUANGAN</h2>
+          <button type="button" class="btn bg-teal-500 btn-icon-text hover:bg-teal-600" data-toggle="modal" data-target="#addRuanganModal">
             <i class="fas fa-plus me-2 text-white"></i> <strong class="text-white">Tambah Ruangan</strong>
           </button>
         </div>
@@ -96,33 +90,28 @@
                       <table class="table table-striped table-hover">
                         <thead>
                           <tr>
-                            <th class="font-bold"xt- style="width: 32%;">
-                              KAPRODI
-                            </th>
-                            <th class="font-bold" style="width: 18%;">
-                              DEPARTEMEN
-                            </th>
-                            <th class="font-bold" style="width: 17%;">
+                            <th class="font-bold" style="width: 22%; font-size: 1rem;">
                               RUANG
                             </th>
-                            <th class="font-bold" style="width: 20%;">
+                            <th class="font-bold" style="width: 22%; font-size: 1rem;">
                               KAPASITAS
                             </th>
-                            <th class="font-bold" style="width: 12%;">
+                            <th class="font-bold text-left" style="width: 20%; padding-left: 48px; font-size: 1rem;">
                               AKSI
                             </th>
                           </tr>
                         </thead>
                         <tbody id="ruanganTableBody">
-                          @foreach($ruangkelas as $r)
-                          <tr>
-                            <td>{{ $r->kaprodi }}</td>
-                            <td>{{ $r->departemen }}</td>
-                            <td>{{ $r->ruang }}</td>
-                            <td style="padding-left: 35px;">{{ $r->kapasitas }}</td>
+                          @foreach($ruangan as $r)
+                          <tr data-id="{{ $r->id }}">
+                            <td style="font-size: 1rem;">{{ $r->ruang }}</td>
+                            <td style="padding-left: 35px; font-size: 1rem;">{{ $r->kapasitas }}</td>
                             <td>
-                              <button onclick="deleteRuangan({{ $r->id }})" class="btn btn-warning btn-sm">
-                                <i class="far fa-trash-alt"></i>
+                              <button onclick="editRuangan({{ $r->id }}, '{{ $r->ruang }}', {{ $r->kapasitas }})" class="btn bg-teal-500 btn-lg text-white hover:bg-teal-600" style="font-size: 1rem;">
+                                Edit
+                              </button>
+                              <button onclick="deleteRuangan({{ $r->id }})" class="btn btn-warning btn-lg text-white hover:bg-warning-dark" style="font-size: 1rem;">
+                                Hapus
                               </button>
                             </td>
                           </tr>
@@ -152,31 +141,7 @@
             <form id="ruanganForm">
               @csrf
               <div class="form-group mb-3">
-                <label for="kaprodi">Kaprodi</label>
-                <select class="form-control" id="kaprodi" required>
-                  <option value="">Pilih Kaprodi</option>
-                  <option value="1">Saddam Dharmawan, S.Kom, M.Kom</option>
-                  <option value="2">Dr. Azzam Muhammad, M.Si</option>
-                  <option value="3">Dr. Baskoro Mulyana, S.Si, M.Si</option>
-                  <option value="4">Drs. Emir Habibie, M.Si</option>
-                  <option value="5">Fianita Sari, M.SI</option>
-                </select>
-              </div>
-              <div class="form-group mb-3">
-                <label for="departemen">Departemen</label>
-                <select class="form-control" id="departemen" required>
-                  <option value="">Pilih Departemen</option>
-                  <option value="Informatika">Informatika</option>
-                  <option value="Biologi">Biologi</option>
-                  <option value="Matematika">Matematika</option>
-                  <option value="Fisika">Fisika</option>
-                  <option value="Kimia">Kimia</option>
-                  <option value="Statistika">Statistika</option>
-                  <option value="Bioteknologi">Bioteknologi</option>
-                </select>
-              </div>
-              <div class="form-group mb-3">
-                <label for="ruangan">Ruang</label>
+                <label for="ruang">Ruang</label>
                 <input type="text" class="form-control" id="ruang" placeholder="Masukkan Nama Ruang" required>
               </div>
               <div class="form-group mb-3">
@@ -214,8 +179,39 @@
       </div>
     </div>
 
-    <script>
+    <!-- Modal Form Edit Ruangan -->
+    <div class="modal fade" id="editRuanganModal" tabindex="-1" role="dialog" aria-labelledby="editRuanganModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-teal-800 text-white">
+                    <h5 class="modal-title" id="editRuanganModalLabel">Edit Data Ruangan</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRuanganForm">
+                        @csrf
+                        <input type="hidden" id="editRuanganId">
+                        <div class="form-group mb-3">
+                            <label for="editRuang">Ruang</label>
+                            <input type="text" class="form-control" id="editRuang" placeholder="Masukkan Nama Ruang" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="editKapasitas">Kapasitas</label>
+                            <input type="number" class="form-control" id="editKapasitas" placeholder="Masukkan Jumlah Kapasitas" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn bg-teal-500 text-white" onclick="updateRuangan()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
       function submitForm() {
         const form = document.getElementById('ruanganForm');
         if (!form.checkValidity()) {
@@ -223,15 +219,11 @@
           return;
         }
 
-        const kaprodiSelect = document.getElementById('kaprodi');
-        const departemenSelect = document.getElementById('departemen');
         const ruangan = document.getElementById('ruang').value;
         const kapasitas = document.getElementById('kapasitas').value;
 
         const formData = {
-          kaprodi: kaprodiSelect.options[kaprodiSelect.selectedIndex].text,
-          departemen: departemenSelect.value,
-          ruangan: ruangan,
+          ruang: ruangan,
           kapasitas: kapasitas,
           _token: '{{ csrf_token() }}'
         };
@@ -244,14 +236,16 @@
           success: function(response) {
             if (response.success) {
               const newRow = document.createElement('tr');
+              newRow.setAttribute('data-id', response.data.id);
               newRow.innerHTML = `
-                <td>${formData.kaprodi}</td>
-                <td>${formData.departemen}</td>
-                <td>${formData.ruangan}</td>
+                <td>${formData.ruang}</td>
                 <td style="padding-left: 35px;">${formData.kapasitas}</td>
                 <td>
-                  <button onclick="deleteRuangan(${response.data.id})" class="btn btn-danger btn-sm">
-                    <i class="fas fa-trash"></i>
+                  <button onclick="editRuangan(${response.data.id}, '${formData.ruang}', ${formData.kapasitas})" class="btn bg-teal-500 btn-lg text-white hover:bg-teal-600" style="font-size: 1rem;">
+                    Edit
+                  </button>
+                  <button onclick="deleteRuangan(${response.data.id})" class="btn btn-warning btn-lg text-white hover:bg-warning-dark" style="font-size: 1rem;">
+                    Hapus
                   </button>
                 </td>
               `;
@@ -284,8 +278,8 @@
             alertDiv.className = 'alert alert-danger d-flex align-items-center';
             alertDiv.setAttribute('role', 'alert');
             alertDiv.innerHTML = `
-              <i class="fas fa-exclamation-circle me-2"></i>
-              <a href="#" class="alert-link">Terjadi kesalahan! ${xhr.responseJSON?.message || 'Silakan coba lagi.'}</a>
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <a href="#" class="alert-link">Terjadi kesalahan! Ruang sudah tersedia, Silakan coba lagi.</a>
             `;
             const contentRuangan = document.getElementById('content-ruangan');
             contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
@@ -379,6 +373,96 @@
           });
         }
       });
+
+      function editRuangan(id, ruang, kapasitas) {
+        document.getElementById('editRuanganId').value = id;
+        document.getElementById('editRuang').value = ruang;
+        document.getElementById('editKapasitas').value = kapasitas;
+
+        $('#editRuanganModal').modal('show');
+      }
+
+      function updateRuangan() {
+        const id = document.getElementById('editRuanganId').value;
+        const ruang = document.getElementById('editRuang').value;
+        const kapasitas = document.getElementById('editKapasitas').value;
+
+        const formData = {
+            _token: '{{ csrf_token() }}',
+            ruang: ruang,
+            kapasitas: kapasitas
+        };
+
+        // Tampilkan spinner saat memproses
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'alert alert-info d-flex align-items-center justify-content-center';
+        loadingSpinner.setAttribute('role', 'alert');
+        loadingSpinner.style.backgroundColor = '#e2f6e9'; 
+        loadingSpinner.innerHTML = `
+            <div class="d-flex align-items-center">
+                <div class="spinner-border text-success me-2" role="status" style="width: 1rem; height: 1rem;">
+                    <span class="visually-hidden"></span>
+                </div>
+                <span class="text-success">Memperbarui data...</span>
+            </div>
+        `;
+        const contentRuangan = document.getElementById('content-ruangan');
+        contentRuangan.insertBefore(loadingSpinner, contentRuangan.firstChild);
+
+        $.ajax({
+            url: `/ruangan/${id}`,
+            type: 'PUT',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Update tabel dengan data baru
+                    const row = document.querySelector(`#ruanganTableBody tr[data-id="${id}"]`);
+                    row.children[1].textContent = ruang;
+                    row.children[2].textContent = kapasitas;
+
+                    $('#editRuanganModal').modal('hide');
+
+                    // Alert Sukses
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success d-flex align-items-center';
+                    alertDiv.setAttribute('role', 'alert');
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>
+                        <a href="#" class="alert-link">Data berhasil diperbarui!</a>
+                    `;
+                    const contentRuangan = document.getElementById('content-ruangan');
+                    contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
+
+                    // Hapus spinner setelah selesai
+                    loadingSpinner.remove();
+
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 2000);
+                }
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                console.log(xhr.responseText);
+                // Hapus spinner jika terjadi kesalahan
+                loadingSpinner.remove();
+
+                // Alert Error
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger d-flex align-items-center';
+                alertDiv.setAttribute('role', 'alert');
+                alertDiv.innerHTML = `
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <a href="#" class="alert-link">Terjadi kesalahan! Ruang sudah tersedia, Silakan coba lagi.</a>
+                `;
+                contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 2000);
+            }
+        });
+      }
     </script>
 </body>
 </html>
