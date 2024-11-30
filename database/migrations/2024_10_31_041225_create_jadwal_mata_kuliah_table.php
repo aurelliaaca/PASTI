@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jadwal_mata_kuliah', function (Blueprint $table) {
             $table->string('jadwalid', 20)->primary();
             $table->time('jam_mulai');
+            $table->time('jam_selesai')->nullable();
             $table->string('ruangan', 5)->index('jadwal_ruangan');
             $table->string('kelas', 1);
             $table->string('hari', 6);
@@ -22,6 +23,12 @@ return new class extends Migration
             $table->string('koordinator')->index('jadwal_koordinator');
             $table->string('pengampu1')->index('jadwal_pengampu1');
             $table->string('pengampu2')->index('jadwal_pengampu2');
+
+            $table->foreign('kodemk')->references('kode')->on('matakuliah')->ondelete('cascade');
+            // $table->foreign('koordinator')->references('nama')->on('dosen')->ondelete('cascade');
+            // $table->foreign('pengampu1')->references('nama')->on('dosen')->ondelete('cascade');
+            // $table->foreign('pengampu2')->references('nama')->on('dosen')->ondelete('cascade');
+            $table->foreign('ruangan')->references('ruang')->on('ruangan')->ondelete('cascade');
         });
     }
 

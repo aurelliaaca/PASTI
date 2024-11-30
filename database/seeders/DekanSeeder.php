@@ -15,7 +15,7 @@ class DekanSeeder extends Seeder
     {
         $dekan = [
             [
-                'nip' => '196303161988101001',
+                'nip' => '197405161234567808',
                 'fakultas' => 'Fakultas Sains dan Matematika'
             ]
         ];

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('email', 50)->unique('email');
             $table->string('alamat', 100);
             $table->string('prodi', 50);
+
+            $table->foreign('email')->references('email')->on('user')->ondelete('cascade');
         });
     }
 

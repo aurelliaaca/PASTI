@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nim', 14)->index('khs_mahasiswa');
 
             $table->primary(['smt', 'nim']);
+
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->ondelete('cascade');
         });
     }
 

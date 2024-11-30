@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('smt', 2);
             $table->boolean('status_verifikasi')->nullable();
             $table->timestamp('tanggal_disetujui')->nullable();
+
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->ondelete('cascade');
         });
     }
 

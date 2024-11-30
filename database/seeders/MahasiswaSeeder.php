@@ -21,8 +21,8 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '081559569409',
                 'email' => 'dhela@students.com',
                 'alamat' => 'Jl. Bulusan Utara No. 41, Tembalang, Semarang',
-                'prodi' => 'S1 Informatika', //baru
-                'dosenwali' => '197505152005012001' 
+                'prodi' => 'Informatika',
+                'dosenwali' => '197505152005012001' //kamaruddin
             ],
             [
                 'nama' => 'Tera Makna Pratiwi',
@@ -31,7 +31,37 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '0829989569409',
                 'email' => 'tera@students.com',
                 'alamat' => 'Jl. Banjarsari Selatan No. 90, Tembalang, Semarang',
-                'prodi' => 'S1 Informatika',
+                'prodi' => 'Informatika',
+                'dosenwali' => '197505152005012001' 
+            ],
+            [
+                'nama' => 'Farid Rahman',
+                'nim' => '24060122140199',
+                'smt' => 5,
+                'telp' => '082998956999',
+                'email' => 'farid@students.com',
+                'alamat' => 'Jl. Banjarsari Selatan No. 100, Tembalang, Semarang',
+                'prodi' => 'Informatika',
+                'dosenwali' => '197505152005012001' 
+            ],
+            [
+                'nama' => 'Mochammad Qaynan Mahdaviqya',
+                'nim' => '24060122140170',
+                'smt' => 5,
+                'telp' => '0829989765409',
+                'email' => 'qaynan@students.com',
+                'alamat' => 'Villa Aster 2 N1A, Banyumanik, Semarang',
+                'prodi' => 'Informatika',
+                'dosenwali' => '197505152005012001' 
+            ],
+            [
+                'nama' => 'Dzu Sunan Muhammad',
+                'nim' => '24060122120034',
+                'smt' => 5,
+                'telp' => '0829989765111',
+                'email' => 'dzu@students.com',
+                'alamat' => 'Jangli, Banyumanik, Semarang',
+                'prodi' => 'Informatika',
                 'dosenwali' => '197505152005012001' 
             ],
             [
@@ -41,8 +71,8 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '082876569889',
                 'email' => 'aurel@students.com',
                 'alamat' => 'Jl. Mulawarman, Tembalang, Semarang',
-                'prodi' => 'S1 Informatika',
-                'dosenwali' => '198910182005012002'
+                'prodi' => 'Informatika',
+                'dosenwali' => '196303161988101001' // Priyo
             ],
             [
                 'nama' => 'Nabila Najma Manika',
@@ -51,8 +81,8 @@ class MahasiswaSeeder extends Seeder
                 'telp' => '085899577422',
                 'email' => 'nabila@students.com',
                 'alamat' => 'Jl. Bulusan Selatan No. 90, Tembalang, Semarang',
-                'prodi' => 'S1 Informatika',
-                'dosenwali' => '198910182005012002'
+                'prodi' => 'Informatika',
+                'dosenwali' => '196303161988101001'
             ]
         ];
         DB::table('mahasiswa')->insert($mahasiswa);
