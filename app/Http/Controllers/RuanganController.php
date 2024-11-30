@@ -14,7 +14,7 @@ class RuanganController extends Controller
 
 
     public function store(Request $request)
-    {
+    { //gedungnya diilangin
         $request->validate([
             'kaprodi' => 'required',
             'departemen' => 'required',

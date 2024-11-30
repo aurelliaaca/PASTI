@@ -14,7 +14,7 @@ class RuanganSeeder extends Seeder
      */
     public function run(): void
     {
-        $ruangan = [
+        $ruangan = [ //gedungnya diilangin
             [
                 'ruang' => 'E101',
                 'prodi'=> 'Informatika',

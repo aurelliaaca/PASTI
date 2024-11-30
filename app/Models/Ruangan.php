@@ -8,7 +8,7 @@ class RuangKelas extends Model
     protected $table = 'ruang_kelas';
     public $timestamps = false;
     
-    protected $fillable = [
+    protected $fillable = [ //gedungnya diilangin
         'ruang',
         'prodi',
         'kapasitas'
