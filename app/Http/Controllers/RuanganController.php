@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\RuangKelas;
+use App\Models\Ruangan;
 use Illuminate\Http\Request;
 
 class RuanganController extends Controller
