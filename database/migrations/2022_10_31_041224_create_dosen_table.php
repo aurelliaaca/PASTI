@@ -15,8 +15,10 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('nip', 18)->primary();
             $table->string('telp', 15);
-            $table->string('email', 50)->unique('email');
+            $table->string('email', 50);
             $table->string('alamat', 100);
+
+            $table->foreign('email')->references('email')->on('user')->ondelete('cascade');
         });
     }
 

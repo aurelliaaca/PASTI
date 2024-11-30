@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('ketua_program_studi', function (Blueprint $table) {
             $table->string('prodi', 50);
             $table->string('nip', 18)->primary();
+
+            $table->foreign('nip')->references('nip')->on('dosen')->ondelet('cascade');
         });
     }
 

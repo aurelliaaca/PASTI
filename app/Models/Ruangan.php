@@ -17,7 +17,7 @@ class Ruangan extends Model
     protected $fillable = [
         'ruang',
         'gedung',
-        'fakultas',
+        'prodi',
         'kapasitas',
     ];
 }

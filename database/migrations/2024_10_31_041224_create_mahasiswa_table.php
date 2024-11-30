@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('nim', 14)->primary();
             $table->integer('smt');
             $table->string('telp', 15);
-            $table->string('email', 50)->unique('email');
+            $table->string('email', 50);
             $table->string('alamat', 100);
             $table->string('prodi', 50); //baru
             $table->string('dosenwali', 18)->index('nip_doswal');
+
+            $table->foreign('email')->references('email')->on('user')->ondelete('cascade');
+            $table->foreign('dosenwali')->references('nip')->on('dosen')->ondelete('cascade');
         });
     }
 
