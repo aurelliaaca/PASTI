@@ -48,7 +48,7 @@ Route::get('/login/user', function () {
 
 // perDASHBOARDan
 Route::get('/dashboard_mhs', function () {
-    return view('Mahasiswa');
+    return view('dashboard_mhs');
 });
 
 Route::get('/dashboard_bak', function () {
@@ -88,7 +88,7 @@ Route::get('/dosen_irsmahasiswa', function () {
 
 Route::get('/mhs_pengisianirspage', function () {
     return view('mhs_pengisianirspage');
-})->name('mhs_pengisianirspage');
+})->name('Pengisian_IRS');
 
 Route::get('/user1', function () {
     return view('user1');
@@ -97,3 +97,9 @@ Route::get('/user1', function () {
 Route::get('/kp_matakuliah', function () {
     return view('kp_matakuliah');
 })->name('kp_matakuliah');
+
+// routes mahasiswa
+use App\Http\Controllers\MahasiswaController;
+Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMK'])->name('Pengisian_IRS');
+Route::get('/get-jadwal-mk/{kodeMk}', [MahasiswaController::class, 'getJadwalByMatkul']);
+Route::get('/get-jadwal-mk/{courseId}', [MahasiswaController::class, 'getJadwalByMatkul']);

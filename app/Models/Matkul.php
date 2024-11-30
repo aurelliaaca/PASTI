@@ -22,4 +22,8 @@ class Matkul extends Model
         'semester',
     ];
 
+    public function jadwals()
+{
+    return $this->hasMany(Jadwal_mata_kuliah::class, 'kodemk', 'kode');
+}
 }

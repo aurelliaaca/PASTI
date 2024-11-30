@@ -26,4 +26,10 @@ class Jadwal_mata_kuliah extends Model
         'pengampu1',
         'pengampu2',
     ];
+
+    public function matkul()
+    {
+        return $this->belongsTo(Matkul::class, 'kodemk', 'kode');
+    }    
+
 }
