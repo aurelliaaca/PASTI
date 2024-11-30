@@ -10,10 +10,9 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    { //gedungnya diilangin
         Schema::create('ruangan', function (Blueprint $table) {
             $table->string('ruang', 5)->primary();
-            $table->string('gedung', 1);
             $table->string('prodi', 50);
             $table->integer('kapasitas');
         });

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\RuangKelas;
+use App\Models\Ruangan;
 use Illuminate\Http\Request;
 
 class RuanganController extends Controller
@@ -14,7 +14,7 @@ class RuanganController extends Controller
 
 
     public function store(Request $request)
-    {
+    { //gedungnya diilangin
         $request->validate([
             'kaprodi' => 'required',
             'departemen' => 'required',
