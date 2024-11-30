@@ -40,9 +40,9 @@
             <button class="btn flex-1 bg-teal-700 text-white p-2 shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".jadwalKuliah">
                 <span class="font-semibold italic text-center">Jadwal Kuliah</span>
             </button>
-            <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".penetapan">
+            <!-- <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".penetapan">
                 <span class="font-semibold italic text-center">Penetapan</span>
-            </button>
+            </button> -->
         </div>
 
         <!-- Konten Dinamis -->
@@ -55,11 +55,22 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="text-white block font-medium mb-2">Nama Mata Kuliah</label>
-                                <select id="namaMk" class="w-full p-2 border rounded">
-                                    <option value="" disabled selected>Pilih Mata Kuliah</option>
-                                    <!-- Mata Kuliah Options -->
+                                <select id="namaMk" name="namaMk" class="w-full p-2 border rounded">
+                                    
+                                    <option value="">Pilih Mata Kuliah</option>
+                                    @foreach ($matakuliah as $mk)
+                                        <option value="{{ $mk->kode }}"
+                                        data-nama="{{ $mk->nama }}"
+                                        data-kode="{{ $mk->kode }}"
+                                        data-sks="{{ $mk->sks }}"
+                                        data-semester="{{ $mk->semester }}">
+                                        {{ $mk->nama }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
+
+
                             <div>
                                 <label class="text-white block font-medium mb-2">Kode Mata Kuliah</label>
                                 <input type="text" id="kodeMk" class="w-full p-2 border rounded" readonly>
@@ -75,6 +86,7 @@
                             <div>
                                 <label class="text-white block font-medium mb-2">Kelas</label>
                                 <select id="kelasMk" class="w-full p-2 border rounded">
+                                    <option value=""> Pilih Kelas </option>
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="C">C</option>
@@ -85,6 +97,7 @@
                             <div>
                                 <label class="text-white block font-medium mb-2">Ruang</label>
                                 <select id="ruangKls" class="w-full p-2 border rounded">
+                                    <option value=""> Pilih Ruangan </option>
                                     <option value="E101">E101</option>
                                     <option value="A303">A303</option>
                                     <option value="E103">E103</option>
@@ -103,6 +116,7 @@
                             <div>
                                 <label class="text-white block font-medium mb-2">Hari</label>
                                 <select id="hari" class="w-full p-2 border rounded">
+                                    <option value=""> Pilih Hari </option>
                                     <option value="Senin">Senin</option>
                                     <option value="Selasa">Selasa</option>
                                     <option value="Rabu">Rabu</option>
@@ -114,10 +128,10 @@
                                 <label class="text-white block font-medium mb-2">Dosen</label>
                                 <select id="dosenSelect" class="w-full p-2 border rounded" multiple>
                                     <!-- Dosen Options -->
-                                    <option value="Dosen1">Sonny Wia, S.Kom., M.Kom</option>
-                                    <option value="Dosen2">Yusuf Gunadha, M.T</option>
-                                    <option value="Dosen3">Herry Tan, M.T</option>
-                                    <option value="Dosen4">Jena Syala, S.Kom., M.Kom</option>
+                                    @foreach ($dosen as $ds)
+                                        <option value="{{ $ds->nip }}">{{ $ds->nama }}</option>
+                                        
+                                    @endforeach
                                 </select>
                                 <p id="dosenError" class="text-red-500 text-sm mt-1 hidden">Pilih minimal 1 dosen dan maksimal 3 dosen.</p>
                             </div>
@@ -255,6 +269,23 @@
         const sksMk = document.getElementById("sksMk");
         const semesterMk = document.getElementById("semesterMk");
 
+        // Fungsi untuk mengambil data berdasarkan kode mata kuliah
+        async function fetchData(kodeMk) {
+            try {
+                const response = await fetch(`/get-mata-kuliah-data/${kodeMk}`);
+                const data = await response.json();
+                
+                // Set nilai pada form berdasarkan data yang didapat
+                if (data) {
+                    document.getElementById("kodeMk").value = data.kode;
+                    document.getElementById("sksMk").value = data.sks;
+                    document.getElementById("semesterMk").value = data.semester;
+                }
+            } catch (error) {
+                console.error("Error fetching mata kuliah data:", error);
+            }
+        }
+
         mataKuliahData.forEach(mk => {
             const option = document.createElement("option");
             option.value = mk.kode;
@@ -263,11 +294,15 @@
         });
 
         namaMkSelect.addEventListener("change", function () {
-            const selectedMk = mataKuliahData.find(mk => mk.kode === namaMkSelect.value);
-            if (selectedMk) {
-                kodeMk.value = selectedMk.kode;
-                sksMk.value = selectedMk.sks;
-                semesterMk.value = selectedMk.semester;
+            const selectedOption = namaMkSelect.options[namaMkSelect.selectedIndex];
+            const kode = selectedOption.value;
+
+            if (kode) {
+                fetchData(kode);  // Panggil fetch untuk mendapatkan data
+            } else {
+                kodeMk.value = '';
+                sksMk.value = '';
+                semesterMk.value = '';
             }
         });
         

@@ -6,7 +6,7 @@ use App\Http\Controllers\DekanController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\BAKController;
 use App\Http\Controllers\RuanganController;
-
+use App\Http\Controllers\KaprodiController;
 
 Route::get('/', function () {
     return view('login');
@@ -97,3 +97,13 @@ Route::get('/user1', function () {
 Route::get('/kp_matakuliah', function () {
     return view('kp_matakuliah');
 })->name('kp_matakuliah');
+
+Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
+
+
+
+
+
+// Route untuk mendapatkan detail matakuliah
+Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
+
