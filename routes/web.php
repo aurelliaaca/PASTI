@@ -29,7 +29,6 @@ Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::get('/dashboard_mhs', [UserController::class, 'index'])->name('dashboard_mhs');
 Route::get('/dk_persetujuan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuan');
 Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
-Route::get('/bak_jadwal', [BAKController::class, 'showJadwal'])->name('bak_jadwal');
 Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
 
 Route::prefix('ruangan')->name('ruangan.')->group(function () {
@@ -108,3 +107,17 @@ use App\Http\Controllers\MahasiswaController;
 Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMK'])->name('Pengisian_IRS');
 Route::get('/get-jadwal-mk/{kodeMk}', [MahasiswaController::class, 'getJadwalByMatkul']);
 Route::get('/get-jadwal-mk/{courseId}', [MahasiswaController::class, 'getJadwalByMatkul']);
+
+
+// Rute untuk menampilkan halaman jadwal dengan data
+Route::get('/bak_jadwal', [BAKController::class, 'index'])->name('Jadwal');
+
+// Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
+Route::resource('jadwal', BAKController::class);
+
+// Rute resource untuk operasi CRUD pada 'jadwal'
+Route::resource('jadwal', BAKController::class);
+
+// Jika perlu, tambahkan metode khusus untuk hapus dan update, jika Anda ingin kontrol lebih pada rute tertentu
+Route::delete('/jadwal/{id}', [BAKController::class, 'destroy']);
+Route::put('/jadwal/{id}', [BAKController::class, 'update']);

@@ -24,12 +24,12 @@
     <!-- Existing header and navigation remains the same -->
     <!-- Header dengan Tombol -->
     <div class="flex w-full mb-4">
-      <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".BuatIRS">
+    <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400" data-filter="BuatIRS">
         <span class="font-semibold italic text-center">Buat IRS</span>
-      </button>
-      <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".IRS">
+    </button>
+        <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400" data-filter="IRS">
         <span class="font-semibold italic text-center">IRS</span>
-      </button>
+    </button>
     </div>
     
     <div class="BuatIRS">
@@ -143,52 +143,77 @@
     </div>
     </div>
 
-    <div class="IRS">
-    <div class="flex justify-center grid grid-cols-8 gap-4 w-full">
-        <!-- Left Section (Profile) -->
-        <div class="col-span-2 bg-teal-800/0"></div>
+    <!-- IRS Content -->
+  <div class="IRS" style="display: none;">
+    <div class="bg-white shadow-lg rounded-lg">
+        <div id="content-jadwal" class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">ISIAN RENCANA MAHASISWA</h1>
+            </div>
+            <div class="border rounded-md">
+                <div class="table-responsive p-2 table-striped">
+                    <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                    <thead>
+                            <tr>
+                                <th class="font-bold" style="width: 20%;">Nama Mata Kuliah</th>
+                                <th class="font-bold" style="width: 10%;">Kode</th>
+                                <th class="font-bold" style="width: 10%;">SKS</th>
+                                <th class="font-bold" style="width: 15%;">Hari</th>
+                                <th class="font-bold" style="width: 15%;">Jam</th>
+                                <th class="font-bold" style="width: 15%;">Kelas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwalTableBody">
+                        <!-- Jadwal akan ditampilkan di sini setelah pemilihan mata kuliah -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
+  </div>
 
   <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.btn');
+    const buatirsContent = document.querySelector('.BuatIRS');
+    const irsContent = document.querySelector('.IRS');
 
-document.addEventListener('DOMContentLoaded', function () {
-            const buttons = document.querySelectorAll('.btn');
-            const sections = document.querySelectorAll('.buatIRS, .IRS');
+    // Fungsi untuk mengatur tampilan konten
+    function toggleContent(filter) {
+      if (filter === 'BuatIRS') {
+        buatirsContent.style.display = 'block';
+        irsContent.style.display = 'none';
+      } else if (filter === 'IRS') {
+        buatirsContent.style.display = 'none';
+        irsContent.style.display = 'block';
+      }
+    }
 
-            function toggleContent(filter) {
-                sections.forEach(section => {
-                    section.style.display = 'none';
-                });
-
-                const activeSection = document.querySelector(filter);
-                if (activeSection) {
-                    activeSection.style.display = 'block';
-                }
-            }
-
-            buttons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const filter = this.getAttribute('data-filter');
-
-                    buttons.forEach(btn => {
-                        btn.classList.remove('bg-amber-400');
-                        btn.classList.add('bg-teal-700');
-                    });
-
-                    this.classList.remove('bg-teal-700');
-                    this.classList.add('bg-amber-400');
-
-                    toggleContent(filter);
-                });
-            });
-
-            const defaultButton = document.querySelector('.btn[data-filter=".buatIRS"]');
-            if (defaultButton) {
-                defaultButton.classList.add('bg-amber-400');
-                toggleContent('.buatIRS');
-            }
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Menghapus titik dari data-filter
+        const filter = this.getAttribute('data-filter');
+        
+        // Mengatur warna background button
+        buttons.forEach(btn => {
+          btn.classList.remove('bg-amber-400');
+          btn.classList.add('bg-teal-700');
         });
+        this.classList.remove('bg-teal-700');
+        this.classList.add('bg-amber-400');
+
+        // Menampilkan konten yang sesuai
+        toggleContent(filter);
+      });
+    });
+
+    // Set tampilan default (IRS)
+    const defaultButton = document.querySelector('.a[data-filter="BuatIRS"]');
+    defaultButton.classList.add('bg-amber-400');
+    toggleContent('BuatIRS');
+});
+
         
   document.getElementById('matkul-dropdown').addEventListener('change', function () {
     const selectedOption = this.options[this.selectedIndex];
@@ -237,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <td class="border px-4 py-2">${jadwal.jam_mulai}</td>
                                 <td class="border px-4 py-2">${jadwal.kelas}</td>
                                 <td class="border px-4 py-2">
-                                    <button class="bg-teal-500 text-white px-4 py-1 rounded">Pilih</button>
+                                            <button class="bg-teal-500 text-white px-4 py-1 rounded" onclick="pilihJadwal('${courseId}', '${jadwal.id}')">Pilih</button>
                                 </td>
                             `;
                             // Tambahkan baris ke tabel
@@ -262,6 +287,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+window.pilihJadwal = function(courseId, jadwalId) {
+        const button = event.target;
+        const row = button.closest('tr');
+        
+        // Mengubah tombol menjadi "Batal" dan menonaktifkan baris
+        button.textContent = 'Batal';
+        button.classList.remove('bg-teal-500');
+        button.classList.add('bg-red-500');
+        row.style.opacity = 0.5; // Menurunkan opacity baris
+
+        // Kirim data ke database
+        fetch(`/insert-irs`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                course_id: courseId,
+                jadwal_id: jadwalId,
+                semester: 'Ganjil', // Sesuaikan dengan semester yang dipilih
+                smt: 5 // Semester mahasiswa
+            })
+        }).then(response => response.json())
+          .then(data => {
+            if (data.success) {
+                alert('Jadwal berhasil dipilih');
+            } else {
+                alert('Terjadi kesalahan');
+            }
+        });
+    };
         </script> 
 </body>
 </html>

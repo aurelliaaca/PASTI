@@ -139,7 +139,7 @@
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4">
             <!-- Periode Akses IRS Button -->
-            <a href="{{ route('bak_jadwal') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ route('Jadwal') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
               <i class="fas fa-hourglass-half text-3xl"></i>
               <span class="text-2xl">Jadwal</span>
             </a>

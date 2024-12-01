@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Matkul;
@@ -26,17 +25,24 @@ class MahasiswaController extends Controller
 
     // Mendapatkan jadwal berdasarkan kode mata kuliah yang dipilih
     public function getJadwalByMatkul($kodeMk)
-{
-    // Ambil data jadwal berdasarkan kode mata kuliah
-    $jadwal = Jadwal_mata_kuliah::with('matkul')
-        ->where('kodemk', $kodeMk)
-        ->get();
+    {
+        // Ambil data jadwal berdasarkan kode mata kuliah
+        $jadwal = Jadwal_mata_kuliah::with('matkul')
+            ->where('kodemk', $kodeMk)
+            ->get();
 
-    // Periksa apakah ada jadwal yang ditemukan
-    if ($jadwal->isEmpty()) {
-        return response()->json([], 404);  // Jika tidak ada jadwal, kembalikan array kosong
+        // Periksa apakah ada jadwal yang ditemukan
+        if ($jadwal->isEmpty()) {
+            return response()->json([], 404);  // Jika tidak ada jadwal, kembalikan array kosong
+        }
+
+        // Tidak perlu urutan hari, kembalikan jadwal langsung
+        return response()->json($jadwal);
     }
 
-    return response()->json($jadwal);  // Kembalikan data jadwal dalam format JSON
-}
+    public function showBuatIRS()
+    {
+        $matkul = Jadwal_mata_kuliah::all();  // Ambil semua mata kuliah yang tersedia
+        return view('mhs_pengisianirspage', compact('matkul'));
+    }
 }
