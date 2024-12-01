@@ -48,4 +48,12 @@ class RuanganController extends Controller
             ], 500);
         }
     }
+
+    public function setujuiSemua(Request $request) {
+        // Logika untuk menyetujui semua ruangan
+        // Misalnya, update status semua ruangan di database
+        Ruangan::query()->update(['status' => 'disetujui']); // Contoh update status
+
+        return response()->json(['success' => true]);
+    }
 }
