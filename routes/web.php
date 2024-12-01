@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::get('/dashboard_mhs', [UserController::class, 'index'])->name('dashboard_mhs');
-Route::get('/dk_persetujuan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuan');
+Route::get('/dk_persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuanruangan');
 Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
 Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
 
@@ -35,6 +35,7 @@ Route::prefix('ruangan')->name('ruangan.')->group(function () {
     Route::post('/store', [RuanganController::class, 'store'])->name('store');
     Route::get('/', [RuanganController::class, 'index'])->name('index');
     Route::delete('/{id}', [RuanganController::class, 'destroy'])->name('destroy');
+    Route::post('/setujuiSemua', [RuanganController::class, 'setujuiSemua'])->name('setujuiSemua');
 });
 
 Route::get('/login', function () {
@@ -96,6 +97,10 @@ Route::get('/user1', function () {
 Route::get('/kp_matakuliah', function () {
     return view('kp_matakuliah');
 })->name('kp_matakuliah');
+
+Route::get('/bak_plottingruang', function () {
+    return view('bak_plottingruang');
+})->name('bak_plottingruang'); 
 
 Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
 
