@@ -121,3 +121,15 @@ Route::resource('jadwal', BAKController::class);
 // Jika perlu, tambahkan metode khusus untuk hapus dan update, jika Anda ingin kontrol lebih pada rute tertentu
 Route::delete('/jadwal/{id}', [BAKController::class, 'destroy']);
 Route::put('/jadwal/{id}', [BAKController::class, 'update']);
+
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/profile', function() {
+    // Halaman profil pengguna
+    return view('profile');
+})->name('profile');
+
+Route::post('/logout', function() {
+    Auth::logout();
+    return redirect()->route('login');
+})->name('logout');
