@@ -8,7 +8,7 @@ class DekanController extends Controller
 {
     public function showPersetujuan()
     {
-        return view('dk_persetujuan');
+        return view('dk_persetujuanruangan');
     }
 
     public function showMonitoring()

@@ -120,15 +120,15 @@
           <!-- Container for Centered Buttons -->
           <div class="col-span-3 flex justify-center space-x-4 mt-4">
               <!-- Periode Akses IRS Button -->
-              <a href="{{ route('dk_persetujuan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-                <i class="fa fa-laptop text-3xl"></i>
-                <span class="text-2xl">Persetujuan</span>
+              <a href="{{ route('dk_persetujuanruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="fa fa-building text-3xl"></i>
+                <span class="text-2xl">Persetujuan Ruangan</span>
             </a>
 
               <!-- Data Mahasiswa Button -->
               <a href="{{ route('dk_monitoring') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-                  <i class="fa fa-users text-3xl"></i>
-                  <span class="text-2xl">Monitoring Jadwal Kuliah</span>
+                  <i class="fa fa-book text-3xl"></i>
+                  <span class="text-2xl">Persetujuan Jadwal Kuliah</span>
               </a>
           </div>
 
