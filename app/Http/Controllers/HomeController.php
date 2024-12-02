@@ -29,12 +29,17 @@ class HomeController extends Controller
 
     public function dashboardKaprodi()
     {
-        return view('kaprodi.dashboard');
+        return view('kaprodi.dashboard_kp');
     }
 
     public function user1()
     {
         return view('user1');
+    }
+
+    public function user2()
+    {
+        return view('user2');
     }
     
 }

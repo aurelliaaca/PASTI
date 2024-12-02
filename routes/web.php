@@ -74,7 +74,10 @@ Route::middleware(['auth', 'akademik'])->group(function () {
 
 // Grup untuk Kaprodi
 Route::middleware(['auth', 'kaprodi'])->group(function () {
-    Route::get('kaprodi/dashboard', [HomeController::class, 'dashboardKaprodi']);
+    Route::get('kaprodi/dashboard', [HomeController::class, 'dashboardKaprodi'])->name('dashboard.kaprodi');
+    Route::get('kaprodi/dashboard2', [HomeController::class, 'dashboardKaprodi'])->name('dashboard.kaprodi2');
+    Route::get('dosen/dashboard3', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen3');
+    Route::get('/user2', [HomeController::class, 'user2'])->name('user2');
     //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
     Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
     Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');

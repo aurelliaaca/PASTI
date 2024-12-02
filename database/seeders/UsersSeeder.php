@@ -19,7 +19,7 @@ class UsersSeeder extends Seeder
                 'name' => 'dhela',
                 'password' => 'dhela123',
                 'email' => 'dhela@students.com',
-                'role' => '2'
+                'role' => '7'
             ],
             [
                 'name' => 'arya',
