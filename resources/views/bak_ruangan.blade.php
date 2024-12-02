@@ -5,465 +5,229 @@
 @section('content')
 <html>
 <head>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-image: url('{{ asset('image/bg_PASTI1.png') }}');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-color: #f9f9fa
-    }
-
-    .flex {
-      -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-      flex: 1 1 auto
-    }
-
-    .table-responsive {
-     display: block;
-     width: 100%;
-     overflow-x: auto;
-     -webkit-overflow-scrolling: touch;
-     -ms-overflow-style: -ms-autohiding-scrollbar
-    }
-
-    .table,
-    .jsgrid .jsgrid-table {
-     width: 100%;
-     max-width: 100%;
-     margin-bottom: 1rem;
-     background-color: transparent
-    }
-
-    .table thead th,
-      .jsgrid .jsgrid-table thead th {
-     border-top: 0;
-     border-bottom-width: 1px;
-     font-weight: 500;
-     font-size: .875rem;
-     text-transform: uppercase
-      }
-
-    .table td,
-      .jsgrid .jsgrid-table td {
-     font-size: 0.875rem;
-     padding: .875rem 0.9375rem;
-    }
-
-    .table tbody tr:hover,
-    .jsgrid .jsgrid-table tbody tr:hover {
-      background-color: #518b726b !important; 
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-  </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: linear-gradient(to right, #02979D, #FFBB1C);
+            background-size: cover;
+            background-repeat: repeat;
+            height: max-content;
+            margin: 0;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5); /* Gelap di belakang form */
+            display: none; /* Sembunyikan overlay secara default */
+            justify-content: flex center;
+            align-items: center; /* Membuat konten berada di tengah */
+            z-index: 999; /* Pastikan overlay berada di atas konten lainnya */
+        }
+        .popup-form {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow atas dan bawah */
+            width: 40%; /* Atur lebar form sesuai kebutuhan */
+            max-width: 500px;
+            padding: 20px;
+            margin: 0 auto;
+            animation: popup 0.5s ease-out; /* Animasi halus */
+        }
+        /* Animasi popup */
+        @keyframes popup {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<body class="relative">
-    <!-- Container -->
-    <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-1" style="min-height: 600px;">
-      <!-- Content -->
-      <div id="content-ruangan" class="p-4">
-        <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold text-teal-800">RUANGAN</h2>
-          <button type="button" class="btn bg-teal-500 btn-icon-text hover:bg-teal-600" data-toggle="modal" data-target="#addRuanganModal">
-            <i class="fas fa-plus me-2 text-white"></i> <strong class="text-white">Tambah Ruangan</strong>
-          </button>
-        </div>
-        <div class="border rounded-md mt-2 p-4">
-          <!-- Tempat untuk data ruangan -->
-          <div class="page-content page-container" id="page-content">
-            <div class="row container d-flex justify-content-center">
-              <div class="col-lg-12 grid-margin">
-                <div class="card border-0 shadow-none m-0 p-0">
-                  <div class="card-body p-0">
-                    <div class="table-responsive">
-                      <table class="table table-striped table-hover">
-                        <thead>
-                          <tr>
-                            <th class="font-bold" style="width: 22%; font-size: 1rem;">
-                              RUANG
-                            </th>
-                            <th class="font-bold" style="width: 22%; font-size: 1rem;">
-                              KAPASITAS
-                            </th>
-                            <th class="font-bold text-left" style="width: 20%; padding-left: 48px; font-size: 1rem;">
-                              AKSI
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody id="ruanganTableBody">
-                          @foreach($ruangan as $r)
-                          <tr data-id="{{ $r->id }}">
-                            <td style="font-size: 1rem;">{{ $r->ruang }}</td>
-                            <td style="padding-left: 35px; font-size: 1rem;">{{ $r->kapasitas }}</td>
-                            <td>
-                              <button onclick="editRuangan({{ $r->id }}, '{{ $r->ruang }}', {{ $r->kapasitas }})" class="btn bg-teal-500 btn-lg text-white hover:bg-teal-600" style="font-size: 1rem;">
-                                Edit
-                              </button>
-                              <button onclick="deleteRuangan({{ $r->id }})" class="btn btn-warning btn-lg text-white hover:bg-warning-dark" style="font-size: 1rem;">
-                                Hapus
-                              </button>
-                            </td>
-                          </tr>
-                          @endforeach
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <!-- Modal Form -->
-    <div class="modal fade" id="addRuanganModal" tabindex="-1" role="dialog" aria-labelledby="addRuanganModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-teal-800 text-white">
-            <h5 class="modal-title" id="addRuanganModalLabel">Tambah Data Ruangan</h5>
-            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="ruanganForm">
-              @csrf
-              <div class="form-group mb-3">
-                <label for="ruang">Ruang</label>
-                <input type="text" class="form-control" id="ruang" placeholder="Masukkan Nama Ruang" required>
-              </div>
-              <div class="form-group mb-3">
-                <label for="kapasitas">Kapasitas</label>
-                <input type="number" class="form-control" id="kapasitas" placeholder="Masukkan Jumlah Kapasitas" required>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn bg-teal-500 text-white" onclick="submitForm()">Simpan</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Konfirmasi Delete -->
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-teal-800 text-white">
-            <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus Data</h5>
-            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Apakah Anda ingin menghapus data ini?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn bg-teal-500 text-white" id="confirmDelete">Hapus</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Form Edit Ruangan -->
-    <div class="modal fade" id="editRuanganModal" tabindex="-1" role="dialog" aria-labelledby="editRuanganModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-teal-800 text-white">
-                    <h5 class="modal-title" id="editRuanganModalLabel">Edit Data Ruangan</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+<body class="min-h-screen">
+    <div class="bg-white shadow-lg rounded-lg">
+        <div id="content-ruangan" class="p-4">
+            <!-- Header dan Tombol -->
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">RUANGAN</h1>
+                <div class="flex items-center">
+                    <button class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg" onclick="addRow()">
+                        <i class="fas fa-plus text-white"></i>
+                        <strong class="text-white">Tambah Ruangan</strong>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="editRuanganForm">
-                        @csrf
-                        <input type="hidden" id="editRuanganId">
-                        <div class="form-group mb-3">
-                            <label for="editRuang">Ruang</label>
-                            <input type="text" class="form-control" id="editRuang" placeholder="Masukkan Nama Ruang" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="editKapasitas">Kapasitas</label>
-                            <input type="number" class="form-control" id="editKapasitas" placeholder="Masukkan Jumlah Kapasitas" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning text-white" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn bg-teal-500 text-white" onclick="updateRuangan()">Simpan</button>
+            </div>
+
+            <!-- Tabel -->
+            <div class="border rounded-md">
+                <div class="table-responsive p-2 table-striped">
+                    <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="font-bold" style="width: 30%;">Gedung</th>
+                                <th class="font-bold" style="width: 30%;">Ruang</th>
+                                <th class="font-bold" style="width: 25%;">Kapasitas</th>
+                                <th class="font-bold text-center" style="width: 15%;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ruanganTableBody">
+                            @foreach($ruangans as $ruangan)
+                                <tr id="ruangan_{{ $ruangan->id }}" class="odd:bg-teal-800/10 even:bg-white mb-2">
+                                    <td>{{ $ruangan->gedung }}</td>
+                                    <td>{{ $ruangan->ruang }}</td>
+                                    <td>{{ $ruangan->kapasitas }}</td>
+                                    <td class="text-center py-2">
+                                        <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, {{ $ruangan->id }})">Hapus</button>
+                                        <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-      function submitForm() {
-        const form = document.getElementById('ruanganForm');
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        const ruangan = document.getElementById('ruang').value;
-        const kapasitas = document.getElementById('kapasitas').value;
-
-        const formData = {
-          ruang: ruangan,
-          kapasitas: kapasitas,
-          _token: '{{ csrf_token() }}'
-        };
-
-        $.ajax({
-          url: '{{ route("ruangan.store") }}',
-          type: 'POST',
-          data: formData,
-          dataType: 'json',
-          success: function(response) {
-            if (response.success) {
-              const newRow = document.createElement('tr');
-              newRow.setAttribute('data-id', response.data.id);
-              newRow.innerHTML = `
-                <td>${formData.ruang}</td>
-                <td style="padding-left: 35px;">${formData.kapasitas}</td>
-                <td>
-                  <button onclick="editRuangan(${response.data.id}, '${formData.ruang}', ${formData.kapasitas})" class="btn bg-teal-500 btn-lg text-white hover:bg-teal-600" style="font-size: 1rem;">
-                    Edit
-                  </button>
-                  <button onclick="deleteRuangan(${response.data.id})" class="btn btn-warning btn-lg text-white hover:bg-warning-dark" style="font-size: 1rem;">
-                    Hapus
-                  </button>
-                </td>
-              `;
-
-              document.getElementById('ruanganTableBody').appendChild(newRow);
-              $('#addRuanganModal').modal('hide');
-              form.reset();
-
-              // Alert Sukses
-              const alertDiv = document.createElement('div');
-              alertDiv.className = 'alert alert-success d-flex align-items-center';
-              alertDiv.setAttribute('role', 'alert');
-              alertDiv.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i>
-                <a href="#" class="alert-link">Data berhasil ditambahkan!</a>
-              `;
-
-              const contentRuangan = document.getElementById('content-ruangan');
-              contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-
-              setTimeout(() => {
-                alertDiv.remove();
-              }, 2000);
-            }
-          },
-          error: function(xhr) {
-            console.error(xhr);
-            // Alert Error
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-danger d-flex align-items-center';
-            alertDiv.setAttribute('role', 'alert');
-            alertDiv.innerHTML = `
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <a href="#" class="alert-link">Terjadi kesalahan! Ruang sudah tersedia, Silakan coba lagi.</a>
-            `;
-            const contentRuangan = document.getElementById('content-ruangan');
-            contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-            setTimeout(() => {
-              alertDiv.remove();
-            }, 2000);
-          }
-        });
-      }
-
-      let deleteId = null;
-
-      function deleteRuangan(id) {
-        deleteId = id;
-        $('#deleteConfirmModal').modal('show');
-      }
-
-      $('#confirmDelete').click(function() {
-        if(deleteId !== null) {
-          $('#deleteConfirmModal').modal('hide');
-          
-          $.ajax({
-            url: `/ruangan/${deleteId}`,
-            type: 'DELETE',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-              if(response.success) {
-                // Tampilkan alert sukses 
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-success d-flex align-items-center';
-                alertDiv.setAttribute('role', 'alert');
-                alertDiv.innerHTML = `
-                  <i class="fas fa-check-circle me-2"></i>
-                  <a href="#" class="alert-link">Data berhasil dihapus!</a>
-                `;
-                
-                const contentRuangan = document.getElementById('content-ruangan');
-                contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-                
-                // Setelah alert muncul, tampilkan spinner dan update data
-                setTimeout(() => {
-                  alertDiv.remove();
-                  // Tampilkan spinner loading 
-                  const loadingSpinner = document.createElement('div');
-                  loadingSpinner.className = 'alert alert-info d-flex align-items-center justify-content-center';
-                  loadingSpinner.setAttribute('role', 'alert');
-                  loadingSpinner.style.backgroundColor = '#e2f6e9'; 
-                  loadingSpinner.innerHTML = `
-                    <div class="d-flex align-items-center">
-                      <div class="spinner-border text-success me-2" role="status" style="width: 1rem; height: 1rem;">
-                        <span class="visually-hidden"></span>
-                      </div>
-                      <span class="text-success">Memperbarui data...</span>
-                    </div>
-                  `;
-                  
-                  contentRuangan.insertBefore(loadingSpinner, contentRuangan.firstChild);
-                  
-                  // Ambil data terbaru dari server
-                  $.get('{{ route("ruangan.index") }}', function(data) {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const newTableBody = doc.getElementById('ruanganTableBody');
-                    // Update tabel dengan data baru
-                    document.getElementById('ruanganTableBody').innerHTML = newTableBody.innerHTML;
-                    loadingSpinner.remove();
-                  });
-                }, 1000);
-              }
-            },
-            error: function(xhr) {
-              console.error('Error:', xhr);
-              // Alert Error
-              const alertDiv = document.createElement('div');
-              alertDiv.className = 'alert alert-danger d-flex align-items-center';
-              alertDiv.setAttribute('role', 'alert');
-              alertDiv.innerHTML = `
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <a href="#" class="alert-link">Terjadi kesalahan saat menghapus data!</a>
-              `;
-              
-              const contentRuangan = document.getElementById('content-ruangan');
-              contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-              
-              setTimeout(() => {
-                alertDiv.remove();
-              }, 3000);
-            }
-          });
-        }
-      });
-
-      function editRuangan(id, ruang, kapasitas) {
-        document.getElementById('editRuanganId').value = id;
-        document.getElementById('editRuang').value = ruang;
-        document.getElementById('editKapasitas').value = kapasitas;
-
-        $('#editRuanganModal').modal('show');
-      }
-
-      function updateRuangan() {
-        const id = document.getElementById('editRuanganId').value;
-        const ruang = document.getElementById('editRuang').value;
-        const kapasitas = document.getElementById('editKapasitas').value;
-
-        const formData = {
-            _token: '{{ csrf_token() }}',
-            ruang: ruang,
-            kapasitas: kapasitas
-        };
-
-        // Tampilkan spinner saat memproses
-        const loadingSpinner = document.createElement('div');
-        loadingSpinner.className = 'alert alert-info d-flex align-items-center justify-content-center';
-        loadingSpinner.setAttribute('role', 'alert');
-        loadingSpinner.style.backgroundColor = '#e2f6e9'; 
-        loadingSpinner.innerHTML = `
-            <div class="d-flex align-items-center">
-                <div class="spinner-border text-success me-2" role="status" style="width: 1rem; height: 1rem;">
-                    <span class="visually-hidden"></span>
+    <!-- Overlay untuk popup -->
+    <div id="overlay" class="overlay">
+        <div class="popup-form">
+            <form id="tambahForm" action="{{ route('ruangan.store') }}" method="POST">
+                @csrf
+                <h2 class="text-lg font-semibold mb-4 text-center">Tambah Ruangan</h2>
+                <div class="mb-4">
+                    <label class="block">Gedung</label>
+                    <input type="text" name="gedung" id="gedung" class="w-full px-4 py-2 border rounded-lg" required>
                 </div>
-                <span class="text-success">Memperbarui data...</span>
-            </div>
-        `;
-        const contentRuangan = document.getElementById('content-ruangan');
-        contentRuangan.insertBefore(loadingSpinner, contentRuangan.firstChild);
+                <div class="mb-4">
+                    <label class="block">Ruang</label>
+                    <input type="text" name="ruang" id="ruang" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block">Kapasitas</label>
+                    <input type="number" name="kapasitas" id="kapasitas" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeTambahForm()" class="mr-2 px-4 py-2 bg-teal-500 text-white rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-400 text-white rounded-lg">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+    // Fungsi untuk menambah form
+    function addRow() {
+        document.getElementById('overlay').style.display = 'flex';
+        $('#tambahForm').trigger('reset'); // Reset form
+        $('#tambahForm').attr('action', '{{ route('ruangan.store') }}'); // Reset action URL untuk tambah
+        $('#tambahForm').find('input[name="_method"]').remove(); // Remove hidden method field jika ada
+    }
+
+    // Fungsi untuk menutup form
+    function closeTambahForm() {
+        $('#overlay').hide(); // Menyembunyikan overlay
+    }
+
+    // Menangani pengiriman form untuk tambah atau edit ruangan
+    // Fungsi untuk menangani pengiriman form
+    $('#tambahForm').on('submit', function (e) {
+        e.preventDefault();  // Mencegah pengiriman form default
+        var formData = new FormData(this);
+        var actionUrl = $(this).attr('action'); // Dapatkan URL form action
 
         $.ajax({
-            url: `/ruangan/${id}`,
-            type: 'PUT',
+            url: actionUrl,
+            type: 'POST',
             data: formData,
-            dataType: 'json',
-            success: function(response) {
+            processData: false,
+            contentType: false,
+            success: function (response) {
                 if (response.success) {
-                    // Update tabel dengan data baru
-                    const row = document.querySelector(`#ruanganTableBody tr[data-id="${id}"]`);
-                    row.children[1].textContent = ruang;
-                    row.children[2].textContent = kapasitas;
+                    // Jika ini adalah update, kita perlu mengganti row yang ada
+                    if (response.is_edit) {
+                        var updatedRow = $('#ruangan_' + response.data.id);
+                        updatedRow.find('td:eq(0)').text(response.data.gedung);
+                        updatedRow.find('td:eq(1)').text(response.data.ruang);
+                        updatedRow.find('td:eq(2)').text(response.data.kapasitas);
+                    } else {
+                        // Jika ini adalah tambah ruangan, tambahkan baris baru
+                        var newRow = '<tr id="ruangan_' + response.data.id + '" class="odd:bg-teal-800/10 even:bg-white mb-2">' +
+                            '<td>' + response.data.gedung + '</td>' +
+                            '<td>' + response.data.ruang + '</td>' +
+                            '<td>' + response.data.kapasitas + '</td>' +
+                            '<td class="text-center py-2">' +
+                                '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, ' + response.data.id + ')">Hapus</button>' +
+                                '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>' +
+                            '</td>' +
+                        '</tr>';
 
-                    $('#editRuanganModal').modal('hide');
-
-                    // Alert Sukses
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-success d-flex align-items-center';
-                    alertDiv.setAttribute('role', 'alert');
-                    alertDiv.innerHTML = `
-                        <i class="fas fa-check-circle me-2"></i>
-                        <a href="#" class="alert-link">Data berhasil diperbarui!</a>
-                    `;
-                    const contentRuangan = document.getElementById('content-ruangan');
-                    contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-
-                    // Hapus spinner setelah selesai
-                    loadingSpinner.remove();
-
-                    setTimeout(() => {
-                        alertDiv.remove();
-                    }, 2000);
+                        $('#ruanganTableBody').append(newRow); // Menambahkan baris baru ke dalam tabel
+                        closeTambahForm(); // Menutup form setelah data berhasil ditambahkan
+                    }
+                } else {
+                    alert('Terjadi kesalahan, data gagal disimpan.');
                 }
             },
-            error: function(xhr) {
-                console.error(xhr);
-                console.log(xhr.responseText);
-                // Hapus spinner jika terjadi kesalahan
-                loadingSpinner.remove();
-
-                // Alert Error
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-danger d-flex align-items-center';
-                alertDiv.setAttribute('role', 'alert');
-                alertDiv.innerHTML = `
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <a href="#" class="alert-link">Terjadi kesalahan! Ruang sudah tersedia, Silakan coba lagi.</a>
-                `;
-                contentRuangan.insertBefore(alertDiv, contentRuangan.firstChild);
-                setTimeout(() => {
-                    alertDiv.remove();
-                }, 2000);
+            error: function (error) {
+                console.log(error);
+                alert('Terjadi kesalahan saat menyimpan data.');
             }
         });
-      }
-    </script>
+    });
+
+    // Fungsi untuk mengedit baris data
+    function editRow(button, id) {
+        var row = $(button).closest('tr');
+        var gedung = row.find('td:eq(0)').text();
+        var ruang = row.find('td:eq(1)').text();
+        var kapasitas = row.find('td:eq(2)').text();
+
+        // Menampilkan popup form untuk edit
+        document.getElementById('overlay').style.display = 'flex';
+        $('#tambahForm').trigger('reset'); // Reset form
+        $('#tambahForm').attr('action', '{{ route('ruangan.update', ':id') }}'.replace(':id', id)); // Set URL untuk update
+        $('#tambahForm').find('input[name="_method"]').remove(); // Remove method hidden field jika ada
+        $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Menambahkan metode PUT untuk update
+
+        // Mengisi form dengan data yang ada
+        $('#gedung').val(gedung);
+        $('#ruang').val(ruang);
+        $('#kapasitas').val(kapasitas);
+    }
+
+    // Fungsi untuk menghapus baris
+    function deleteRow(button, id) {
+        var row = $(button).closest('tr');
+
+        if (confirm('Apakah Anda yakin ingin menghapus ruangan ini?')) {
+            $.ajax({
+                url: '{{ route('ruangan.destroy', ':id') }}'.replace(':id', id),
+                type: 'DELETE',
+                success: function (response) {
+                    if (response.success) {
+                        row.remove(); // Menghapus baris jika berhasil
+                    } else {
+                        alert('Terjadi kesalahan, data gagal dihapus.');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('Terjadi kesalahan saat menghapus data.');
+                }
+            });
+        }
+    }
+</script>
 </body>
 </html>
 @endsection

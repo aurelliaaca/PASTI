@@ -6,54 +6,57 @@ use Illuminate\Http\Request;
 
 class RuanganController extends Controller
 {
+    public function showJadwal()
+    {
+        // Ambil semua data jadwal
+        $ruangans = Ruangan::all();
+        return view('bak_ruangan', compact('ruangans')); // Kirim data ke view
+    }
+
     public function index()
     {
-        $ruangan = Ruangan::all();
-        return view('bak_ruangan', compact('ruangan'));
+        $ruangans = Ruangan::all();  // Ambil semua data jadwal
+        return view('bak_ruangan', compact('ruangans')); // Kirim data ke view
     }
 
+    // Menambahkan Ruangan
+public function store(Request $request)
+{
+    $ruangan = new Ruangan();
+    $ruangan->gedung = $request->gedung;
+    $ruangan->ruang = $request->ruang;
+    $ruangan->kapasitas = $request->kapasitas;
+    $ruangan->save();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'ruang' => 'required',
-            'kapasitas' => 'required|numeric',
-        ]);
+    return response()->json([
+        'success' => true,
+        'data' => $ruangan,
+        'is_edit' => false,
+    ]);
+}
 
-        $ruangan = Ruangan::create([
-            'ruang' => $request->ruang,
-            'kapasitas' => $request->kapasitas,
-        ]);
+// Mengupdate Ruangan
+public function update(Request $request, $id)
+{
+    $ruangan = Ruangan::findOrFail($id);
+    $ruangan->gedung = $request->gedung;
+    $ruangan->ruang = $request->ruang;
+    $ruangan->kapasitas = $request->kapasitas;
+    $ruangan->save();
 
-        return response()->json([
-            'success' => true,
-            'data' => $ruangan
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'data' => $ruangan,
+        'is_edit' => true,
+    ]);
+}
 
-    public function destroy($id)
-    {
-        try {
-            $ruangan = Ruangan::findOrFail($id);
-            $ruangan->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus data: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+// Menghapus Ruangan
+public function destroy($id)
+{
+    $ruangan = Ruangan::findOrFail($id);
+    $ruangan->delete();
 
-    public function setujuiSemua(Request $request) {
-        // Logika untuk menyetujui semua ruangan
-        // Misalnya, update status semua ruangan di database
-        Ruangan::query()->update(['status' => 'disetujui']); // Contoh update status
-
-        return response()->json(['success' => true]);
-    }
+    return response()->json(['success' => true]);
+}
 }
