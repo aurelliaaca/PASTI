@@ -15,15 +15,16 @@ class KaprodiController extends Controller
         return view('user');
     }
 
-    public function listMK(Request $request) {
+    public function buatJadwal(Request $request) {
         // Fetch all the matakuliah (courses)
         $matakuliah = Matkul::all();
 
         $dosen = Dosen::all();
 
+        $ruang = Ruangan::all();
 
         // Pass matakuliah to the view
-        return view('kp_penjadwalan', compact('matakuliah', 'dosen'));
+        return view('kp_penjadwalan', compact('matakuliah', 'dosen', 'ruang'));
     }
 
     public function getMatkul($kode) {
@@ -43,7 +44,72 @@ class KaprodiController extends Controller
         return response()->json([]);
     }
 
+    public function matkul(){
+        // Mengambil semua data mata kuliah
+        $matakuliah = Matkul::all();
+        return view('kp_matakuliah', compact('matakuliah'));
+    }
+
+    public function storeMatkul(Request $request)
+    {
+        $request->validate([
+            'kode' => 'required|unique:matakuliah,kode',
+            'nama' => 'required',
+            'semester' => 'required|numeric',
+            'sks' => 'required|numeric',
+            'status' => 'required|in:wajib,pilihan',
+        ]);
+
+        Matkul::create([
+            'kode' => $request->kode,
+            'nama' => $request->nama,
+            'semester' => $request->semester,
+            'sks' => $request->sks,
+            'status' => $request->status, // Status default, bisa disesuaikan
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
     
+    // Mengecek duplikasi berdasarkan kode atau nama
+    public function checkDuplicateMK(Request $request)
+    {
+        $exists_kode = Matkul::where('kode', $request->kode)->exists();
+        $exists_nama = Matkul::where('nama', $request->nama)->exists();
+
+        return response()->json([
+            'exists' => $exists_kode || $exists_nama,
+            'exists_kode' => $exists_kode,
+            'exists_nama' => $exists_nama
+        ]);
+    }
+    // Mengupdate mata kuliah
+    public function updateMK(Request $request, $kode)
+    {
+        $matakuliah = Matkul::findOrFail($kode);
+
+        $matakuliah->update([
+            'kode' => $request->kode,
+            'nama' => $request->nama,
+            'semester' => $request->semester,
+            'sks' => $request->sks,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    // Menghapus mata kuliah
+    public function destroyMK($kode)
+    {
+        $matakuliah = Matkul::findOrFail($kode);
+        $matakuliah->delete();
+
+        return response()->json(['success' => true]);
+
+    }
+
     // public function getDosen() {
     //     // Ambil data matakuliah berdasarkan kode yang dipilih
     //     $dosen = Dosen::all();

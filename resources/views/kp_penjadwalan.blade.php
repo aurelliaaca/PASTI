@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'KP Penjadwalan')
+@section('title', 'Kp Penjadwalan')
 
 @section('content')
 <html>
@@ -34,10 +34,10 @@
 
         <!-- Header dengan Tombol -->
         <div class="flex w-full mb-4">
-            <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".buatJadwal">
+            <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".buatJadwal">
                 <span class="font-semibold italic text-center">Buat Jadwal</span>
             </button>
-            <button class="btn flex-1 bg-teal-700 text-white p-2 shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".jadwalKuliah">
+            <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".jadwalKuliah">
                 <span class="font-semibold italic text-center">Jadwal Kuliah</span>
             </button>
             <!-- <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".penetapan">
@@ -98,10 +98,10 @@
                                 <label class="text-white block font-medium mb-2">Ruang</label>
                                 <select id="ruangKls" class="w-full p-2 border rounded">
                                     <option value=""> Pilih Ruangan </option>
-                                    <option value="E101">E101</option>
-                                    <option value="A303">A303</option>
-                                    <option value="E103">E103</option>
-                                    <option value="E102">E102</option>
+                                    @foreach ($ruang as $rg)
+                                        <option value="{{ $rg->ruang }}">{{ $rg->ruang }}</option>
+                                        
+                                    @endforeach
 
                                 </select>
                             </div>
