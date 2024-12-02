@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth']], function(){
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::get('/dashboard_mhs', [UserController::class, 'index'])->name('dashboard_mhs');
 Route::get('/dk_persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuanruangan');
-Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
+Route::get('/dk_persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('Persetujuan_Jadwal');
 Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
 
 Route::prefix('ruangan')->name('ruangan.')->group(function () {

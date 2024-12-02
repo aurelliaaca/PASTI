@@ -11,8 +11,8 @@ class DekanController extends Controller
         return view('dk_persetujuanruangan');
     }
 
-    public function showMonitoring()
+    public function showJadwal()
     {
-        return view('dk_monitoring');
+        return view('dk_persetujuanjadwal');
     }
 }

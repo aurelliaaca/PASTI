@@ -21,7 +21,7 @@
 <body class="min-h-screen bg-cover bg-center">
   <div class="main-container">
       <!-- Main Content Section -->
-      <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-8 rounded-lg shadow-lg w-full mt-4">
+      <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-4 rounded-lg shadow-lg w-full">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           
           <!-- Left Section (Profile) -->
@@ -140,7 +140,7 @@
             </a>
 
               <!-- Data Mahasiswa Button -->
-              <a href="{{ route('dk_monitoring') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <a href="{{ route('Persetujuan_Jadwal') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                   <i class="fa fa-book text-3xl"></i>
                   <span class="text-2xl">Persetujuan Jadwal Kuliah</span>
               </a>
