@@ -14,7 +14,7 @@ class Dekan
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role !== '4') {
+            if ($user->role !== '4' && $user->role !== '6') {
                 // Jika bukan Dekan, arahkan ke dashboard sesuai role mereka
                 switch ($user->role) {
                     case '1': // Mahasiswa

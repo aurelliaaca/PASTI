@@ -24,11 +24,17 @@ class HomeController extends Controller
 
     public function dashboardDekan()
     {
-        return view('dekan.dashboard');
+        return view('dekan.dashboard_dekan');
     }
 
     public function dashboardKaprodi()
     {
         return view('kaprodi.dashboard');
     }
+
+    public function user1()
+    {
+        return view('user1');
+    }
+    
 }

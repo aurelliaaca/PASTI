@@ -35,27 +35,60 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('/get-jadwal-mk/{courseId}', [MahasiswaController::class, 'getJadwalByMatkul']);
 });
 
+// Grup untuk Dekan
+Route::middleware(['auth', 'dekan'])->group(function () {
+    Route::get('dekan/dashboard', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan');
+    Route::get('dekan/dashboard2', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan2');
+    Route::get('dosen/dashboard2', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen2');
+    Route::get('/dk_persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuanruangan');
+    Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
+    Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
+    // Route::get('/user1', function () {return view('user1');})->name('user1');
+});
+
 // Grup untuk Dosen
 Route::middleware(['auth', 'dosen'])->group(function () {
-    Route::get('dosen/dashboard', [HomeController::class, 'dashboardDosen']);
+    Route::get('dosen/dashboard', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen');
+    Route::get('/dosen_perwalian', function () {return view('dosen_perwalian');})->name('Perwalian');
+    Route::get('/dosen_persetujuan', function () {return view('dosen_persetujuan');})->name('persetujuan_IRS');
+    Route::get('/dosen_irsmahasiswa', function () {return view('dosen_irsmahasiswa');})->name('IRS_Mahasiswa');
 });
 
 // Grup untuk Akademik
 Route::middleware(['auth', 'akademik'])->group(function () {
     Route::get('akademik/dashboard', [HomeController::class, 'dashboardAkademik']);
+    Route::get('/bak_jadwal', [BAKController::class, 'index'])->name('Jadwal');
+    Route::get('/bak_plottingruang', function () {return view('bak_plottingruang');})->name('bak_plottingruang'); 
+    Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
+    Route::prefix('ruangan')->name('ruangan.')->group(function () {
+        Route::post('/store', [RuanganController::class, 'store'])->name('store');
+        Route::get('/', [RuanganController::class, 'index'])->name('index');
+        Route::delete('/{id}', [RuanganController::class, 'destroy'])->name('destroy');
+        Route::post('/setujuiSemua', [RuanganController::class, 'setujuiSemua'])->name('setujuiSemua');
+    });
+    // Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
+    Route::resource('jadwal', BAKController::class);
 });
 
-// Grup untuk Dekan
-Route::middleware(['auth', 'dekan'])->group(function () {
-    Route::get('dekan/dashboard', [HomeController::class, 'dashboardDekan']);
-});
+
 
 // Grup untuk Kaprodi
 Route::middleware(['auth', 'kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [HomeController::class, 'dashboardKaprodi']);
+    //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
+    Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
+    Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
+    // Route untuk mendapatkan detail matakuliah
+    Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
 });
 
+// Ini tolong jangan digeser
+Route::get('/profile', function() {
+    // Halaman profil pengguna
+    return view('profile');
+})->name('profile');
 
+// Fosil
 
 // Route::get('/', function () {
 //     return view('login');
@@ -174,10 +207,7 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
 
 // use Illuminate\Support\Facades\Auth;
 
-Route::get('/profile', function() {
-    // Halaman profil pengguna
-    return view('profile');
-})->name('profile');
+
 
 // Route::post('/logout', function() {
 //     Auth::logout();
