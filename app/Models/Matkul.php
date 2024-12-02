@@ -14,6 +14,7 @@ class Matkul extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    public $timestamps = false;
     protected $fillable = [
         'nama',
         'kode',
