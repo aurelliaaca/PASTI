@@ -54,7 +54,7 @@ class AuthenticatedSessionController extends Controller
         }
         elseif($request->user()->role === '7')
         {
-            return redirect('kaprodi/dashboard');
+            return redirect('user2');
         }
         return redirect()->intended(route('dashboard'));
     }

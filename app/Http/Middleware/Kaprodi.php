@@ -14,7 +14,7 @@ class Kaprodi
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role !== '5') {
+            if ($user->role !== '5' && $user->role !== '7') {
                 // Jika bukan Kaprodi, arahkan ke dashboard sesuai role mereka
                 switch ($user->role) {
                     case '1': // Mahasiswa
