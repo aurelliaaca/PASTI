@@ -19,14 +19,20 @@ class UsersSeeder extends Seeder
                 'name' => 'dhela',
                 'password' => 'dhela123',
                 'email' => 'dhela@students.com',
-                'role' => '1'
+                'role' => '2'
             ],
             [
                 'name' => 'arya',
                 'password' => 'arya123',
                 'email' => 'arya@students.com',
-                'role' => '1'
+                'role' => '6'
             ],
+            [
+                'name' => 'dekan',
+                'password' => 'dekan123',
+                'email' => 'dekan@students.com',
+                'role' => '4'
+            ]
             // [
             //     'password' => 'tera123',
             //     'email' => 'tera@students.com',

@@ -14,7 +14,7 @@ class Dosen
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->role !== '2') {
+            if ($user->role !== '2' && $user->role !== 6) {
                 // Jika bukan Dosen, arahkan ke dashboard sesuai role mereka
                 switch ($user->role) {
                     case '1': // Mahasiswa
