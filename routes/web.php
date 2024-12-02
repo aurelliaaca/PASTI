@@ -71,9 +71,6 @@ Route::middleware(['auth', 'akademik'])->group(function () {
 });
 
 
-
-
-
 // Grup untuk Kaprodi
 Route::middleware(['auth', 'kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [HomeController::class, 'dashboardKaprodi'])->name('dashboard.kaprodi');

@@ -17,14 +17,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersSeeder::class,
-            // DosenSeeder::class,
-            // MahasiswaSeeder::class,
-            // BagianAkademikSeeder::class,
-            // DekanSeeder::class,
-            // KetuaProdiSeeder::class,
+            DosenSeeder::class,
+            MahasiswaSeeder::class,
+            BagianAkademikSeeder::class,
+            DekanSeeder::class,
+            KetuaProdiSeeder::class,
             MatkulSeeder::class,
-            // RuanganSeeder::class,
-            // JadwalSeeder::class
+            RuanganSeeder::class,
+            JadwalSeeder::class
         ]);
     }
 }
