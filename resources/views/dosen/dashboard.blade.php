@@ -123,17 +123,17 @@
         </div>
 
         <!-- Container for Centered Buttons -->
-        <div class="col-span-3 flex justify-center space-x-4 mt-4">
-            <!-- Mahasiswa Perwalian-->
-            <a href="{{ route('Perwalian') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-              <i class="far fa-user text-3xl"></i>
-              <span class="text-2xl">Mahasiswa Perwalian</span>
-          </a>
+        <div class="col-span-3 flex justify-center space-x-3 mt-4">
+            <!-- Mahasiswa Perwalian -->
+            <a href="{{ route('Perwalian') }}" class="bg-yellow-500 text-white px-6 py-3 rounded-md flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="far fa-user text-2xl"></i>
+                <span class="text-lg">Mahasiswa Perwalian</span>
+            </a>
 
             <!-- Data IRS Mahasiswa Perwalian -->
-            <a href="{{ route('persetujuan_IRS') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-              <i class="far fa-check text-3xl"></i>
-              <span class="text-2xl">Persetujuan IRS</span>
+            <a href="{{ route('persetujuan_IRS') }}" class="bg-yellow-500 text-white px-6 py-3 rounded-md flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="far fa-check text-2xl"></i>
+                <span class="text-lg">Persetujuan IRS</span>
             </a>
         </div>
 

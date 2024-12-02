@@ -1,47 +1,82 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>
+    Login Page
+    </title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+    body {
+                background: linear-gradient(to right, #f6d365, #fda085);
+                background-size: cover;
+                font-family: 'Arial', sans-serif;
+            }
+            .bg-pattern {
+                background-image: url('bg_PASTI.PNG');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+    </style>
+</head>
+<body class="min-h-screen bg-pattern flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset('image/bg_PASTI.png') }}'); background-size: cover; background-repeat: no-repeat;">
+    <div class="bg-teal-700 bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div class="flex justify-center mb-6">
+            <img alt="University logo" class="h-24" height="120" src="{{ asset('image/LogoUNDIP.png') }}" width="80"/>
         </div>
+        <h1 class="text-3xl font-bold text-yellow-500 text-center mb-2">
+            PASTI
+        </h1>
+        <p class="text-white text-center mb-6">
+            Universitas Diponegoro
+        </p>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                <!-- Email Address -->
+                <div class="mb-4">
+                    <input id="email" type="email" name="email" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Email" required :value="old('email')" required autofocus autocomplete="username" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                <!-- Password -->
+                <div class="mb-4">
+                    <input id="password" class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Password" required
+                                    type="password"
+                                    name="password"
+                                    required autocomplete="current-password" />
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+                <!-- Remember Me -->
+                <div class="block mt-4">
+                    <label for="remember_me" class="inline-flex items-center">
+                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                        <span class="ms-2 text-sm text-white">{{ __('Remember me') }}</span>
+                    </label>
+                </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                <div class="flex items-center justify-end mt-4">
+                    @if (Route::has('password.request'))
+                        <a class="underline text-sm text-white hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                            {{ __('Forgot your password?') }}
+                        </a>
+                    @endif
+
+                    <x-primary-button class="ms-3">
+                        {{ __('Log in') }}
+                    </x-primary-button>
+                </div>
+            </form>
+        
+    </div>
+    
+</body>
+
