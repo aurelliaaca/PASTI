@@ -41,7 +41,7 @@
         <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">
             <i class="fas fa-user text-4xl text-teal-700"></i>
         </div>
-        <a href="{{ route('Dosen') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
+        <a href="{{ route('dashboard.dosen2') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full hover:bg-yellow-600 inline-block">
                 Dosen
         </a>
     </div>
@@ -49,7 +49,7 @@
         <div class="bg-white w-16 h-16 flex items-center justify-center rounded-full mb-2 mx-auto">  
             <i class="fas fa-user text-4xl text-teal-700"></i>
         </div>
-        <a href="{{ route('Dekan') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full inline-block hover:bg-yellow-600">
+        <a href="{{ route('dashboard.dekan2') }}" class="bg-yellow-500 text-white px-11 py-2 rounded-full inline-block hover:bg-yellow-600">
             Dekan
         </a>
     </div>

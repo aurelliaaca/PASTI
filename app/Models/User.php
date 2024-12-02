@@ -15,20 +15,17 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $table = 'user'; // Set the custom table name
+    protected $table = 'users'; // Set the custom table name
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    public $fillable = [
+    protected $fillable = [
         'name',
-        'username', //baru
-        'level', //baru
         'email',
         'password',
-        'role',
     ];
     public $timestamps = false;
 
