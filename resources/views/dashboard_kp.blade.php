@@ -107,23 +107,23 @@
 
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4 mt-4">
-            <!-- Penjadwalan Button -->
-            <a href="{{ route('kp_penjadwalan') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-                <i class="far fa-calendar text-3xl"></i>
-                <span class="text-2xl">Penjadwalan</span>
-            </a>
-
             <!-- Mata kuliah Button -->
-            <a href="{{ route('kp_matakuliah') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ route('Matakuliah') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="fa fa-book text-3xl"></i>
                 <span class="text-2xl">Mata Kuliah</span>
             </a>
 
-            <!-- Monitoring IRS Button -->
+            <!-- Penjadwalan Button -->
+            <a href="{{ route('Penjadwalan') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+                <i class="far fa-calendar text-3xl"></i>
+                <span class="text-2xl">Penjadwalan</span>
+            </a>
+
+            <!-- Monitoring IRS Button
             <a href="{{ route('dk_monitoring') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="fa fa-users text-3xl"></i>
                 <span class="text-2xl">Monitoring Jadwal Kuliah</span>
-            </a>
+            </a> -->
         </div>
         </div>
 

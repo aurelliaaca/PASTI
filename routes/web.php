@@ -98,10 +98,20 @@ Route::get('/kp_matakuliah', function () {
     return view('kp_matakuliah');
 })->name('kp_matakuliah');
 
-Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
+Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
 
 // Route untuk mendapatkan detail matakuliah
 Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
+
+Route::prefix('kp_matakuliah')->group(function () {
+    Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
+    Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');
+    Route::post('/check-duplicate', [KaprodiController::class, 'checkDuplicateMK'])->name('matakuliah.checkDuplicateMK');
+    Route::delete('/{kode}', [KaprodiController::class, 'destroyMK'])->name('matakuliah.destroy');
+    Route::put('/{kode}', [KaprodiController::class, 'updateMK'])->name('matakuliah.update');
+});
+
+
 
 // routes mahasiswa
 use App\Http\Controllers\MahasiswaController;
