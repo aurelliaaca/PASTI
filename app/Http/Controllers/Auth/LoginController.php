@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
+
+// INI UDAH GA KEPAKE YAAA PINDAH KE AUTHENTICATEDSESSIONCONTROLLER
 class LoginController extends Controller
 {
     public function showLoginForm()

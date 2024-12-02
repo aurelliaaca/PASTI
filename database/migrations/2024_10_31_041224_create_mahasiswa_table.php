@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('prodi', 50); //baru
             $table->string('dosenwali', 18)->index('nip_doswal');
 
-            $table->foreign('email')->references('email')->on('user')->ondelete('cascade');
+            $table->foreign('email')->references('email')->on('users')->ondelete('cascade');
             $table->foreign('dosenwali')->references('nip')->on('dosen')->ondelete('cascade');
         });
     }

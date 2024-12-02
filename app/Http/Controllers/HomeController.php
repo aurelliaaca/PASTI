@@ -6,24 +6,29 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    //
+    public function dashboardMahasiswa()
     {
-        // $this->middleware('auth');
+        return view('mahasiswa.dashboard_mhs');
+    }
+    
+    public function dashboardDosen()
+    {
+        return view('dosen.dashboard');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function dashboardAkademik()
     {
-        return view('user');
+        return view('akademik.dashboard');
+    }
+
+    public function dashboardDekan()
+    {
+        return view('dekan.dashboard');
+    }
+
+    public function dashboardKaprodi()
+    {
+        return view('kaprodi.dashboard');
     }
 }
-

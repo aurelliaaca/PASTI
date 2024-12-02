@@ -40,9 +40,12 @@
                         <i class="far fa-user mr-2"></i> Akun Saya
                     </a>
                     <!-- Logout -->
-                    <a href="{{ route('logout') }}" class="block py-2 px-4 text-sm hover:bg-teal-100 rounded-b-lg">
-                        <i class="far fa-sign-out text-xs mr-2"></i> Logout
-                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="block py-2 px-4 text-sm hover:bg-teal-100 rounded-b-lg">
+                            <i class="far fa-sign-out text-xs mr-2"></i> Logout
+                        </button>
+                    </form>                    
                 </div>
             </div>
         </header>
