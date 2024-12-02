@@ -19,25 +19,26 @@ class UsersSeeder extends Seeder
                 'name' => 'dhela',
                 'password' => 'dhela123',
                 'email' => 'dhela@students.com',
-                'role' => '7'
+                'role' => '1'
             ],
             [
                 'name' => 'arya',
                 'password' => 'arya123',
-                'email' => 'arya@students.com',
-                'role' => '6'
+                'email' => 'arya@dekan.com',
+                'role' => '4' // Dekan aja
             ],
             [
-                'name' => 'dekan',
-                'password' => 'dekan123',
-                'email' => 'dekan@students.com',
-                'role' => '4'
-            ]
-            // [
-            //     'password' => 'tera123',
-            //     'email' => 'tera@students.com',
-            //     'role' => '1'
-            // ],
+                'name' => 'ajisadda',
+                'password' => 'ajisadda123',
+                'email' => 'ajisadda@kaprodi.com',
+                'role' => '5' // Kaprodi aja
+            ],
+            [
+                'name' => 'tera',
+                'password' => 'tera123',
+                'email' => 'tera@students.com',
+                'role' => '1'
+            ],
             // [
             //     'password' => 'farid123',
             //     'email' => 'farid@students.com',
@@ -53,36 +54,42 @@ class UsersSeeder extends Seeder
             //     'email' => 'dzu@students.com',
             //     'role' => '1'
             // ],
-            // [
-            //     'password' => 'aurel123',
-            //     'email' => 'aurel@students.com',
-            //     'role' => '1'
-            // ],
-            // [
-            //     'password' => 'nabila123',
-            //     'email' => 'nabila@students.com',
-            //     'role' => '1'
-            // ],
-            // [
-            //     'password' => 'kamaruddin123',
-            //     'email' => 'kamaruddin@dosen.com',
-            //     'role' => '7' 
-            // ],
-            // [
-            //     'password' => 'dinal123',
-            //     'email' => 'dinal@bak.com',
-            //     'role' => '3'
-            // ],
-            // [
-            //     'password' => 'priyo123',
-            //     'email' => 'priyo@dosen.com',
-            //     'role' => '2'
-            // ],
-            // [
-            //     'password' => 'niken123',
-            //     'email' => 'niken@dosen.com',
-            //     'role' => '6'
-            // ],
+            [
+                'name' => 'aurel',
+                'password' => 'aurel123',
+                'email' => 'aurel@students.com',
+                'role' => '1'
+            ],
+            [
+                'name' => 'nabila',
+                'password' => 'nabila123',
+                'email' => 'nabila@students.com',
+                'role' => '1'
+            ],
+            [
+                'name' => 'kamaruddin',
+                'password' => 'kamaruddin123',
+                'email' => 'kamaruddin@dosen.com',
+                'role' => '7'  // Dekan + Dosen
+            ],
+            [
+                'name' => 'dinal',
+                'password' => 'dinal123',
+                'email' => 'dinal@bak.com',
+                'role' => '3' // akademik
+            ],
+            [
+                'name' => 'priyo',
+                'password' => 'priyo123',
+                'email' => 'priyo@dosen.com',
+                'role' => '2' // Dosen aja
+            ],
+            [
+                'name' => 'niken',
+                'password' => 'niken123',
+                'email' => 'niken@dosen.com',
+                'role' => '6' // Dekan + Dosen
+            ],
             // [
             //     'password' => 'azizah123',
             //     'email' => 'azizah@dosen.com',

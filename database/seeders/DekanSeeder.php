@@ -18,6 +18,7 @@ class DekanSeeder extends Seeder
                 'nip' => '197405161234567808',
                 'fakultas' => 'Fakultas Sains dan Matematika'
             ]
+
         ];
         DB::table('dekan')->insert($dekan);
     }
