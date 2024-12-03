@@ -86,8 +86,13 @@
                                     <td>{{ $ruangan->ruang }}</td>
                                     <td>{{ $ruangan->kapasitas }}</td>
                                     <td class="text-center py-2">
-                                        <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, {{ $ruangan->id }})">Hapus</button>
-                                        <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
+                                        @if($ruangan->plottingRuangs->where('status', 'telah disetujui')->isEmpty())
+                                            <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, {{ $ruangan->id }})">Hapus</button>
+                                            <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
+                                        @else
+                                            <button class="btn btn-secondary" disabled>Edit</button>
+                                            <button class="btn btn-secondary" disabled>Hapus</button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -6,12 +6,6 @@ use Illuminate\Http\Request;
 
 class RuanganController extends Controller
 {
-    public function showRuang()
-    {
-        // Ambil semua data jadwal
-        $ruangans = Ruangan::all();
-        return view('bak_ruangan', compact('ruangans')); // Kirim data ke view
-    }
 
     public function index()
     {

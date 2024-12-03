@@ -11,6 +11,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\PlottingRuangController;
+use App\Http\Controllers\PersetujuanRuanganController;
 
 // Pembaruan Login
 Route::get('/', function () {
@@ -42,7 +44,7 @@ Route::middleware(['auth', 'dekan'])->group(function () {
     Route::get('dekan/dashboard', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan');
     Route::get('dekan/dashboard2', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan2');
     Route::get('dosen/dashboard2', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen2');
-    Route::get('/dk_persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuanruangan');
+    Route::get('/dk_persetujuanruangan', [PersetujuanRuanganController::class, 'index'])->name('dk_persetujuanruangan');
     Route::get('/dk_persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('Persetujuan_Jadwal');
     Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
     // Route::get('/user1', function () {return view('user1');})->name('user1');
@@ -60,7 +62,7 @@ Route::middleware(['auth', 'dosen'])->group(function () {
 Route::middleware(['auth', 'akademik'])->group(function () {
     Route::get('akademik/dashboard', [HomeController::class, 'dashboardAkademik']);
     Route::get('/bak_jadwal', [BAKController::class, 'index'])->name('Jadwal');
-    Route::get('/bak_plottingruang', function () {return view('bak_plottingruang');})->name('bak_plottingruang'); 
+    Route::get('/bak_plottingruang', [PlottingRuangController::class, 'index'])->name('bak_plottingruang');
     Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
     Route::prefix('ruangan')->name('ruangan.')->group(function () {
         Route::post('/store', [RuanganController::class, 'store'])->name('store');
@@ -71,7 +73,9 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     // Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
     Route::resource('jadwal', BAKController::class);
     Route::resource('ruang', RuanganController::class);
-    
+    Route::get('/bak_plottingruang', [PlottingRuangController::class, 'index'])->name('bak_plottingruang');
+    Route::post('/plotting-ruang/approve/{id}', [PlottingRuangController::class, 'approve'])->name('plotting-ruang.approve');
+    Route::post('/plotting-ruang/store', [PlottingRuangController::class, 'store'])->name('plotting-ruang.store');
 });
 
 
@@ -208,7 +212,7 @@ Route::prefix('kp_matakuliah')->group(function () {
 // // Route untuk mendapatkan detail matakuliah
 // Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
 
-// // routes mahasiswa
+// routes mahasiswa
 // use App\Http\Controllers\MahasiswaController;
 // Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMK'])->name('Pengisian_IRS');
 // Route::get('/get-jadwal-mk/{kodeMk}', [MahasiswaController::class, 'getJadwalByMatkul']);
