@@ -28,7 +28,7 @@ return new class extends Migration
             // $table->foreign('koordinator')->references('nama')->on('dosen')->ondelete('cascade');
             // $table->foreign('pengampu1')->references('nama')->on('dosen')->ondelete('cascade');
             // $table->foreign('pengampu2')->references('nama')->on('dosen')->ondelete('cascade');
-            $table->foreign('ruangan')->references('ruang')->on('ruangan')->ondelete('cascade');
+            // $table->foreign('ruangan')->references('ruang')->on('ruangan')->ondelete('cascade');
         });
     }
 

@@ -14,10 +14,12 @@ return new class extends Migration
     {
         Schema::create('ruangan', function (Blueprint $table) {
             $table->id();
-            $table->string('gedung')->unique();
+            $table->string('gedung');
             $table->string('ruang')->unique();
             $table->integer('kapasitas');
             $table->timestamps();
+
+            $table->unique(['gedung', 'ruang']);
         });
     }
 

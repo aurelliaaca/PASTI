@@ -123,7 +123,6 @@
             </form>
         </div>
     </div>
-
 <script>
     // Fungsi untuk menambah form
     function addRow() {
@@ -141,88 +140,80 @@
     // Menangani pengiriman form untuk tambah atau edit ruangan
     // Fungsi untuk menangani pengiriman form
     $('#tambahForm').on('submit', function (e) {
-        e.preventDefault();  // Mencegah pengiriman form default
-        var formData = new FormData(this);
-        var actionUrl = $(this).attr('action'); // Dapatkan URL form action
+    e.preventDefault();  // Mencegah pengiriman form default
+    var formData = new FormData(this);
+    var actionUrl = $(this).attr('action'); // Dapatkan URL form action
 
-        $.ajax({
-            url: actionUrl,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    // Jika ini adalah update, kita perlu mengganti row yang ada
-                    if (response.is_edit) {
-                        var updatedRow = $('#ruangan_' + response.data.id);
-                        updatedRow.find('td:eq(0)').text(response.data.gedung);
-                        updatedRow.find('td:eq(1)').text(response.data.ruang);
-                        updatedRow.find('td:eq(2)').text(response.data.kapasitas);
-                    } else {
-                        // Jika ini adalah tambah ruangan, tambahkan baris baru
-                        var newRow = '<tr id="ruangan_' + response.data.id + '" class="odd:bg-teal-800/10 even:bg-white mb-2">' +
-                            '<td>' + response.data.gedung + '</td>' +
-                            '<td>' + response.data.ruang + '</td>' +
-                            '<td>' + response.data.kapasitas + '</td>' +
-                            '<td class="text-center py-2">' +
-                                '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, ' + response.data.id + ')">Hapus</button>' +
-                                '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>' +
-                            '</td>' +
-                        '</tr>';
-
-                        $('#ruanganTableBody').append(newRow); // Menambahkan baris baru ke dalam tabel
-                        closeTambahForm(); // Menutup form setelah data berhasil ditambahkan
-                    }
+    $.ajax({
+        url: actionUrl,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (response.success) {
+                // Jika ini adalah update, kita perlu mengganti row yang ada
+                if (response.is_edit) {
+                    var updatedRow = $('#ruangan_' + response.data.id);
+                    updatedRow.find('td:eq(0)').text(response.data.gedung);
+                    updatedRow.find('td:eq(1)').text(response.data.ruang);
+                    updatedRow.find('td:eq(2)').text(response.data.kapasitas);
                 } else {
-                    alert('Terjadi kesalahan, data gagal disimpan.');
+                    // Jika ini adalah tambah ruangan, tambahkan baris baru
+                    var newRow = '<tr id="ruangan_' + response.data.id + '" class="odd:bg-teal-800/10 even:bg-white mb-2">';
+                    newRow += '<td>' + response.data.gedung + '</td>';
+                    newRow += '<td>' + response.data.ruang + '</td>';
+                    newRow += '<td>' + response.data.kapasitas + '</td>';
+                    newRow += '<td class="text-center py-2">';
+                    newRow += '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg mr-1" onclick="deleteRow(this, ' + response.data.id + ')">Hapus</button>';
+                    newRow += '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>';
+                    newRow += '</td></tr>';
+
+                    $('#ruanganTableBody').append(newRow); // Menambahkan baris baru ke dalam tabel
                 }
-            },
-            error: function (error) {
-                console.log(error);
-                alert('Terjadi kesalahan saat menyimpan data.');
+                closeTambahForm(); // Menutup form setelah proses selesai
+            } else {
+                // Jika response.success adalah false (misalnya karena duplikasi), tampilkan alert
+                alert(response.message || 'Terjadi kesalahan, silakan coba lagi.');
             }
-        });
+        },
+        error: function (xhr, status, error) {
+            // Tangani error dari server
+            alert('Terjadi kesalahan, silakan coba lagi.');
+        }
     });
+});
 
     // Fungsi untuk mengedit baris data
     function editRow(button, id) {
-        var row = $(button).closest('tr');
-        var gedung = row.find('td:eq(0)').text();
-        var ruang = row.find('td:eq(1)').text();
-        var kapasitas = row.find('td:eq(2)').text();
+    var row = $(button).closest('tr');
+    var gedung = row.find('td:eq(0)').text();
+    var ruang = row.find('td:eq(1)').text();
+    var kapasitas = row.find('td:eq(2)').text();
 
-        // Menampilkan popup form untuk edit
-        document.getElementById('overlay').style.display = 'flex';
-        $('#tambahForm').trigger('reset'); // Reset form
-        $('#tambahForm').attr('action', '{{ route('ruangan.update', ':id') }}'.replace(':id', id)); // Set URL untuk update
-        $('#tambahForm').find('input[name="_method"]').remove(); // Remove method hidden field jika ada
-        $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Menambahkan metode PUT untuk update
-
-        // Mengisi form dengan data yang ada
-        $('#gedung').val(gedung);
-        $('#ruang').val(ruang);
-        $('#kapasitas').val(kapasitas);
-    }
+    // Menampilkan popup form untuk edit
+    $('#overlay').show();
+    $('#gedung').val(gedung);
+    $('#ruang').val(ruang);
+    $('#kapasitas').val(kapasitas);
+    $('#tambahForm').attr('action', '/ruang/' + id); // Update action URL untuk edit
+    $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Menambahkan metode PUT untuk update
+    document.getElementById('overlay').style.display = 'flex';
+}
 
     // Fungsi untuk menghapus baris
-    function deleteRow(button, id) {
-        var row = $(button).closest('tr');
-
-        if (confirm('Apakah Anda yakin ingin menghapus ruangan ini?')) {
+    function deleteRow(btn, id) {
+        if (confirm('Apakah Anda yakin ingin menghapus ruang ini?')) {
             $.ajax({
-                url: '{{ route('ruangan.destroy', ':id') }}'.replace(':id', id),
+                url: '/ruang/' + id,
                 type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
                 success: function (response) {
                     if (response.success) {
-                        row.remove(); // Menghapus baris jika berhasil
-                    } else {
-                        alert('Terjadi kesalahan, data gagal dihapus.');
+                        $(btn).closest('tr').remove();
                     }
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert('Terjadi kesalahan saat menghapus data.');
                 }
             });
         }

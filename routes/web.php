@@ -68,6 +68,8 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     });
     // Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
     Route::resource('jadwal', BAKController::class);
+    Route::resource('ruang', RuanganController::class);
+    
 });
 
 
