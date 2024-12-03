@@ -16,6 +16,8 @@ class Jadwal_mata_kuliah extends Model
 
     protected $fillable = [
         'jadwalid',
+        // nambahin kode prodi buat tabel persetujuan jadwal di dekan
+        'kodeprodi',
         'jam_mulai',
         'ruangan',
         'kelas',
@@ -27,9 +29,15 @@ class Jadwal_mata_kuliah extends Model
         'pengampu2',
     ];
 
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class, 'kodeprodi', 'kodeprodi');
+    }
+
+    // Relasi dengan Matkul
     public function matkul()
     {
         return $this->belongsTo(Matkul::class, 'kodemk', 'kode');
-    }    
-
+    }
 }
+

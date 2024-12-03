@@ -21,4 +21,13 @@ class Dosen extends Model
         'email',
         'alamat'
     ];
+
+    public function dekan()
+    {
+        return $this->belongsTo(Dekan::class, 'nip', 'nip');
+    }
+    public function kaprodi()
+    {
+        return $this->belongsTo(KetuaProdi::class, 'nip', 'nip');
+    }
 }

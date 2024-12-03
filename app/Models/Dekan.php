@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Dekan extends Model
@@ -16,4 +16,9 @@ class Dekan extends Model
         'nip',
         'fakultas',
     ];
+
+    public function dosen()
+    {
+        return $this->hasOne(Dosen::class, 'nip', 'nip');
+    }
 }

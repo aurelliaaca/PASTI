@@ -2,6 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matkul;
+use Illuminate\Support\Facades\Auth;  // Pastikan ini ada
+use App\Models\Mahasiswa;
+use App\Models\User;
 use App\Models\Jadwal_mata_kuliah;
 use Illuminate\Http\Request;
 
@@ -15,12 +18,16 @@ class MahasiswaController extends Controller
 
     public function listMK(Request $request)
     {
+        $user = Auth::user();
+
         // Mengambil seluruh data jadwal dan mata kuliah
+        $mahasiswas = Mahasiswa::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
+        $users = User::all();
         $jadwalList = Jadwal_mata_kuliah::all();
         $matkul = Matkul::all();  // Daftar mata kuliah
 
         // Mengirimkan data jadwal dan mata kuliah ke view
-        return view('mhs_pengisianirspage', compact('jadwalList', 'matkul'));
+        return view('mhs_pengisianirspage', compact('jadwalList', 'matkul', 'mahasiswas'));
     }
 
     // Mendapatkan jadwal berdasarkan kode mata kuliah yang dipilih

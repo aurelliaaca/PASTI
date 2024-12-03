@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
+use App\Models\Prodi;
+use App\Models\Jadwal_mata_kuliah;
+use Illuminate\Http\Request;
 class DekanController extends Controller
 {
     public function showPersetujuan()
@@ -13,6 +15,8 @@ class DekanController extends Controller
 
     public function showJadwal()
     {
-        return view('dk_persetujuanjadwal');
+        $prodis = Prodi::all();
+        $jadwals = Jadwal_mata_kuliah::with(['prodi', 'matkul'])->get();
+            return view('dk_persetujuanjadwal', compact('prodis','jadwals')); // Kirim data ke view
     }
 }

@@ -36,6 +36,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- Left Section (Profile) -->
+        @foreach ($mahasiswas as $mhs)
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
             <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
@@ -45,27 +46,27 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NAMA</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full text-justify">Ahlis Dinal Bahtiar</p>
+                    <p class="w-full text-justify">{{ $mhs->nama }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NIM</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">24060122130088</p>                                                                                                                                     
+                    <p class="w-full">{{ $mhs->nim }}</p>                                                                                                                                     
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">EMAIL</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">dinal@students.com</p>
+                    <p class="w-full">{{ $mhs->email }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NO. TELP</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">085737843467</p>
+                    <p class="w-full">{{ $mhs->telp }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">PRODI</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">S1 Informatika</p>
+                    <p class="w-full">{{ $mhs->prodi }}</p>
                 </div>
                 <div class="col-span-1 bg-white p-[0.5px] rounded-lg">
                 </div>
@@ -83,6 +84,8 @@
             </div>
             </div>
         </div>
+        @endforeach
+
         
         <!-- Right Section (Notifications) -->
         <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">

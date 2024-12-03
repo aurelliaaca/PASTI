@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Ruangan;
-use App\Models\Prodi;
 use Illuminate\Http\Request;
 
 class RuanganController extends Controller
@@ -11,15 +10,13 @@ class RuanganController extends Controller
     {
         // Ambil semua data jadwal
         $ruangans = Ruangan::all();
-        $prodis = Prodi::all();
-        return view('bak_ruangan', compact('ruangans', 'prodis')); // Kirim data ke view
+        return view('bak_ruangan', compact('ruangans')); // Kirim data ke view
     }
 
     public function index()
     {
         $ruangans = Ruangan::all();  // Ambil semua data jadwal
-        $prodis = Prodi::all();
-        return view('bak_ruangan', compact('ruangans', 'prodis')); // Kirim data ke view
+        return view('bak_ruangan', compact('ruangans')); // Kirim data ke view
     }
 
     // Menambahkan Ruangan

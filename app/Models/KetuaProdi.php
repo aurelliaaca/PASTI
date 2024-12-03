@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KetuaProdi extends Model
@@ -16,4 +17,8 @@ class KetuaProdi extends Model
         'nip',
         'prodi',
     ];
+    public function dosen()
+    {
+        return $this->hasOne(Dosen::class, 'nip', 'nip');
+    }
 }

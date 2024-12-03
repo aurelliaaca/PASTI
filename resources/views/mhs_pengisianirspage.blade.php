@@ -36,6 +36,7 @@
     <!-- Main Content Section -->
     <div class="flex justify-center grid grid-cols-8 gap-4 w-full">
         <!-- Left Section (Profile) -->
+        @foreach ($mahasiswas as $mhs)
         <div class="col-span-2 bg-teal-800/0">
         <div class="col-span-2 bg-teal-800/80 text-white p-4 rounded-lg flex flex-col space-y-4">
             <!-- Existing profile information remains the same -->
@@ -44,12 +45,12 @@
                 <div class="flex">
                     <p class="text-sm align-top w-[100px] font-semibold">NAMA</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle text-justify w-full">Muhammad Faiq As-sajad</p>
+                    <p class="text-sm align-middle text-justify w-full">{{ $mhs->nama }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-sm align-top w-[100px] font-semibold">NIM</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">14050122120168</p>
+                    <p class="text-sm align-middle w-full">{{ $mhs->nim }}</p>
                 </div>
                 </div>
             </div>
@@ -114,6 +115,8 @@
             </div>
         </div>
         </div>
+        @endforeach
+
         
     
         <!-- Tabel Jadwal -->

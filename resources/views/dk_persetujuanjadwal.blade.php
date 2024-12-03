@@ -25,84 +25,74 @@
         <div id="content-jadwal" class="p-4">
             <!-- Header dan Tombol -->
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-xl font-semibold text-teal-800 mb-0">JADWAL</h1>
-                <div class="flex items-center">
-                    <button class="btn bg-teal-500 btn-icon-text p-2 rounded-lg" onclick="addRow()">
-                        <i class="fa fa-check mr-1 ml-1 text-white"></i>
-                        <strong class="text-white">Setujui Semua</strong>
-                    </button>
-                </div>
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">PERSETUJUAN ALOKASI JADWAL</h1>
             </div>
 
             <!-- Tabel -->
-            <div class="border rounded-md p-2">
-                <div class="table-responsive">
-                    <table class="table table-striped w-full text-teal-800 font-black">
+            <!-- Tabel -->
+            <div class="border rounded-md pl-2 pr-2">
+                <div class="table-container">
+                    <table class="table w-full text-teal-800 font-teal-800 flex items-center font-semibold">
                         <tbody>
-                            <tr>
-                                <td class="pb-2 pt-0">
-                                    <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="0">+</button>
-                                    INFORMATIKA
-                                </td>
-                            </tr>
-                            <tr class="course-table" id="courses-0" style="display: none;">
-                                <td colspan="4">
-                                    <div class="border rounded-md">
-                                        <div class="table-responsive p-2 table-striped">
-                                            <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="font-normal" style="width: 5%;">Semester</th>
-                                                        <th class="font-normal" style="width: 20%;">Nama Mata Kuliah</th>
-                                                        <th class="font-normal" style="width: 10%;">Kelas</th>
-                                                        <th class="font-normal" style="width: 10%;">SKS</th>
-                                                        <th class="font-normal" style="width: 10%;">Hari</th>
-                                                        <th class="font-normal" style="width: 10%;">Jam</th>
-                                                        <th class="font-normal items-center" style="width: 5%;">Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="jadwalTableBody">
-                                                </tbody>
-                                            </table>
-                                        </div>
+                        @foreach ($prodis as $prodi)
+                        <tr class="border-b">
+                            <td class="pb-2 pt-2">
+                                <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-2" data-id="{{ $prodi->kodeprodi }}" onclick="toggleApproveButton(this)">+</button>
+                                {{ $prodi->namaprodi }} <!-- Menampilkan nama Prodi -->
+                            </td>
+                            <td class="pb-2 pt-2 text-right button-container">
+                                <button class="btn bg-teal-500 btn-icon-text p-2 rounded-lg" id="approveBtn-{{ $prodi->kodeprodi }}" style="display: none;" onclick="approveAll({{ $prodi->kodeprodi }})">
+                                    <i class="fa fa-check mr-1 ml-1 text-white"></i>
+                                    <strong class="text-white">Setujui Semua</strong>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Menampilkan Jadwal Mata Kuliah berdasarkan kodeprodi -->
+                        <tr class="course-table" id="courses-{{ $prodi->kodeprodi }}" style="display: none;">
+                            <td colspan="4">
+                            <div class="py-2">
+                                <div class="border rounded-md">
+                                    <div class="table-responsive table-striped">
+                                        <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th class="font-semibold" style="width: 5%;">Semester</th>
+                                                    <th class="font-semibold" style="width: 20%;">Nama Mata Kuliah</th>
+                                                    <th class="font-semibold" style="width: 5%;">Kelas</th>
+                                                    <th class="font-semibold" style="width: 5%;">SKS</th>
+                                                    <th class="font-semibold" style="width: 5%;">Hari</th>
+                                                    <th class="font-semibold" style="width: 10%;">Jam</th>
+                                                    <th class="font-semibold" style="width: 15%;">Dosen</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($jadwals->where('kodeprodi', $prodi->kodeprodi) as $jadwal)
+                                                <tr id="jadwal_{{ $jadwal->jadwalid }}" class="odd:bg-teal-800/10 even:bg-white">
+                                                    <td class="py-3 font-normal">{{ $jadwal->matkul->semester }}</td>
+                                                    <td class="py-3 font-normal">{{ $jadwal->matkul->nama }}</td>
+                                                    <td class="py-3 font-normal">{{ $jadwal->kelas }}</td>
+                                                    <td class="py-3 font-normal">{{ $jadwal->matkul->sks }} SKS</td>
+                                                    <td class="py-3 font-normal">{{ $jadwal->hari }}</td>
+                                                    <td class="py-3 font-normal">{{ $jadwal->jam_mulai }}</td>
+                                                    <td class="py-3 font-normal pl-2">{{ $jadwal->pengampu1 }} / {{ $jadwal->pengampu2 }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pb-2 pt-2">
-                                    <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="1">+</button>
-                                    BIOLOGI
-                                </td>
-                            </tr>
-                            <tr class="course-table" id="courses-1" style="display: none;">
-                                <td colspan="4">
-                                    <div class="border rounded-md">
-                                        <div class="table-responsive p-2 table-striped">
-                                            <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="font-normal" style="width: 5%;">Semester</th>
-                                                        <th class="font-normal" style="width: 20%;">Nama Mata Kuliah</th>
-                                                        <th class="font-normal" style="width: 10%;">Kelas</th>
-                                                        <th class="font-normal" style="width: 10%;">SKS</th>
-                                                        <th class="font-normal" style="width: 10%;">Hari</th>
-                                                        <th class="font-normal" style="width: 10%;">Jam</th>
-                                                        <th class="font-normal items-center" style="width: 5%;">Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="jadwalTableBody">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
+                            </td>
+                        </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const buttons = document.querySelectorAll('.toggle-button');
@@ -111,18 +101,28 @@
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
                 const table = document.getElementById(`courses-${id}`);
+                const approveButton = document.getElementById(`approveBtn-${id}`);
 
+                // Toggle visibility of course table and approve button
                 if (table.style.display === 'none' || table.style.display === '') {
                     table.style.display = 'table-row';
+                    approveButton.style.display = 'inline-block';
                     this.textContent = '-';
                 } else {
                     table.style.display = 'none';
+                    approveButton.style.display = 'none';
                     this.textContent = '+';
                 }
             });
         });
     });
+
+    function approveAll(id) {
+        alert(`Semua jadwal di ${id === 0 ? 'INFORMATIKA' : 'BIOLOGI'} telah disetujui!`);
+        // Lakukan aksi lain yang perlu dilakukan ketika tombol Setujui Semua diklik
+    }
 </script>
+
 </body>
 </html>
 @endsection

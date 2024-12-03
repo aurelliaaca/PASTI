@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('jadwal_mata_kuliah', function (Blueprint $table) {
             $table->string('jadwalid', 20)->primary();
+        // nambahin kode prodi buat tabel persetujuan jadwal di dekan
+            $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
             $table->time('jam_selesai')->nullable();
             $table->string('ruangan', 5)->index('jadwal_ruangan');

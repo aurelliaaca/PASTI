@@ -25,6 +25,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- Left Section (Profile) -->
+        @foreach ($akademiks as $bak)
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
             <div class="flex flex-col items-center">
             <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
@@ -34,32 +35,34 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NAMA</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full text-justify">Benny, S.Kom</p>
+                    <p class="w-full text-justify">{{ $bak->nama }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NIP</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">19910986543</p>                                                                                                                                     
+                    <p class="w-full">{{ $bak->nip }}</p>                                                                                                                                     
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">EMAIL</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">benny@staff.undip.ac.id</p>
+                    <p class="w-full">{{ $bak->email }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">NO. TELP</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">085778654346</p>
+                    <p class="w-full">{{ $bak->telp }}</p>
                 </div>
                 <div class="flex">
                     <p class="w-[140px] font-semibold">PRODI</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">S1 Informatika</p>
+                    <p class="w-full">{{ $bak->prodi }}</p>
                 </div>
                 </div>
             </div>
             </div>
         </div>
+        @endforeach
+
         
         <!-- Right Section (Notifications) -->
         <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">

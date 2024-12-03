@@ -25,46 +25,52 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           
           <!-- Left Section (Profile) -->
-          <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
-              <div class="flex flex-col items-center">
-              <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
-              <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
-              <div class="text-left w-full">
-                  <div class="space-y-2">
-                  <div class="flex">
-                      <p class="w-24 font-semibold">NAMA</p>
-                      <p>: Prof. Dr. Niken Wayuhni, S.Si., M.T.</p>
-                  </div>
-                  <div class="flex">
-                      <p class="w-24 font-semibold">NIP</p>
-                      <p>: 199108120015</p>
-                  </div>
-                  <div class="flex">
-                      <p class="w-24 font-semibold">EMAIL</p>
-                      <p>: niken@lecture.undip.ac.id</p>
-                  </div>
-                  <div class="flex">
-                      <p class="w-24 font-semibold">NO. TELP</p>
-                      <p>: 085221267834</p>
-                  </div>
-                  <div class="flex">
-                      <p class="w-24 font-semibold">FAKULTAS</p>
-                      <p>: Sains dan Matematika</p>
-                  </div>
-                  </div>
-              </div>
-              </div>
-          </div>
+          @foreach ($dekans as $dekan)
+        <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
+            <div class="flex flex-col items-center">
+            <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
+            <h2 class="text-center text-lg font-semibold mb-2">Profil</h2>
+            <div class="text-left w-full">
+                <div class="space-y-2">
+                <div class="flex">
+                    <p class="w-[140px] font-semibold">NAMA</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full text-justify">{{  $dekan->dosen->nama }}</p>
+                </div>
+                <div class="flex">
+                    <p class="w-[140px] font-semibold">NIP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $dekan->nip }}</p>                                                                                                                                     
+                </div>
+                <div class="flex">
+                    <p class="w-[140px] font-semibold">EMAIL</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{  $dekan->dosen->email }}</p>
+                </div>
+                <div class="flex">
+                    <p class="w-[140px] font-semibold">NO. TELP</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{  $dekan->dosen->telp }}</p>
+                </div>
+                <div class="flex">
+                    <p class="w-[140px] font-semibold">FAKULTAS</p>
+                    <p class="w-[20px] font-semibold">:</p>
+                    <p class="w-full">{{ $dekan->fakultas }}</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        @endforeach
           
           <!-- Right Section (Notifications) -->
           <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                 <!-- pie chart -->
                   <div class="col-span-1 text-white rounded-lg">
-                      <h2 class="text-center font-semibold text-xl items-center">Persetujuan Jadwal Kuliah</h2>
+                      <h2 class="text-center font-semibold text-xl items-center">Persetujuan Alokasi Jadwal</h2>
                       <canvas id="myPieChart" class="p-4"></canvas>
                   </div>
-
                   <!-- notification -->
               <div class="col-span-2 text-white p-0 rounded-lg">
                   <div class="space-y-4">
@@ -142,7 +148,7 @@
               <!-- Data Mahasiswa Button -->
               <a href="{{ route('Persetujuan_Jadwal') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                   <i class="fa fa-book text-3xl"></i>
-                  <span class="text-2xl">Persetujuan Jadwal Kuliah</span>
+                  <span class="text-2xl">Persetujuan Alokasi Jadwal</span>
               </a>
           </div>
 

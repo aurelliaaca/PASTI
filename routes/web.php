@@ -9,6 +9,8 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ProfileController;
+
 
 // Pembaruan Login
 Route::get('/', function () {
@@ -41,7 +43,7 @@ Route::middleware(['auth', 'dekan'])->group(function () {
     Route::get('dekan/dashboard2', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan2');
     Route::get('dosen/dashboard2', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen2');
     Route::get('/dk_persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('dk_persetujuanruangan');
-    Route::get('/dk_monitoring', [DekanController::class, 'showMonitoring'])->name('dk_monitoring');
+    Route::get('/dk_persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('Persetujuan_Jadwal');
     Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
     // Route::get('/user1', function () {return view('user1');})->name('user1');
 });

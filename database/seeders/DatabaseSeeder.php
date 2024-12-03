@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             KetuaProdiSeeder::class,
             MatkulSeeder::class,
             RuanganSeeder::class,
+            // nambahin prodi buat tabel persetujuan jadwal di dekan
+            ProdiSeeder::class,
             JadwalSeeder::class
         ]);
     }
