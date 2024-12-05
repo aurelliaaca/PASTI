@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('telp', 15);
             $table->string('email', 50);
             $table->string('alamat', 100);
+            $table->string('prodi', 50);
 
             $table->foreign('email')->references('email')->on('users')->ondelete('cascade');
         });

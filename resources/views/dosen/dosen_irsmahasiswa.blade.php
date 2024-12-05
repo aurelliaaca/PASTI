@@ -97,21 +97,25 @@
       </div>
     </div>
 
-    <form action="{{ route('setujuiIRS') }}" method="POST" class="inline">
-      @csrf
-      <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
-      <button type="submit" class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
-          <span class="text-base font-semibold italic">SETUJUI</span>
-      </button>
-    </form>
+    <!-- Tombol setujui dan tolak -->
+    <div class="grid grid-cols-2 w-full gap-4 mt-4">
+      <!-- Tombol Tolak -->
+      <form action="{{ route('tolakIRS') }}" method="POST" class="w-full">
+          @csrf
+          <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+          <button type="submit" class="bg-white text-amber-400 p-3 rounded-lg flex justify-center items-center w-full">
+              <span class="text-base font-semibold italic">TOLAK</span>
+          </button>
+      </form>
 
-    <div class="grid grid-cols-2 w-full flex-grow space-x-2 mt-4">
-      <button class="bg-white text-teal-700 p-2 rounded-lg items-center space-x-2">
-        <span class="text-base font-semibold italic">TOLAK</span>
-      </button>
-      <!-- <button class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
-        <span class="text-base font-semibold italic">SETUJUI</span>
-      </button> -->
+      <!-- Tombol Setujui -->
+      <form action="{{ route('setujuiIRS') }}" method="POST" class="w-full">
+          @csrf
+          <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+          <button type="submit" class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full">
+              <span class="text-base font-semibold italic">SETUJUI</span>
+          </button>
+      </form>
     </div>
   </div>
 </div>
@@ -168,18 +172,55 @@
     <div class="bg-white text-teal-900 p-4 rounded-lg">
       <div class="space-y-4">
         <h2 class="text-xl font-bold text-teal-800">Kartu Hasil Studi</h2>
-        <!-- <div class="grid grid-cols-1 gap-4">
-          <div class="border p-4 rounded-lg">
-            <h3 class="font-semibold">Mata Kuliah yang Diambil</h3>
-            <ul class="mt-2 space-y-2">
-              <li>Pengembangan Berbasis Platform - 3 SKS</li>
-              <li>Komputasi tersebar Paralel - 3 SKS</li>
-              <li>Sistem Informasi - 3 SKS</li>
-            </ul>
-          </div>
-        </div> -->
+      </div>
+
+      <!-- Tabel -->
+      <div class="border rounded-md p-2">
+        <div class="table-responsive">
+          <table class="table table-striped w-full text-teal-800 font-black flex items-center">
+            <tbody>
+              <!-- ikon drop -->
+              <tr>
+                <td class="pb-2 pt-0">
+                  <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-1">+</button>
+                  Semester 1
+                </td>
+              </tr>
+
+              <tr class="khs-table" id="khs-1" style="display: none;">
+                <td colspan="4">
+                  <div class="border rounded-md">
+                    <div class="table-responsive p-2 table-striped">
+                      <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                          <thead>
+                              <tr>
+                                <th class="font-normal" style="width: 20%;">Mata Kuliah</th>
+                                <th class="font-normal" style="width: 20%;">Status</th>
+                                <th class="font-normal" style="width: 20%;">SKS</th>
+                                <th class="font-normal" style="width: 20%;">Nilai</th>
+                                <th class="font-normal" style="width: 20%;">Bobot</th>
+                              </tr>
+                          </thead>
+                          <tbody id="KHSTableBody-1">
+                              <tr>
+                                  <td>Statistika</td>
+                                  <td>Baru</td>
+                                  <td>2</td>
+                                  <td>A</td>
+                                  <td>4</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 </div>
@@ -225,6 +266,27 @@
     const defaultButton = document.querySelector('.a[data-filter=".IRS"]');
     defaultButton.classList.add('bg-amber-400');
     toggleContent('IRS');
+  });
+
+  // Buat tabel dropdown
+  document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.toggle-button');
+
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', function () {
+            // Cari tabel KHS yang terkait dengan tombol berdasarkan urutan tombol
+            const khsTable = document.querySelectorAll('.khs-table')[index];
+
+            // Toggle visibility dari tabel
+            if (khsTable.style.display === 'none' || khsTable.style.display === '') {
+                khsTable.style.display = 'table-row'; // Tampilkan tabel
+                this.textContent = '-'; // Ubah tombol menjadi tanda "-"
+            } else {
+                khsTable.style.display = 'none'; // Sembunyikan tabel
+                this.textContent = '+'; // Ubah tombol menjadi tanda "+"
+            }
+        });
+    });
   });
 </script>
 
