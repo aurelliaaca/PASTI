@@ -22,7 +22,7 @@ class DosenController extends Controller
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
         $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen.dosen_perwalian', compact('mahasiswaperwalian'));
+        return view('dosen.perwalian', compact('mahasiswaperwalian'));
     }
 
     public function showPersetujuanIRS()
@@ -30,7 +30,8 @@ class DosenController extends Controller
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
         $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen.dosen_persetujuan', compact('mahasiswaperwalian'));
+        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
+
     }
 
     public function showIRSMahasiswa(Request $request)
@@ -50,7 +51,8 @@ class DosenController extends Controller
         // $jumlahsks = 
 
         // Tampilkan halaman IRS dengan data mahasiswa
-        return view('dosen.dosen_irsmahasiswa', compact('mahasiswa'));
+        return view('dosen.irsmahasiswa', compact('mahasiswa'));
+
     }
 
     public function setujuiIRS(Request $request)
@@ -105,4 +107,3 @@ class DosenController extends Controller
     
 
 }
-

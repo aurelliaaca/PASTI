@@ -200,9 +200,8 @@ Route::get('/profile', function() {
 
 // Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
 
-// Route untuk mendapatkan detail matakuliah
+// // Route untuk mendapatkan detail matakuliah
 // Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
-
 // Route::prefix('kp_matakuliah')->group(function () {
 //     Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
 //     Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');

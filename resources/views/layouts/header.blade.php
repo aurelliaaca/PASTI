@@ -18,7 +18,6 @@
                 </a>
             </div>
             <div class="flex items-center">
-            <!-- Page Route Display -->
 
             <!-- Profile Icon with Dropdown -->
             <div class="relative">
