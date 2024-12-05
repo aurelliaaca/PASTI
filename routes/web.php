@@ -72,7 +72,7 @@ Route::middleware(['auth', 'akademik'])->group(function () {
         Route::post('/store', [RuanganController::class, 'store'])->name('store');
         Route::get('/', [RuanganController::class, 'index'])->name('index');
         Route::delete('/{id}', [RuanganController::class, 'destroy'])->name('destroy');
-        Route::post('/setujuiSemua', [RuanganController::class, 'setujuiSemua'])->name('setujuiSemua');
+        
     });
     // Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
     Route::resource('jadwal', BAKController::class);
@@ -80,6 +80,8 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     Route::get('/bak_plottingruang', [PlottingRuangController::class, 'index'])->name('bak_plottingruang');
     Route::post('/plotting-ruang/approve/{id}', [PlottingRuangController::class, 'approve'])->name('plotting-ruang.approve');
     Route::post('/plotting-ruang/store', [PlottingRuangController::class, 'store'])->name('plotting-ruang.store');
+    Route::get('/plotting-ruang/data', [PlottingRuangController::class, 'getData'])->name('plotting-ruang.data');
+
 });
 
 
