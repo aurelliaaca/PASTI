@@ -18,7 +18,6 @@
                 </a>
             </div>
             <div class="flex items-center">
-            
 
             <!-- Profile Icon with Dropdown -->
             <div class="relative">

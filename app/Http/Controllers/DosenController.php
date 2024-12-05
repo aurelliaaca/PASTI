@@ -31,6 +31,7 @@ class DosenController extends Controller
         $dosenwali = Dosen::where('email',$useremail)->first();
         $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
         return view('dosen.persetujuan', compact('mahasiswaperwalian'));
+
     }
 
     public function showIRSMahasiswa(Request $request)
@@ -51,6 +52,7 @@ class DosenController extends Controller
 
         // Tampilkan halaman IRS dengan data mahasiswa
         return view('dosen.irsmahasiswa', compact('mahasiswa'));
+
     }
 
     public function setujuiIRS(Request $request)

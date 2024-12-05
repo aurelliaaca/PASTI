@@ -56,5 +56,15 @@ class PlottingRuangController extends Controller
             return redirect()->route('bak_plottingruang')->with('error', 'Terjadi kesalahan saat menyetujui ruangan.');
         }
     }
+
+    public function getData()
+    {
+        try {
+            $plottingRuang = PlottingRuang::with('ruangan')->get();
+            return response()->json($plottingRuang);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal memuat data.']);
+        }
+    }
 }
 
