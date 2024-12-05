@@ -23,15 +23,27 @@
 <body class="min-h-screen">
     <div class="bg-white shadow-lg rounded-lg">
         <div id="content-jadwal" class="p-4">
+            <!-- Alert Sukses -->
+            <div id="success-alert" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">Sukses!</strong>
+                <span class="block sm:inline">Semua ruangan untuk program studi tersebut telah disetujui.</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" onclick="this.parentElement.parentElement.classList.add('hidden')">
+                        <title>Close</title>
+                        <path d="M14.348 5.652a1 1 0 0 0-1.414 0L10 8.586 7.066 5.652a1 1 0 1 0-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 1 0 1.414 1.414L10 11.414l2.934 2.934a1 1 0 0 0 1.414-1.414L11.414 10l2.934-2.934a1 1 0 0 0 0-1.414z"/>
+                    </svg>
+                </span>
+            </div>
+
             <!-- Header dan Tombol -->
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-xl font-semibold text-teal-800 mb-0">PERSETUJUAN JADWAL MATA KULIAH</h1>
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">PERSETUJUAN RUANGAN</h1>
             </div>
 
             <!-- Tabel -->
             <div class="border rounded-md p-2">
                 <div class="table-responsive">
-                    <table class="table table-striped w-full text-teal-800 font-black flex items-center">
+                    <table class="table table-striped w-full text-teal-800 font-black">
                         <tbody>
                         @foreach($programStudiList as $index => $programStudi)
                         <tr>
@@ -40,9 +52,9 @@
                                 {{ $programStudi }}
                             </td>
                             <td class="pb-2 pt-0 text-right">
-                                <!-- Tombol Setujui Semua disembunyikan oleh default -->
-                                <button class="btn bg-teal-500 btn-icon-text p-2 rounded-lg" id="approveBtn-{{ $index }}" style="display: none;" onclick="approveAll({{ $index }})">
-                                    <i class="fa fa-check mr-1 ml-1 text-white"></i>
+                                <!-- Tombol Setujui Semua -->
+                                <button class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg" id="approveBtn-{{ $index }}" style="display: none;" onclick="approveAll('{{ $programStudi }}')">
+                                    <i class="fa fa-check text-white"></i>
                                     <strong class="text-white">Setujui Semua</strong>
                                 </button>
                             </td>
@@ -50,32 +62,27 @@
                         <tr class="ruangan-table" id="ruangan-{{ $index }}" style="display: none;">
                             <td colspan="4">
                                 <div class="border rounded-md">
-                                    <div class="table-responsive p-2 table-striped">
-                                        <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
-                                            <thead>
+                                    <div class="table-responsive p-2">
+                                        <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse border border-gray-300">
+                                            <thead class="bg-gray-100">
                                                 <tr>
-                                                    <th class="font-normal" style="width: 20%;">Gedung</th>
-                                                    <th class="font-normal" style="width: 20%;">Ruang</th>
-                                                    <th class="font-normal" style="width: 20%;">Kapasitas</th>
-                                                    <th class="font-normal" style="width: 20%;">Status</th>
+                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Gedung</th>
+                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Ruang</th>
+                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Kapasitas</th>
+                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="ruanganTableBody-{{ $index }}">
                                                 @foreach($plottingRuangData[$programStudi] as $plotting)
-                                                <tr>
-                                                    <td>{{ $plotting->ruangan->gedung }}</td>
-                                                    <td>{{ $plotting->ruangan->ruang }}</td>
-                                                    <td>{{ $plotting->ruangan->kapasitas }}</td>
-                                                    <td>
-                                                        <span class="badge text-white {{ $plotting->status == 'belum disetujui' ? 'bg-danger' : 'bg-success' }}">
+                                                <tr class="border-b border-gray-200">
+                                                    <td class="border border-gray-300">{{ $plotting->ruangan->gedung }}</td>
+                                                    <td class="border border-gray-300">{{ $plotting->ruangan->ruang }}</td>
+                                                    <td class="border border-gray-300">{{ $plotting->ruangan->kapasitas }}</td>
+                                                    <td class="text-center py-2 border border-gray-300">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                            {{ $plotting->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
                                                             {{ ucfirst($plotting->status) }}
                                                         </span>
-                                                        @if($plotting->status == 'belum disetujui')
-                                                            <form action="{{ route('plotting-ruang.approve', $plotting->id) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-success btn-sm">Setujui</button>
-                                                            </form>
-                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -117,28 +124,52 @@
         });
     });
 
-    function approveAll(id) {
-        const programStudi = ['INFORMATIKA', 'BIOLOGI', 'MATEMATIKA', 'FISIKA', 'KIMIA', 'BIOTEKNOLOGI', 'STATISTIKA'];
-        const url = `/approve-ruangan/${id}`; // URL untuk permintaan AJAX
+    function showApprovalAlert(message, type) {
+        const alertBox = $('#approval-alert');
+        const alertMessage = $('#approval-alert-message');
+        
+        alertMessage.text(message);
+        
+        // Set warna berdasarkan tipe alert
+        if (type === 'success') {
+            alertBox.removeClass('bg-red-100 border-red-400 text-red-700')
+                    .addClass('bg-green-100 border-green-400 text-green-700');
+        } else if (type === 'danger') {
+            alertBox.removeClass('bg-green-100 border-green-400 text-green-700')
+                    .addClass('bg-red-100 border-red-400 text-red-700');
+        }
+        
+        alertBox.removeClass('hidden'); // Menampilkan alert
+        setTimeout(() => alertBox.addClass('hidden'), 3000); // Menyembunyikan alert setelah 3 detik
+    }
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}' // Kirim token CSRF untuk keamanan
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert('Sukses: ' + response.message);
-                    // Update tampilan jika perlu, misalnya ubah status di tabel
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error: Terjadi kesalahan saat memproses permintaan.');
+    function approveAll() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $.ajax({
+            url: '/approve-all',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                if (response.success) {
+                    showApprovalAlert('Semua ruangan berhasil disetujui.', 'success');
+                } else {
+                    showApprovalAlert('Gagal menyetujui ruangan.', 'danger');
+                }
+            },
+            error: function() {
+                showApprovalAlert('Terjadi kesalahan saat menyetujui ruangan.', 'danger');
+            }
+        });
+    }
+
+    function toggleApproveButton(button) {
+        const programStudiId = button.getAttribute('data-id');
+        console.log('Tombol diklik untuk program studi ID:', programStudiId);
     }
 </script>
 
