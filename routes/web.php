@@ -9,7 +9,7 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileController; //bismillah
 
 use App\Http\Controllers\PlottingRuangController;
 use App\Http\Controllers\PersetujuanRuanganController;
