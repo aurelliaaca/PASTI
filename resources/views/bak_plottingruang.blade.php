@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -253,6 +253,20 @@
                 }
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const openModalButton = document.getElementById('yourButtonId');
+            const closeModalButton = document.getElementById('closeModal');
+            const modal = document.getElementById('plottingModal');
+
+            openModalButton.addEventListener('click', function() {
+                modal.classList.remove('hidden');
+            });
+
+            closeModalButton.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+        });
     </script>
 </body>
 </html>

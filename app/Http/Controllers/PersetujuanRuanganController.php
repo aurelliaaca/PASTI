@@ -48,4 +48,16 @@ class PersetujuanRuanganController extends Controller
             return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menyetujui ruangan.'], 500);
         }
     }
+
+    public function setujuiSemua(Request $request)
+    {
+        try {
+            // Logika untuk menyetujui semua ruangan
+            PlottingRuang::where('status', 'belum disetujui')->update(['status' => 'sudah disetujui']);
+
+            return redirect()->back()->with('success', 'Semua ruangan telah disetujui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyetujui ruangan.');
+        }
+    }
 }

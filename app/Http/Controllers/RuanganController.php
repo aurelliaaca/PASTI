@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use App\Models\PlottingRuang;
 
 class RuanganController extends Controller
 {
@@ -12,7 +13,7 @@ class RuanganController extends Controller
         $ruangans = Ruangan::with('plottingRuangs')
         ->get()
         ->sortBy(function($ruangan) {
-            return $ruangan->plottingRuangs->where('status', 'telah disetujui')->isNotEmpty();
+            return $ruangan->plottingRuangs->where('status', 'sudah disetujui')->isNotEmpty();
         });
 
         // Convert the sorted collection back to a query for pagination

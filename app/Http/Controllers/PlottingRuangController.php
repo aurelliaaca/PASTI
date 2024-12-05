@@ -12,7 +12,7 @@ class PlottingRuangController extends Controller
     public function index()
     {
         $ruangan = Ruangan::whereDoesntHave('plottingRuangs', function($query) {
-            $query->where('status', 'telah disetujui');
+            $query->whereIn('status', ['belum disetujui', 'sudah disetujui']);
         })->get();
 
         $plottingRuang = PlottingRuang::with('ruangan')->get();
