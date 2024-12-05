@@ -19,7 +19,8 @@ class Dosen extends Model
         'nip',
         'telp',
         'email',
-        'alamat'
+        'alamat',
+        'prodi'
     ];
 
     public function dekan()

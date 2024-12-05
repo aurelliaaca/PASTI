@@ -8,7 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * @return void
      */
     public function up(): void
     {
@@ -18,8 +17,6 @@ return new class extends Migration
             $table->string('ruang')->unique();
             $table->integer('kapasitas');
             $table->timestamps();
-
-            $table->unique(['gedung', 'ruang']);
         });
     }
 

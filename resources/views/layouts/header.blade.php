@@ -18,10 +18,6 @@
                 </a>
             </div>
             <div class="flex items-center">
-            <!-- Page Route Display -->
-            <div class="text-white italic mr-4">
-                <span>Dashboard / {{ ucwords(str_replace('_', ' ', Route::currentRouteName())) }}</span>
-            </div>
 
             <!-- Profile Icon with Dropdown -->
             <div class="relative">

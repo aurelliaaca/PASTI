@@ -63,20 +63,22 @@
                     </label>
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
+
+                <div class="mb-6">
+                    <x-primary-button class="w-full bg-yellow-500 text-white p-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300 flex justify-center items-center">
+                        {{ __('Log in') }}
+                    </x-primary-button>
+                </div>
+
+                <div class="flex items-center">
                     @if (Route::has('password.request'))
                         <a class="underline text-sm text-white hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                             {{ __('Forgot your password?') }}
                         </a>
                     @endif
-
-                    <x-primary-button class="ms-3">
-                        {{ __('Log in') }}
-                    </x-primary-button>
                 </div>
             </form>
         
     </div>
     
 </body>
-

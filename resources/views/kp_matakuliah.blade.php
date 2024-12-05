@@ -21,12 +21,12 @@
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
-    <a href="{{ url()->previous() }}" class="absolute top-4 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+    <!-- <a href="{{ url()->previous() }}" class="absolute top-4 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
         <i class="fas fa-arrow-left"></i>
         <span class="font-medium">Kembali</span>
-    </a>
+    </a> -->
 
-    <div class="max-w-7xl mx-auto p-4 min-h-screen">
+    <div class="max-w-7xl mx-auto p-4 min-h-screen"> -->
         <div class="bg-white rounded-lg shadow p-6">
             <h1 class="text-2xl font-bold text-teal-800 mb-4">Daftar Mata Kuliah</h1>
             

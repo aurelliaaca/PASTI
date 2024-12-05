@@ -23,18 +23,29 @@
         <i class="fas fa-arrow-left text-xl"></i>
     </a>
     <div class="bg-white shadow-lg rounded-lg mx-auto max-w-7xl p-6 mt-4">
-        <!-- Konten Header -->
-        <h1 class="text-2xl font-semibold text-teal-800 mb-4 text-center flex items-center justify-left space-x-2">
-            <span>Status IRS Mahasiswa Perwalian</span>
-        </h1>
-        <div class="min-h-screen bg-white-800 py-5">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-semibold text-teal-800 mb-4 text-center flex items-center justify-left space-x-2">
+                <span>Status IRS Mahasiswa Perwalian</span>
+            </h1>
+
+            <!-- Tombol Setujui Semua -->
+            <td class="pb-2 pt-2 text-right button-container">
+                <div class="flex justify-end">
+                    <button class="btn bg-teal-500 btn-icon-text p-2 rounded-lg">
+                        <!-- <i class="fa fa-check mr-1 ml-1 text-white"></i> -->
+                        <strong class="text-white">Setujui Semua</strong>
+                    </button>
+                </div>
+            </td>
+        </div>
+        <div class="min-h-screen bg-white-800 py-2">
             <!-- Tambahkan kelas w-full agar tabel mengikuti lebar penuh -->
             <div class="overflow-x-auto w-full">
                 <table class="w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
                     <thead style="background-color: #FADBA9;">
                         <tr class="text-black text-center">
                             <th class="font-semibold text-sm uppercase px-6 py-4"> Nama </th>
-                            <th class="font-semibold text-sm uppercase px-6 py-4"> NIM </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> NIM </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Semester </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Status </th>
                             <th class="font-semibold text-sm uppercase px-6 py-4"> </th>
@@ -51,7 +62,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-center">
                                 <p class=""> {{ $mahasiswa->nim }} </p>
                             </td>
                             <td class="px-6 py-4 text-center"> {{ $mahasiswa->smt }} </td>

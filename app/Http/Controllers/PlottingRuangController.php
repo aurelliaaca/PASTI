@@ -12,7 +12,7 @@ class PlottingRuangController extends Controller
     public function index()
     {
         $ruangan = Ruangan::whereDoesntHave('plottingRuangs', function($query) {
-            $query->where('status', 'telah disetujui');
+            $query->whereIn('status', ['belum disetujui', 'sudah disetujui']);
         })->get();
 
         $plottingRuang = PlottingRuang::with('ruangan')->get();
@@ -54,6 +54,16 @@ class PlottingRuangController extends Controller
             return redirect()->route('bak_plottingruang')->with('success', 'Ruangan berhasil disetujui.');
         } catch (\Exception $e) {
             return redirect()->route('bak_plottingruang')->with('error', 'Terjadi kesalahan saat menyetujui ruangan.');
+        }
+    }
+
+    public function getData()
+    {
+        try {
+            $plottingRuang = PlottingRuang::with('ruangan')->get();
+            return response()->json($plottingRuang);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal memuat data.']);
         }
     }
 }
