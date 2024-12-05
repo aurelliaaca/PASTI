@@ -41,49 +41,45 @@
                             <th class="font-semibold text-sm uppercase px-6 py-4"> </th>
                         </tr>
                     </thead>
-                <tbody class="divide-y divide-gray-200">
-
-                    <tr>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center space-x-3">
-                                <div class="inline-flex w-10 h-10"> <img class='w-10 h-10 object-cover rounded-full' alt='User avatar' src="{{ asset('image/profil.png') }}" /> </div>
-                                <div>
-                                    <p> Revaline Dhela </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class=""> 216780745628374 </p>
-                        </td>
-                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
-                        <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a> </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center space-x-3">
-                                <div class="inline-flex w-10 h-10"> <img class='w-10 h-10 object-cover rounded-full' alt='User avatar' src="{{ asset('image/profil.png') }}" /> </div>
-                                <div>
-                                    <p> Makna Tera </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class=""> 216780745628374 </p>
-                        </td>
-                        <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Active </span> </td>
-                        <td class="px-6 py-4 text-center"> 5 </td>
-                        <td class="px-6 py-4 text-center"> 100 </td>
-                        <td class="px-6 py-4 text-center"> <a href="{{ route('IRS_Mahasiswa') }}" class="text-teal-800 hover:underline">Lihat</a>  </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach ($mahasiswaperwalian as $mahasiswa)
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="inline-flex w-10 h-10">
+                                            <img class='w-10 h-10 object-cover rounded-full' alt='User avatar' 
+                                                src="{{ asset('image/profil.png') }}" />
+                                        </div>
+                                        <div>
+                                            <p>{{ $mahasiswa->nama }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p>{{ $mahasiswa->nim }}</p>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="text-white text-sm w-1/3 pb-1 bg-green-600 px-2 rounded-full">
+                                        @if($mahasiswa->status==1)
+                                            AKTIF
+                                        @else
+                                            TIDAK AKTIF
+                                        @endif
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">{{ $mahasiswa->smt }}</td>
+                                <td class="px-6 py-4 text-center">{{ $mahasiswa->sks }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" 
+                                    class="text-teal-800 hover:underline">Lihat</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-</div>
 </body>
 </html>
 @endsection
