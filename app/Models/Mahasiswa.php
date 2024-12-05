@@ -21,7 +21,8 @@ class Mahasiswa extends Model
         'telp',
         'email',
         'alamat',
-        'prodi', //baru
+        'prodi',
+        'status',
         'dosenwali'
     ];
 }

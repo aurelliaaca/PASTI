@@ -30,4 +30,12 @@ class Dosen extends Model
     {
         return $this->belongsTo(KetuaProdi::class, 'nip', 'nip');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'dosenwali', 'nip');
+    }
 }

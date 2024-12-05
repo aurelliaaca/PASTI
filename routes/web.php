@@ -16,7 +16,7 @@ use App\Http\Controllers\PersetujuanRuanganController;
 
 // Pembaruan Login
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -53,9 +53,12 @@ Route::middleware(['auth', 'dekan'])->group(function () {
 // Grup untuk Dosen
 Route::middleware(['auth', 'dosen'])->group(function () {
     Route::get('dosen/dashboard', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen');
-    Route::get('/dosen_perwalian', function () {return view('dosen_perwalian');})->name('Perwalian');
-    Route::get('/dosen_persetujuan', function () {return view('dosen_persetujuan');})->name('persetujuan_IRS');
-    Route::get('/dosen_irsmahasiswa', function () {return view('dosen_irsmahasiswa');})->name('IRS_Mahasiswa');
+    Route::get('/dosen_perwalian', [DosenController::class, 'showPerwalian'])->name('Perwalian');
+    //Route::get('/dosen_perwalian', function () {return view('dosen_perwalian');})->name('Perwalian');
+    Route::get('/dosen_persetujuan', [DosenController::class, 'showPersetujuanIRS'])->name('persetujuan_IRS');
+    // Route::get('/dosen_persetujuan', function () {return view('dosen_persetujuan');})->name('persetujuan_IRS');
+    Route::get('/dosen_irsmahasiswa', [DosenController::class, 'showIRSMahasiswa'])->name('IRS_Mahasiswa');
+    Route::post('/dosen_irsmahasiswasetuju', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
 });
 
 // Grup untuk Akademik

@@ -71,7 +71,7 @@
                   <i class="far fa-envelope text-2xl"></i>
               </div>
               <div class="flex-1">
-                <p class="text-sm text-left pl-3.5 pr-4">[11/07 - 15.33] Kaprodi Informatika - Mengajukan Jadwal Kuliah.</p>
+                <p class="text-sm text-left pl-3.5 pr-4">Notifikasi</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -85,43 +85,6 @@
               </div>
             </div>
             
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-left pl-3.5 pr-4">[8/07 - 08.46] Kaprodi Matematika - Merevisi Jadwal Kuliah.</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-left pl-3.5 pr-4">[4/07 - 12.52] Kaprodi Biologi - Mengajukan Jadwal Kuliah.</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i> 
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -135,7 +98,7 @@
 
             <!-- Data IRS Mahasiswa Perwalian -->
             <a href="{{ route('persetujuan_IRS') }}" class="bg-yellow-500 text-white px-6 py-3 rounded-md flex items-center space-x-2 hover:bg-yellow-600">
-                <i class="far fa-check text-2xl"></i>
+                <i class="fas fa-check-circle text-2xl"></i>
                 <span class="text-lg">Persetujuan IRS</span>
             </a>
         </div>

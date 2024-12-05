@@ -52,22 +52,22 @@
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">NAMA</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle text-justify w-full">Muhammad Faiq As-sajad</p>
+          <p class="text-sm align-middle text-justify w-full">{{ $mahasiswa->nama }}</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">NIM</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full">14050122120168</p>
+          <p class="text-sm align-middle w-full">{{ $mahasiswa->nim }}</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Email</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full">faiq@students.com</p>
+          <p class="text-sm align-middle w-full">{{ $mahasiswa->email }}</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Semester</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full">5</p>
+          <p class="text-sm align-middle w-full">{{ $mahasiswa->smt }}</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">IP Kumulatif</p>
@@ -97,13 +97,21 @@
       </div>
     </div>
 
+    <form action="{{ route('setujuiIRS') }}" method="POST" class="inline">
+      @csrf
+      <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+      <button type="submit" class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
+          <span class="text-base font-semibold italic">SETUJUI</span>
+      </button>
+    </form>
+
     <div class="grid grid-cols-2 w-full flex-grow space-x-2 mt-4">
       <button class="bg-white text-teal-700 p-2 rounded-lg items-center space-x-2">
         <span class="text-base font-semibold italic">TOLAK</span>
       </button>
-      <button class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
+      <!-- <button class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
         <span class="text-base font-semibold italic">SETUJUI</span>
-      </button>
+      </button> -->
     </div>
   </div>
 </div>
