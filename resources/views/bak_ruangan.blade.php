@@ -86,12 +86,12 @@
                                     <td class="text-sm px-4 py-2">{{ $ruangan->ruang }}</td>
                                     <td class="text-sm px-4 py-2">{{ $ruangan->kapasitas }}</td>
                                     <td class="text-sm px-4 py-2 text-center">
-                                        @if($ruangan->plottingRuangs->where('status', 'telah disetujui')->isEmpty())
+                                        @if($ruangan->plottingRuangs->where('status', 'sudah disetujui')->isEmpty())
                                             <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRuangan({{ $ruangan->id }})">Hapus</button>
                                             <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
                                         @else
-                                            <button class="btn btn-secondary" disabled>Edit</button>
                                             <button class="btn btn-secondary" disabled>Hapus</button>
+                                            <button class="btn btn-secondary" disabled>Edit</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -156,7 +156,7 @@
                                     @if (is_array($element))
                                         @foreach ($element as $page => $url)
                                             @if ($page == $paginatedRuangans->currentPage())
-                                                <span class="relative z-10 inline-flex items-center bg-green-600 px-4 py-2 text-sm font-semibold text-white">{{ $page }}</span>
+                                                <span class="relative z-10 inline-flex items-center bg-teal-500 px-4 py-2 text-sm font-semibold text-white">{{ $page }}</span>
                                             @else
                                                 <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">{{ $page }}</a>
                                             @endif

@@ -53,10 +53,15 @@
                             </td>
                             <td class="pb-2 pt-0 text-right">
                                 <!-- Tombol Setujui Semua -->
-                                <button class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg" id="approveBtn-{{ $index }}" style="display: none;" onclick="approveAll('{{ $programStudi }}')">
-                                    <i class="fa fa-check text-white"></i>
-                                    <strong class="text-white">Setujui Semua</strong>
-                                </button>
+                                <form action="{{ route('setujuiSemua') }}" method="POST" class="w-full">
+                                    @csrf
+                                    <div class="flex justify-end items-center mb-4">
+                                        <button type="submit" id="approveAllButton" class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg flex justify-end items-center hidden">
+                                            <i class="fa fa-check text-white mr-2"></i>
+                                            <strong class="text-white">SETUJUI SEMUA</strong>
+                                        </button>
+                                    </div>
+                                </form>
                             </td>
                         </tr>
                         <tr class="ruangan-table" id="ruangan-{{ $index }}" style="display: none;">
@@ -167,10 +172,32 @@
         });
     }
 
-    function toggleApproveButton(button) {
-        const programStudiId = button.getAttribute('data-id');
-        console.log('Tombol diklik untuk program studi ID:', programStudiId);
+    function toggleApproveButton() {
+    const approveButton = document.getElementById('approveAllButton');
+    if (approveButton.classList.contains('hidden')) {
+        approveButton.classList.remove('hidden');
+    } else {
+        approveButton.classList.add('hidden');
     }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement.classList.contains('hidden')) {
+                targetElement.classList.remove('hidden');
+            } else {
+                targetElement.classList.add('hidden');
+            }
+        });
+    });
+});
+
 </script>
 
 </body>

@@ -47,6 +47,7 @@ Route::middleware(['auth', 'dekan'])->group(function () {
     Route::get('/dk_persetujuanruangan', [PersetujuanRuanganController::class, 'index'])->name('dk_persetujuanruangan');
     Route::get('/dk_persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('Persetujuan_Jadwal');
     Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
+    Route::post('/setujui-semua', [PersetujuanRuanganController::class, 'setujuiSemua'])->name('setujuiSemua');
     // Route::get('/user1', function () {return view('user1');})->name('user1');
 });
 
