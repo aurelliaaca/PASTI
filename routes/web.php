@@ -53,12 +53,13 @@ Route::middleware(['auth', 'dekan'])->group(function () {
 // Grup untuk Dosen
 Route::middleware(['auth', 'dosen'])->group(function () {
     Route::get('dosen/dashboard', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen');
-    Route::get('/dosen_perwalian', [DosenController::class, 'showPerwalian'])->name('Perwalian');
+    Route::get('dosen/perwalian', [DosenController::class, 'showPerwalian'])->name('Perwalian');
     //Route::get('/dosen_perwalian', function () {return view('dosen_perwalian');})->name('Perwalian');
-    Route::get('/dosen_persetujuan', [DosenController::class, 'showPersetujuanIRS'])->name('persetujuan_IRS');
+    Route::get('dosen/persetujuan', [DosenController::class, 'showPersetujuanIRS'])->name('persetujuan_IRS');
     // Route::get('/dosen_persetujuan', function () {return view('dosen_persetujuan');})->name('persetujuan_IRS');
-    Route::get('/dosen_irsmahasiswa', [DosenController::class, 'showIRSMahasiswa'])->name('IRS_Mahasiswa');
-    Route::post('/dosen_irsmahasiswasetuju', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
+    Route::get('dosen/irs-mahasiswa', [DosenController::class, 'showIRSMahasiswa'])->name('IRS_Mahasiswa');
+    Route::post('dosen/setujui-irs', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
+    Route::post('dosen/tolak-irs', [DosenController::class, 'tolakIRS'])->name('tolakIRS');
 });
 
 // Grup untuk Akademik
@@ -90,9 +91,16 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
     Route::get('/user2', [HomeController::class, 'user2'])->name('user2');
     //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
     Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
-    Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
+    Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
     // Route untuk mendapatkan detail matakuliah
     Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
+    Route::prefix('kp_matakuliah')->group(function () {
+        Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
+        Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');
+        Route::post('/check-duplicate', [KaprodiController::class, 'checkDuplicateMK'])->name('matakuliah.checkDuplicateMK');
+        Route::delete('/{kode}', [KaprodiController::class, 'destroyMK'])->name('matakuliah.destroy');
+        Route::put('/{kode}', [KaprodiController::class, 'updateMK'])->name('matakuliah.update');
+    });
 });
 
 // Ini tolong jangan digeser
@@ -189,27 +197,27 @@ Route::get('/profile', function() {
 //     return view('kp_matakuliah');
 // })->name('kp_matakuliah');
 
-Route::get('/kp_matakuliah', function () {
-    return view('kp_matakuliah');
-})->name('kp_matakuliah');
+// Route::get('/kp_matakuliah', function () {
+//     return view('kp_matakuliah');
+// })->name('kp_matakuliah');
 
-Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
+// Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
 // Route::get('/bak_plottingruang', function () {
 //     return view('bak_plottingruang');
 // })->name('bak_plottingruang'); 
 
 // Route::get('/kp_penjadwalan', [KaprodiController::class, "listMk"])->name('kp_penjadwalan');
 
-// Route untuk mendapatkan detail matakuliah
-Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
+// // Route untuk mendapatkan detail matakuliah
+// Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
 
-Route::prefix('kp_matakuliah')->group(function () {
-    Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
-    Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');
-    Route::post('/check-duplicate', [KaprodiController::class, 'checkDuplicateMK'])->name('matakuliah.checkDuplicateMK');
-    Route::delete('/{kode}', [KaprodiController::class, 'destroyMK'])->name('matakuliah.destroy');
-    Route::put('/{kode}', [KaprodiController::class, 'updateMK'])->name('matakuliah.update');
-});
+// Route::prefix('kp_matakuliah')->group(function () {
+//     Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
+//     Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');
+//     Route::post('/check-duplicate', [KaprodiController::class, 'checkDuplicateMK'])->name('matakuliah.checkDuplicateMK');
+//     Route::delete('/{kode}', [KaprodiController::class, 'destroyMK'])->name('matakuliah.destroy');
+//     Route::put('/{kode}', [KaprodiController::class, 'updateMK'])->name('matakuliah.update');
+//});
 
 
 // // Route untuk mendapatkan detail matakuliah

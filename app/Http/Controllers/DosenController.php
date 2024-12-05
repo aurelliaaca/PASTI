@@ -22,7 +22,7 @@ class DosenController extends Controller
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
         $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen_perwalian', compact('mahasiswaperwalian'));
+        return view('dosen.perwalian', compact('mahasiswaperwalian'));
     }
 
     public function showPersetujuanIRS()
@@ -30,7 +30,7 @@ class DosenController extends Controller
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
         $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen_persetujuan', compact('mahasiswaperwalian'));
+        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
     }
 
     public function showIRSMahasiswa(Request $request)
@@ -50,7 +50,7 @@ class DosenController extends Controller
         // $jumlahsks = 
 
         // Tampilkan halaman IRS dengan data mahasiswa
-        return view('dosen_irsmahasiswa', compact('mahasiswa'));
+        return view('dosen.irsmahasiswa', compact('mahasiswa'));
     }
 
     public function setujuiIRS(Request $request)
@@ -72,6 +72,25 @@ class DosenController extends Controller
         return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil disetujui.");
     }
 
+    public function tolakIRS(Request $request)
+    {
+        $nim = $request->nim;
+
+        // Cari semua data IRS berdasarkan NIM
+        $affectedRows = IRS::where('nim', $nim)->update([
+            'status_verifikasi' => false, // Menandai belum disetujui
+            'tanggal_disetujui' => null,  // Mengosongkan tanggal persetujuan
+        ]);
+
+        // Jika tidak ada data IRS yang diperbarui
+        if ($affectedRows === 0) {
+            return redirect()->back()->with('error', 'Tidak ada IRS yang ditemukan untuk NIM tersebut.');
+        }
+
+        // Kembali ke halaman sebelumnya dengan pesan sukses
+        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil ditolak.");
+    }
+
     // public function index()
     // {
     //     $data = Mahasiswa::all(); // Mengambil semua data mahasiswa
@@ -86,4 +105,3 @@ class DosenController extends Controller
     
 
 }
-
