@@ -25,4 +25,9 @@ class Mahasiswa extends Model
         'status',
         'dosenwali'
     ];
+
+    public function irs()
+{
+    return $this->hasMany(Irs::class, 'nim', 'nim');
+}
 }

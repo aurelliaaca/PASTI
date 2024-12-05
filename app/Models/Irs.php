@@ -11,15 +11,11 @@ class Irs extends Model
 
     // Nama tabel yang digunakan
     protected $table = 'irs';
-
-    // Primary key
-    protected $primaryKey = 'irsid';
-
-    // Menonaktifkan timestamps jika tidak digunakan
     public $timestamps = false;
 
     // Kolom yang dapat diisi secara massal
     protected $fillable = [
+        'jadwalid',
         'nim',
         'smt',
         'status_verifikasi',
@@ -33,4 +29,9 @@ class Irs extends Model
     {
         return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
+
+    public function jadwal()
+{
+    return $this->belongsTo(Jadwal_mata_kuliah::class, 'jadwalid');
+}
 }

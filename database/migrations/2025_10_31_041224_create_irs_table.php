@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('irs', function (Blueprint $table) {
-            $table->integer('irsid', true);
-            $table->string('nim', 14)->index('irs_nim');
-            $table->string('smt', 2);
+            $table->string('jadwalid');
+            $table->string('nim', 14);
+            $table->integer('smt');
             $table->boolean('status_verifikasi')->nullable();
             $table->timestamp('tanggal_disetujui')->nullable();
 
-            $table->foreign('nim')->references('nim')->on('mahasiswa')->ondelete('cascade');
+            $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');
         });
     }
 
