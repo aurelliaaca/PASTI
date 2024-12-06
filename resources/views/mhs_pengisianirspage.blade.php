@@ -35,7 +35,6 @@
     </div>
     
     <div class="BuatIRS">
-    @foreach ($mahasiswas as $mhs)
     <!-- Main Content Section -->
     <div class="flex justify-center grid grid-cols-8 gap-4 w-full">
         <!-- Left Section (Profile) -->
@@ -47,12 +46,12 @@
                 <div class="flex">
                     <p class="text-sm align-top w-[100px] font-semibold">NAMA</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle text-justify w-full">{{ $mhs->nama }}</p>
+                    <p class="text-sm align-middle text-justify w-full">{{ $mahasiswa->nama }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-sm align-top w-[100px] font-semibold">NIM</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">{{ $mhs->nim }}</p>
+                    <p class="text-sm align-middle w-full">{{ $mahasiswa->nim }}</p>
                 </div>
                 </div>
             </div>
@@ -70,7 +69,7 @@
                         <p class="text-sm align-top  w-[300px] font-semibold">GANJIL/GENAP</p>
                         <p class="text-sm align-top  w-[20px] font-semibold">:</p>
                         <p class="text-sm align-middle w-full">
-                            @if($mhs->smt % 2 == 1)
+                            @if($mahasiswa->smt % 2 == 1)
                                 Ganjil
                             @else
                                 Genap
@@ -80,7 +79,7 @@
                 <div class="flex">
                     <p class="text-sm align-top w-[300px] font-semibold">SEMESTER</p>
                     <p class="text-sm align-top  w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">{{ $mhs->smt }}</p>
+                    <p class="text-sm align-middle w-full">{{ $mahasiswa->smt }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-sm align-top  w-[300px] font-semibold">IPK</p>
@@ -151,7 +150,6 @@
 
     </div>
     </div>
-    @endforeach
 
 
     <!-- IRS Content -->
@@ -270,8 +268,8 @@ document.getElementById('matkul-dropdown').addEventListener('change', function (
                                 <td class="border px-4 py-2">${jadwal.hari}</td>
                                 <td class="border px-4 py-2">${jadwal.jam_mulai}</td>
                                 <td class="border px-4 py-2">${jadwal.kelas}</td>
-                                <input type="text" id="nim" value="{{ $mhs->nim }}" class="hidden">
-                                <input type="text" id="smt" value="{{ $mhs->smt }}" class="hidden">
+                                <input type="text" id="nim" value="{{ $mahasiswa->nim }}" class="hidden">
+                                <input type="text" id="smt" value="{{ $mahasiswa->smt }}" class="hidden">
                                 <td class="border px-4 py-2">
                                     <button class="bg-teal-500 text-white px-4 py-1 rounded" onclick="pilihJadwal('${jadwal.jadwalid}')">Pilih</button>
                                 </td>
@@ -306,149 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Fungsi untuk memilih jadwal dan mengirim data ke server
-// function pilihJadwal(jadwalid) {
-//     // Ambil nilai NIM dan Semester dari form atau elemen yang sesuai
-//     const nim = document.getElementById('nim').value; // Pastikan elemen dengan id 'nim' ada
-//     const smt = document.getElementById('smt').value; // Pastikan elemen dengan id 'smt' ada
-
-//     if (!nim || !smt) {
-//         alert('NIM atau Semester tidak valid');
-//         return;
-//     }
-    
-
-//     // Kirim data ke server untuk menyimpan jadwal yang dipilih
-//     $.ajax({
-//         url: '/store-jadwal',  // Pastikan URL ini sesuai dengan route di Laravel Anda
-//         method: 'POST',
-//         data: {
-//             nim: nim,
-//             smt: smt,
-//             jadwalid: jadwalid, // Pastikan jadwalid yang dikirim sesuai
-//             _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token untuk keamanan
-//         },
-//         success: function(response) {
-//             if (response.success) {
-//                 alert('Jadwal berhasil dipilih!');
-//             } else {
-//                 alert('Terjadi kesalahan saat memilih jadwal');
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             console.error('Error:', error);
-//             alert('Terjadi kesalahan, coba lagi');
-//         }
-//     });
-// }
-
-// function pilihJadwal(jadwalid) {
-//     const nim = document.getElementById('nim').value; // Assuming there's an element with id 'nim'
-//     const smt = document.getElementById('smt').value; // Assuming there's an element with id 'smt'
-
-//     // Ensure nim and smt are provided
-//     if (!nim || !smt) {
-//         alert('NIM or Semester is not valid.');
-//         return;
-//     }
-
-//     // Send an AJAX request to check if the schedule is already selected
-//     $.ajax({
-//         url: '/cek-jadwal',  // Make sure this matches the correct route
-//         method: 'POST',
-//         data: {
-//             nim: nim,
-//             jadwalid: jadwalid,  // Pass the selected schedule id
-//             _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
-//         },
-//         success: function(response) {
-//             if (response.exists) {
-//                 // If the schedule already exists, show an alert
-//                 alert('You have already selected this schedule.');
-//             } else {
-//                 // If the schedule does not exist, proceed with selecting the schedule
-//                 $.ajax({
-//                     url: '/store-jadwal',  // Route to store the selected schedule (ensure this exists)
-//                     method: 'POST',
-//                     data: {
-//                         nim: nim,
-//                         smt: smt,
-//                         jadwalid: jadwalid,  // Pass the selected schedule id
-//                         _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
-//                     },
-//                     success: function(response) {
-//                         if (response.success) {
-//                             alert('Schedule successfully selected!');
-//                             // Optionally, update the UI to reflect the new selection
-//                         } else {
-//                             alert('There was an error selecting the schedule.');
-//                         }
-//                     },
-//                     error: function() {
-//                         alert('An error occurred while saving the schedule.');
-//                     }
-//                 });
-//             }
-//         },
-//         error: function() {
-//             alert('An error occurred while checking the schedule.');
-//         }
-//     });
-// }
-
-// function pilihJadwal(jadwalid) {
-//     const nim = document.getElementById('nim').value;  // Ambil nilai NIM
-//     const smt = document.getElementById('smt').value;  // Ambil nilai Semester
-
-//     // Pastikan nim dan smt terisi
-//     if (!nim || !smt) {
-//         alert('NIM atau Semester tidak valid.');
-//         return;
-//     }
-
-//     // Kirim AJAX untuk cek apakah jadwal sudah dipilih
-//     $.ajax({
-//         url: '/cek-jadwal',  // Pastikan route ini sesuai dengan route di web.php
-//         method: 'POST',
-//         data: {
-//             nim: nim,
-//             jadwalid: jadwalid,  // Kirim jadwal yang dipilih
-//             _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token untuk keamanan
-//         },
-//         success: function(response) {
-//             if (response.exists) {
-//                 // Jika jadwal sudah ada, tampilkan alert
-//                 alert('Jadwal ini sudah dipilih.');
-//             } else {
-//                 // Jika belum ada, lanjutkan untuk menyimpan jadwal
-//                 $.ajax({
-//                     url: '/store-jadwal',  // Route untuk menyimpan jadwal
-//                     method: 'POST',
-//                     data: {
-//                         nim: nim,
-//                         smt: smt,
-//                         jadwalid: jadwalid,  // Kirim jadwal yang dipilih
-//                         _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token
-//                     },
-//                     success: function(response) {
-//                         if (response.success) {
-//                             alert('Jadwal berhasil dipilih!');
-//                             // Opsional: Update tampilan UI sesuai dengan jadwal yang dipilih
-//                         } else {
-//                             alert('Terjadi kesalahan saat memilih jadwal.');
-//                         }
-//                     },
-//                     error: function() {
-//                         alert('Terjadi kesalahan saat menyimpan jadwal.');
-//                     }
-//                 });
-//             }
-//         },
-//         error: function() {
-//             alert('Terjadi kesalahan saat memeriksa jadwal.');
-//         }
-//     });
-// }
 function pilihJadwal(jadwalid) {
     const nim = document.getElementById('nim').value;  // Ambil nilai NIM
     const smt = document.getElementById('smt').value;  // Ambil nilai Semester
@@ -470,7 +325,7 @@ function pilihJadwal(jadwalid) {
         },
         success: function(response) {
             if (response.exists) {
-                alert('Anda sudah memilih mata kuliah dengan kode MK yang sama.');
+                alert('Anda sudah memilih mata kuliah ini.');
             } else {
                 // Lanjutkan untuk menyimpan jadwal
                 $.ajax({

@@ -19,7 +19,7 @@ class MatkulSeeder extends Seeder
                 'kode' => 'PAIK6301',
                 'sks' => '4',
                 'status' => 'wajib',
-                'semester'=> '3',
+                'semester'=> '4',
             ],
             [
                 'nama' => 'Metode Numerik',
@@ -68,7 +68,7 @@ class MatkulSeeder extends Seeder
                 'kode' => 'UNW00007',
                 'sks' => '2',
                 'status' => 'wajib',
-                'semester'=> '5',
+                'semester'=> '4',
             ],
             [
                 'nama' => 'Proyek Perangkat Lunak',

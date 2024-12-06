@@ -22,18 +22,35 @@ class MahasiswaController extends Controller
     }
 
     public function listMK(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        // Mengambil seluruh data jadwal dan mata kuliah
-        $mahasiswas = Mahasiswa::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
-        $users = User::all();
-        $jadwalList = Jadwal_mata_kuliah::all();
-        $matkul = Matkul::all();  // Daftar mata kuliah
+    // Mengambil data mahasiswa berdasarkan email
+    $mahasiswa = Mahasiswa::where('email', $user->email)->first();
 
-        // Mengirimkan data jadwal dan mata kuliah ke view
-        return view('mhs_pengisianirspage', compact('jadwalList', 'matkul', 'mahasiswas'));
+    // Periksa jika mahasiswa ditemukan
+    if (!$mahasiswa) {
+        return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan!');
     }
+
+    // Menentukan apakah semester mahasiswa ganjil atau genap
+    $semesterGanjil = $mahasiswa->smt % 2 != 0; // Jika smt ganjil (1, 3, 5,...)
+    
+    // Ambil mata kuliah berdasarkan semester yang sesuai dengan mahasiswa (ganjil/genap)
+    if ($semesterGanjil) {
+        // Jika semester mahasiswa ganjil, ambil mata kuliah untuk semester ganjil (smt % 2 != 0)
+        $matkul = Matkul::whereRaw('semester % 2 != 0')->get();  // Semester ganjil
+    } else {
+        // Jika semester mahasiswa genap, ambil mata kuliah untuk semester genap (smt % 2 == 0)
+        $matkul = Matkul::whereRaw('semester % 2 = 0')->get();  // Semester genap
+    }
+
+    // Mengambil data jadwal berdasarkan kode mata kuliah yang sesuai
+    $jadwalList = Jadwal_mata_kuliah::whereIn('kodemk', $matkul->pluck('kode'))->get();
+
+    // Mengirimkan data ke view
+    return view('mhs_pengisianirspage', compact('jadwalList', 'matkul', 'mahasiswa'));
+}   
 
     // Mendapatkan jadwal berdasarkan kode mata kuliah yang dipilih
     public function getJadwalByMatkul($kodeMk)
@@ -52,51 +69,12 @@ class MahasiswaController extends Controller
         return response()->json($jadwal);
     }
 
-    public function showBuatIRS()
-    {
-        $matkul = Jadwal_mata_kuliah::all();  // Ambil semua mata kuliah yang tersedia
-        return view('mhs_pengisianirspage', compact('matkul'));
-    }
-    // public function store(Request $request)
+    // public function showBuatIRS()
     // {
-    //     // Debug data yang diterima (jika diperlukan)
-    //     // dd($request->all());
-    
-    //     // Mendapatkan user yang sedang login
-    //     $user = Auth::user();
-    
-    //     // Cari data mahasiswa berdasarkan email pengguna yang sedang login
-    //     $mahasiswa = Mahasiswa::where('email', $user->email)->first();
-    
-    //     // Periksa jika mahasiswa tidak ditemukan
-    //     if (!$mahasiswa) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Data mahasiswa tidak ditemukan.'
-    //         ]);
-    //     }
-    
-    //     // Validasi data
-    //     $validated = $request->validate([
-    //         'jadwalid' => 'required|string',
-    //         'nim' => 'required|string|max:14',
-    //         'smt' => 'required|string',
-    //     ]);
-    
-    //     // Simpan data ke database
-    //     $irs = Irs::create([
-    //         'jadwalid' => $request->jadwalid,
-    //         'nim' => $request->nim, // Gunakan nim dari tabel mahasiswa
-    //         'smt' => $request->smt,    // Ambil smt dari request
-    //     ]);
-    
-    //     // Mengembalikan response JSON untuk AJAX
-    //     return response()->json([
-    //         'success' => true,
-    //         'is_edit' => false, // Menandakan bahwa ini adalah create, bukan edit
-    //         'data' => $irs
-    //     ]);
+    //     $matkul = Jadwal_mata_kuliah::all();  // Ambil semua mata kuliah yang tersedia
+    //     return view('mhs_pengisianirspage', compact('matkul'));
     // }
+
     public function store(Request $request)
 {
     $validated = $request->validate([
@@ -144,69 +122,6 @@ class MahasiswaController extends Controller
     ]);
 }
 
-//     public function cekJadwal(Request $request)
-// {
-//     // Validasi data yang masuk
-//     $request->validate([
-//         'nim' => 'required|string|max:14',  // Validasi nim sebagai string dengan panjang 14 karakter
-//         'jadwalid' => 'required|string',     // Validasi jadwalid sebagai string
-//     ]);
-
-//     try {
-//         // Periksa apakah jadwal sudah dipilih oleh mahasiswa dengan NIM yang sama
-//         $exists = Irs::where('nim', $request->nim)
-//             ->where('jadwalid', $request->jadwalid)
-//             ->exists();
-
-//         // Kembalikan hasil dalam bentuk JSON
-//         return response()->json(['exists' => $exists]);
-//     } catch (\Exception $e) {
-//         // Tangani kesalahan dan kembalikan response error
-//         return response()->json(['error' => 'Terjadi kesalahan saat memeriksa jadwal'], 500);
-//     }
-// }
-
-// public function cekJadwal(Request $request)
-// {
-//     // Validate the incoming data
-//     $request->validate([
-//         'nim' => 'required|string|max:14', // Validate nim as string with max length 14
-//         'jadwalid' => 'required|string',   // Validate jadwalid as string
-//     ]);
-
-//     try {
-//         // Check if the student (nim) already selected the schedule (jadwalid)
-//         $exists = Irs::where('nim', $request->nim)
-//             ->where('jadwalid', $request->jadwalid)
-//             ->exists();
-
-//         // Return the result in JSON format
-//         return response()->json(['exists' => $exists]);
-//     } catch (\Exception $e) {
-//         // Handle any errors and return a 500 response
-//         return response()->json(['error' => 'An error occurred while checking the schedule.'], 500);
-//     }
-// }
-// public function cekJadwal(Request $request)
-// {
-//     // Validasi input nim dan jadwalid
-//     $request->validate([
-//         'nim' => 'required|string|max:14',
-//         'jadwalid' => 'required|string',
-//     ]);
-
-//     try {
-//         // Mengecek apakah mahasiswa dengan NIM sudah memilih jadwal tertentu
-//         $exists = Irs::where('nim', $request->nim)
-//             ->where('jadwalid', $request->jadwalid)
-//             ->exists();
-
-//         // Mengirimkan respon dalam bentuk JSON
-//         return response()->json(['exists' => $exists]);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'Terjadi kesalahan saat memeriksa jadwal.'], 500);
-//     }
-// }
 public function cekJadwal(Request $request)
 {
     $request->validate([
@@ -238,6 +153,4 @@ public function cekJadwal(Request $request)
         return response()->json(['error' => 'Terjadi kesalahan saat memeriksa jadwal.'], 500);
     }
 }
-
-
 }

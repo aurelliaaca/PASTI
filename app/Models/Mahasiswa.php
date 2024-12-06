@@ -26,8 +26,8 @@ class Mahasiswa extends Model
         'dosenwali'
     ];
 
-    public function irs()
+    public function jadwals()
 {
-    return $this->hasMany(Irs::class, 'nim', 'nim');
+    return $this->hasMany(Jadwal_mata_kuliah::class, 'kodemk', 'kode');
 }
 }
