@@ -26,7 +26,7 @@
         <span class="font-medium">Kembali</span>
     </a> -->
 
-    <div class="max-w-7xl mx-auto p-4 min-h-screen"> -->
+    <div class="max-w-7xl mx-auto p-4 min-h-screen">
         <div class="bg-white rounded-lg shadow p-6">
             <h1 class="text-2xl font-bold text-teal-800 mb-4">Daftar Mata Kuliah</h1>
             

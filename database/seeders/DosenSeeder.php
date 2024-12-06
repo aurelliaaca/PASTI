@@ -20,7 +20,8 @@ class DosenSeeder extends Seeder
                 'telp' => '085655433211',
                 'email' => 'kamaruddin@dosen.com',
                 'alamat' => 'Graha Estetika No. 75 Tembalang, Semarang',
-                'prodi' => 'Informatika'
+                // 'prodi' => 'Informatika' //aku comment dulu ya mau pake kodeprodi
+                'kodeprodi' => 'E' //belum disambungin ke tabel prodi
             ],
             // [
             //     'nama' => 'Azizah Salsabila, S.Kom., M.Kom.',
@@ -35,7 +36,8 @@ class DosenSeeder extends Seeder
                 'telp' => '087665433211',
                 'email' => 'priyo@dosen.com',
                 'alamat' => 'Jl. Setia Budi No. 88 Banyumanik, Semarang',
-                'prodi' => 'Informatika'
+                // 'prodi' => 'Informatika' //aku comment dulu ya mau pake kodeprodi
+                'kodeprodi' => 'E' //belum disambungin ke tabel prodi
             ],
             [
                 'nama' => 'Prof. Niken, S.Si., M.Kom.',
@@ -43,7 +45,8 @@ class DosenSeeder extends Seeder
                 'telp' => '0877640969800',
                 'email' => 'niken@dosen.com',
                 'alamat' => 'Jl. Gedangan No. 80 Ngaliyan, Semarang',
-                'prodi' => 'Informatika'
+                // 'prodi' => 'Informatika' //aku comment dulu ya mau pake kodeprodi
+                'kodeprodi' => 'A'  //belum disambungin ke tabel prodi
             ],
             // [
             //     'nama' => 'Dio Nicolin, S.Si., M.T.',

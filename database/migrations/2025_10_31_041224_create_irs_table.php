@@ -18,7 +18,8 @@ return new class extends Migration
             $table->boolean('status_verifikasi')->nullable();
             $table->timestamp('tanggal_disetujui')->nullable();
 
-            $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');
+            // $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');
+            //ca ini aku comment dulu karena tipe data jadwalid kita beda
         });
     }
 
