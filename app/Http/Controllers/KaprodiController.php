@@ -15,34 +15,85 @@ class KaprodiController extends Controller
         return view('user');
     }
 
-    public function buatJadwal(Request $request) {
-        // Fetch all the matakuliah (courses)
+    public function showPenjadwalanForm()
+    {
+        $jadwals = Jadwal_mata_kuliah::with(['ruang', 'matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
         $matakuliah = Matkul::all();
-
+        $ruangs = Ruangan::all();
         $dosen = Dosen::all();
 
-        $ruang = Ruangan::all();
-
-        // Pass matakuliah to the view
-        return view('kp_penjadwalan', compact('matakuliah', 'dosen', 'ruang'));
+        return view('kp_penjadwalan', compact('jadwals', 'matakuliah', 'ruangs', 'dosen'));
     }
 
-    public function getMatkul($kode) {
-        // Ambil data matakuliah berdasarkan kode yang dipilih
-        $matakuliah = Matkul::where('kode', $kode)->first();
+    public function storeJadwal(Request $request)
+    {
+        // Mendapatkan data user yang sedang login
+        $user = Auth::user();
+
+        // Mendapatkan kodeprodi dari dosen yang terkait dengan user (Kaprodi)
+        $kodeprodi = $user->dosen->kodeprodi;
         
-        // Jika matakuliah ditemukan, kirimkan data sebagai response JSON
-        if ($matakuliah) {
-            return response()->json([
-                'kode' => $matakuliah->kode,
-                'sks' => $matakuliah->sks,
-                'semester' => $matakuliah->semester,
-            ]);
+        $validator = Validator::make($request->all(), [
+            'mata_kuliah_kode' => 'required|exists:matakuliah,kode',
+            'hari' => 'required|string',
+            'jam_mulai' => 'required|date_format:H:i',
+            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+            'kelas' => 'required|string|max:5',
+            'ruang_id' => 'required|exists:ruangs,id',
+            'koordinator_nip' => 'required|exists:dosen,nip',
+            'pengampu1_nip' => 'nullable|exists:dosen,nip',
+            'pengampu2_nip' => 'nullable|exists:dosen,nip',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
         }
-    
-        // Jika tidak ditemukan, kirimkan response kosong
-        return response()->json([]);
+
+        $jadwal = new Jadwal_mata_kuliah();
+        $jadwal->mata_kuliah_kode = $request->mata_kuliah_kode;
+        $jadwal->hari = $request->hari;
+        $jadwal->jam_mulai = $request->jam_mulai;
+        $jadwal->jam_selesai = $request->jam_selesai;
+        $jadwal->kelas = $request->kelas;
+        $jadwal->ruang_id = $request->ruang_id;
+        $jadwal->koordinator_nip = $request->koordinator_nip;
+        $jadwal->pengampu1_nip = $request->pengampu1_nip;
+        $jadwal->pengampu2_nip = $request->pengampu2_nip;
+        $jadwal->status = 'belum disetujui'; // Default status
+
+        $jadwal->save();
+
+        return response()->json(['message' => 'Jadwal berhasil ditambahkan']);
     }
+
+    // public function buatJadwal(Request $request) {
+    //     // Fetch all the matakuliah (courses)
+    //     $matakuliah = Matkul::all();
+
+    //     $dosen = Dosen::all();
+
+    //     $ruang = Ruangan::all();
+
+    //     // Pass matakuliah to the view
+    //     return view('kp_penjadwalan', compact('matakuliah', 'dosen', 'ruang'));
+    // }
+
+    // public function getMatkul($kode) {
+    //     // Ambil data matakuliah berdasarkan kode yang dipilih
+    //     $matakuliah = Matkul::where('kode', $kode)->first();
+        
+    //     // Jika matakuliah ditemukan, kirimkan data sebagai response JSON
+    //     if ($matakuliah) {
+    //         return response()->json([
+    //             'kode' => $matakuliah->kode,
+    //             'sks' => $matakuliah->sks,
+    //             'semester' => $matakuliah->semester,
+    //         ]);
+    //     }
+    
+    //     // Jika tidak ditemukan, kirimkan response kosong
+    //     return response()->json([]);
+    // }
 
     public function matkul(){
         // Mengambil semua data mata kuliah

@@ -98,9 +98,11 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
     Route::get('/user2', [HomeController::class, 'user2'])->name('user2');
     //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
     Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
-    Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
+    // Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
+    Route::get('/kp_penjadwalan', [KaprodiController::class, 'showPenjadwalanForm'])->name('Penjadwalan');
+    Route::post('/kp_penjadwalan/tambah', [KaprodiController::class, 'storeJadwal']);
     // Route untuk mendapatkan detail matakuliah
-    Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
+    // Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
     Route::prefix('kp_matakuliah')->group(function () {
         Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
         Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');

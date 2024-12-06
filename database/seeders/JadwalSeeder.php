@@ -16,7 +16,7 @@ class JadwalSeeder extends Seeder
         $jadwal = [
             // PPL
             [
-                'jadwalid' => 'PPL_A_2024',
+                // 'jadwalid' => 'PPL_A_2024', //karena increment jadi tidak perlu diberi jadwalid
                 // nambahin kode prodi buat tabel persetujuan jadwal di dekan
                 'kodeprodi' => 'A',
                 'jam_mulai' => '07:00:00',
@@ -28,9 +28,10 @@ class JadwalSeeder extends Seeder
                 'koordinator' => 'Dio Nicolin, S.Si., M.T.',
                 'pengampu1' => 'Prof. Dr. Priyo, S.Si., M.T',
                 'pengampu2'=> 'Azizah Salsabila, S.Kom., M.Kom.',
+                'status' => 'belum disetujui' //menambahkan status persetujuan
             ],
             [
-                'jadwalid' => 'PPL_B_2024',
+                // 'jadwalid' => 'PPL_B_2024', //karena increment jadi tidak perlu diberi jadwalid
                 'kodeprodi' => 'A',
                 'jam_mulai' => '13:00:00',
                 'ruangan' => 'E101',
@@ -41,9 +42,10 @@ class JadwalSeeder extends Seeder
                 'koordinator' => 'Dio Nicolin, S.Si., M.T.',
                 'pengampu1' => 'Prof. Dr. Priyo, S.Si., M.T',
                 'pengampu2'=> 'Azizah Salsabila, S.Kom., M.Kom.',
+                'status' => 'belum disetujui' //menambahkan status persetujuan
             ],
             [
-                'jadwalid' => 'PPL_C_2024',
+                // 'jadwalid' => 'PPL_C_2024',
                 'kodeprodi' => 'A',
                 'jam_mulai' => '07:00:00',
                 'ruangan' => 'E101',
@@ -54,9 +56,10 @@ class JadwalSeeder extends Seeder
                 'koordinator' => 'Dio Nicolin, S.Si., M.T.',
                 'pengampu1' => 'Prof. Dr. Priyo, S.Si., M.T',
                 'pengampu2'=> 'Azizah Salsabila, S.Kom., M.Kom.',
+                'status' => 'belum disetujui' //menambahkan status persetujuan
             ],
             [
-                'jadwalid' => 'PPL_D_2024',
+                // 'jadwalid' => 'PPL_D_2024',
                 'kodeprodi' => 'A',
                 'jam_mulai' => '13:00:00',
                 'ruangan' => 'E101',
@@ -67,6 +70,7 @@ class JadwalSeeder extends Seeder
                 'koordinator' => 'Dio Nicolin, S.Si., M.T.',
                 'pengampu1' => 'Prof. Dr. Priyo, S.Si., M.T',
                 'pengampu2'=> 'Azizah Salsabila, S.Kom., M.Kom.',
+                'status' => 'belum disetujui' //menambahkan status persetujuan
             ],
             // // KTP
             // [
@@ -350,7 +354,7 @@ class JadwalSeeder extends Seeder
             //     'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
             // ],
             [
-                'jadwalid' => 'KWU_D_2024',
+                // 'jadwalid' => 'KWU_D_2024',
                 'kodeprodi' => 'B',
                 'jam_mulai' => '09:40:00',
                 'ruangan' => 'E103',
@@ -360,7 +364,8 @@ class JadwalSeeder extends Seeder
                 'kuota' => 50,
                 'koordinator' => 'Prof. Dimas Surya, S.Si., M.Kom.',
                 'pengampu1' => 'Rizky Pratama, S.Si., M.Kom.',
-                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.'
+                'pengampu2' => 'Prof. Dr. Priyo, S.Si., M.T.',
+                'status' => 'belum disetujui' //menambahkan status persetujuan
             ]
         ];
         DB::table('jadwal_mata_kuliah')->insert($jadwal);
