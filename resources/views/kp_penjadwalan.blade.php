@@ -19,9 +19,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
-    <div class="max-w-7xl mx-auto p-4 min-h-screen">
-        <div class="bg-white rounded-lg shadow p-6">
+<body class="min-h-screen bg-gray-100 overflow-hidden">
+    <div class="min-h-screen">
+        <div class="bg-white shadow min-h-screen p-6">
             <h1 class="text-2xl font-bold text-teal-800 mb-4">Jadwal Mata Kuliah</h1>
 
             <!-- Button untuk Menambah Jadwal -->
@@ -33,7 +33,7 @@
 
             <!-- Tabel Jadwal -->
             <div class="overflow-x-auto">
-                <table class="w-full border text-center table-auto">
+                <table class="min-w-full bg-white border border-gray-300 shadow-sm">
                     <thead class="bg-teal-700 text-white">
                         <tr>
                             <th class="border px-4 py-2">No</th>
@@ -62,9 +62,9 @@
                             <td class="border px-4 py-2">{{ $jadwal->hari }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kelas }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->ruang->ruang ?? 'Ruang tidak tersedia' }}</td>
+                            <td class="border px-4 py-2">{{ $jadwal->ruangan->ruang ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kuota }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->koordinator->nama ?? 'Koordinator tidak tersedia' }}</td>
+                            <td class="border px-4 py-2">{{ $jadwal->koordinator->nama ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->pengampu1->nama ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->pengampu2->nama ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->status }}</td>
@@ -157,9 +157,9 @@
                     <div class="flex flex-col">
                         <label for="ruang_id" class="font-medium">Ruang</label>
                         <select name="ruang_id" id="ruang_id" class="px-3 py-2 border rounded" required>
-                        <option value="" disabled selected>Pilih Ruang</option> <!-- Placeholder -->
+                            <option value="">Pilih Ruangan</option>
                             @foreach($ruangs as $ruang)
-                                <option value="{{ $ruang->id }}">{{ $ruang->ruang }}</option>
+                                <option value="{{ $ruang->ruang }}">{{ $ruang->ruang }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -256,11 +256,22 @@
         }
 
         // Form Validation & Ajax submission
-        $('#jadwalForm').submit(function(event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
+        $('#jadwalForm').submit(function(e) {
+            e.preventDefault();
+            var formData = {
+                kodemk: $('#kodemk').val(),
+                hari: $('#hari').val(),
+                jam_mulai: $('#jam_mulai').val(),
+                jam_selesai: $('#jam_selesai').val(),
+                kelas: $('#kelas').val(),
+                ruang_id: $('#ruang_id').val(),
+                koordinator_nip: $('#koordinator_nip').val(),
+                pengampu1_nip: $('#pengampu1_nip').val(),
+                pengampu2_nip: $('#pengampu2_nip').val(),
+                kuota: $('#kuota').val(),
+            };
             $.ajax({
-                url: '{{ route("jadwal.store") }}',
+                url: "{{ route('kp.jadwal.store') }}",
                 method: 'POST',
                 data: formData,
                 success: function(response) {
@@ -269,9 +280,20 @@
                 },
                 error: function(xhr, status, error) {
                     Swal.fire('Gagal', 'Ada kesalahan dalam menambahkan jadwal', 'error');
+                    console.log(xhr.responseText);
                 }
             });
         });
+
+        function editJadwal(id) {
+            $.get(`/jadwal/${id}/edit`, function(jadwal) {
+                $('#ruang_id').val(jadwal.ruang_id);
+                // ... kode lainnya ...
+            });
+        }
+
+        // Di console browser
+        console.log($('#jadwalForm').serialize());
     </script>
 </body>
 </html>
