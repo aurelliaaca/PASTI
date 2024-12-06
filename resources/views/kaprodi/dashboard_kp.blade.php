@@ -116,7 +116,7 @@
             </a>
 
             <!-- Penjadwalan Button -->
-            <a href="{{ route('Penjadwalan') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <a href="{{ url('/kp_penjadwalan') }}" class="bg-yellow-500 text-white px-16 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="far fa-calendar text-3xl"></i>
                 <span class="text-2xl">Penjadwalan</span>
             </a>

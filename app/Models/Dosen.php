@@ -11,7 +11,7 @@ class Dosen extends Model
 
     protected $table = 'dosen';
     protected $primaryKey = 'nip';
-    public $incrementing = false; // Because 'nip' is not auto-incrementing
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -20,8 +20,7 @@ class Dosen extends Model
         'telp',
         'email',
         'alamat',
-        // 'prodi' //ini aku comment dulu karena mau pake kodeprodi ya
-        'kodeprodi' //ini belum aku sambungin sama tabel prodi
+        'kodeprodi'
     ];
 
     public function dekan()
@@ -41,6 +40,20 @@ class Dosen extends Model
         return $this->belongsTo(Mahasiswa::class, 'dosenwali', 'nip');
     }
 
+    public function jadwalsKoordinator()
+    {
+        return $this->hasMany(Jadwal_mata_kuliah::class, 'koordinator_nip', 'nip');
+    }
+
+    public function jadwalsPengampu1()
+    {
+        return $this->hasMany(Jadwal_mata_kuliah::class, 'pengampu1_nip', 'nip');
+    }
+
+    public function jadwalsPengampu2()
+    {
+        return $this->hasMany(Jadwal_mata_kuliah::class, 'pengampu2_nip', 'nip');
+    }
     // public function prodi()
     // {
     // return $this->belongsTo(Prodi::class, 'kodeprodi'); // memastikan ada hubungan dengan model Prodi
