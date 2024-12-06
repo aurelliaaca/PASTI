@@ -44,6 +44,7 @@
                             <th class="border px-4 py-2">Jam</th>
                             <th class="border px-4 py-2">Kelas</th>
                             <th class="border px-4 py-2">Ruang</th>
+                            <th class="border px-4 py-2">Kuota</th>
                             <th class="border px-4 py-2">Koordinator</th>
                             <th class="border px-4 py-2">Pengampu 1</th>
                             <th class="border px-4 py-2">Pengampu 2</th>
@@ -62,6 +63,7 @@
                             <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kelas }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->ruang->ruang ?? 'Ruang tidak tersedia' }}</td>
+                            <td class="border px-4 py-2">{{ $jadwal->kuota }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->koordinator->nama ?? 'Koordinator tidak tersedia' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->pengampu1->nama ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->pengampu2->nama ?? '-' }}</td>
@@ -163,6 +165,11 @@
                     </div>
 
                     <div class="flex flex-col">
+                        <label for="kuota" class="font-medium">Kuota</label>
+                        <input type="number" name="kuota" id="kuota" class="px-3 py-2 border rounded" required>
+                    </div>
+
+                    <div class="flex flex-col">
                         <label for="koordinator_nip" class="font-medium">Koordinator</label>
                         <select name="koordinator_nip" id="koordinator_nip" class="px-3 py-2 border rounded" required>
                         <option value="" disabled selected>Pilih Koordinator</option> <!-- Placeholder -->
@@ -204,16 +211,40 @@
     <script>
         // Menangani event change pada select mata kuliah
         $('#mata_kuliah_kode').change(function() {
-        var selectedOption = $(this).find('option:selected');
-        var kode = selectedOption.data('kode');
-        var sks = selectedOption.data('sks');
-        var semester = selectedOption.data('semester');
+            var selectedOption = $(this).find('option:selected');
+            var kode = selectedOption.data('kode');
+            var sks = selectedOption.data('sks');
+            var semester = selectedOption.data('semester');
 
-        // Menampilkan data sesuai dengan mata kuliah yang dipilih
-        $('#kode').val(kode);
-        $('#sks').val(sks);
-        $('#semester').val(semester);
+            // Menampilkan data sesuai dengan mata kuliah yang dipilih
+            $('#kode').val(kode);
+            $('#sks').val(sks);
+            $('#semester').val(semester);
+
+            // Menghitung jam selesai berdasarkan SKS
+            calculateEndTime(sks);
         });
+
+        function calculateEndTime(sks) {
+            var jamMulai = $('#jam_mulai').val();
+            if (jamMulai && sks) {
+                var startTime = new Date("1970-01-01T" + jamMulai + ":00"); // Menambahkan tanggal agar dapat diproses sebagai waktu
+                var duration = sks * 50; // 1 SKS = 50 menit
+                startTime.setMinutes(startTime.getMinutes() + duration); // Menambahkan waktu durasi ke waktu mulai
+
+                // Format waktu selesai dalam format HH:mm
+                var hours = startTime.getHours().toString().padStart(2, '0');
+                var minutes = startTime.getMinutes().toString().padStart(2, '0');
+                $('#jam_selesai').val(hours + ':' + minutes); // Menampilkan jam selesai pada field
+            }
+        }
+
+        // Menangani perubahan pada jam_mulai atau sks
+        $('#jam_mulai, #sks').change(function() {
+            var sks = $('#sks').val();
+            calculateEndTime(sks); // Hitung jam selesai ketika jam_mulai atau sks berubah
+        });
+
         // Show Modal
         function showTambahModal() {
             document.getElementById('tambahModal').classList.remove('hidden');

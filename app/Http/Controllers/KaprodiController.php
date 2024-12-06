@@ -7,6 +7,7 @@ use App\Models\Matkul;
 use App\Models\Ruangan;
 use App\Models\Dosen;
 use App\Models\Jadwal_mata_kuliah;
+use App\Models\PlottingRuang;
 
 
 class KaprodiController extends Controller
@@ -19,10 +20,10 @@ class KaprodiController extends Controller
     {
         $jadwals = Jadwal_mata_kuliah::with(['ruang', 'matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
         $matakuliah = Matkul::all();
-        $ruangs = Ruangan::all();
+        $ruang = PlottingRuang::all();
         $dosen = Dosen::all();
 
-        return view('kp_penjadwalan', compact('jadwals', 'matakuliah', 'ruangs', 'dosen'));
+        return view('kp_penjadwalan', compact('jadwals', 'matakuliah', 'ruang', 'dosen'));
     }
 
     public function storeJadwal(Request $request)
@@ -39,10 +40,11 @@ class KaprodiController extends Controller
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
             'kelas' => 'required|string|max:5',
-            'ruang_id' => 'required|exists:ruangs,id',
+            'ruang_id' => 'required|exists:ruang,id',
             'koordinator_nip' => 'required|exists:dosen,nip',
             'pengampu1_nip' => 'nullable|exists:dosen,nip',
             'pengampu2_nip' => 'nullable|exists:dosen,nip',
+            'kuota' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -60,6 +62,9 @@ class KaprodiController extends Controller
         $jadwal->pengampu1_nip = $request->pengampu1_nip;
         $jadwal->pengampu2_nip = $request->pengampu2_nip;
         $jadwal->status = 'belum disetujui'; // Default status
+        $jadwal->kodeprodi = $kodeprodi;
+        $jadwal->kuota = $request->kuota;
+
 
         $jadwal->save();
 
