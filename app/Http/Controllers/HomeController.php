@@ -28,9 +28,15 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-    // Ambil data mahasiswa yang terhubung dengan user yang sedang login
-        $dosens = Dosen::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
+        // Ambil data mahasiswa yang terhubung dengan user yang sedang login
+        //$dosens = Dosen::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
         $users = User::all();
+
+        // Ambil data program studi yang terkait dengan dosen
+        $dosens = Dosen::join('programstudi', 'dosen.kodeprodi', '=', 'programstudi.kodeprodi')
+        ->where('dosen.email', $user->email) // Pastikan hanya dosen yang sedang login
+        ->select('dosen.*', 'programstudi.namaprodi as nama_prodi') // Ambil nama prodi
+        ->get();
             return view('dosen.dashboard', compact('users','dosens')); // Kirim data ke view
     }
 

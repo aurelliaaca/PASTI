@@ -108,12 +108,12 @@
       </form>
 
       <!-- Tombol Setujui -->
-      <form action="{{ route('setujuiIRS') }}" method="POST" class="w-full">
-          @csrf
-          <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
-          <button type="submit" class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full">
-              <span class="text-base font-semibold italic">SETUJUI</span>
-          </button>
+      <form id="approvalForm" action="{{ route('setujuiIRS') }}" method="POST" class="w-full">
+        @csrf
+        <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+        <button type="button" id="approvalButton" class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full">
+          <span class="text-base font-semibold italic">SETUJUI</span>
+        </button>
       </form>
     </div>
   </div>
@@ -222,6 +222,14 @@
 
   </div>
 </div>
+  <!-- Pop-up Modal -->
+  <div id="popupModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white rounded-lg p-6 w-96 text-center">
+      <h2 class="text-lg font-bold mb-4">IRS Berhasil Disetujui</h2>
+      <p class="text-gray-700 mb-4">Data IRS mahasiswa telah berhasil disetujui.</p>
+      <button id="closePopup" class="bg-amber-400 text-white py-2 px-4 rounded-lg hover:bg-amber-500">Tutup</button>
+    </div>
+  </div>
 </div>
 
 
@@ -287,6 +295,23 @@
         });
     });
   });
+
+  document.getElementById('approvalButton').addEventListener('click', function () {
+      // Tampilkan pop-up
+      const popupModal = document.getElementById('popupModal');
+      popupModal.classList.remove('hidden');
+
+      // Submit form setelah beberapa detik (opsional)
+      setTimeout(() => {
+        document.getElementById('approvalForm').submit();
+      }, 2000);
+    });
+
+    document.getElementById('closePopup').addEventListener('click', function () {
+      // Sembunyikan pop-up
+      const popupModal = document.getElementById('popupModal');
+      popupModal.classList.add('hidden');
+    });
 </script>
 
 </html>
