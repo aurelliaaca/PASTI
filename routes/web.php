@@ -34,6 +34,7 @@ require __DIR__.'/auth.php';
 // Grup untuk Mahasiswa
 Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('mahasiswa/dashboard', [HomeController::class, 'dashboardMahasiswa']);
+    Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'bebanSKS']);
     Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMK'])->name('Pengisian_IRS');
     Route::get('/get-jadwal-mk/{kodeMk}', [MahasiswaController::class, 'getJadwalByMatkul']);
     Route::get('/get-jadwal-mk/{courseId}', [MahasiswaController::class, 'getJadwalByMatkul']);
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::post('/cek-jadwal', [MahasiswaController::class, 'cekJadwal']);
     Route::post('/store-jadwal', [MahasiswaController::class, 'store']);
     Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal']);
+
+    
+
 // Mengambil data jadwal menggunakan AJAX berdasarkan nim dan smt
 
 });

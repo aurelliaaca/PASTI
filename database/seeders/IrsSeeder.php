@@ -14,9 +14,9 @@ class IrsSeeder extends Seeder
     {
         $irs = [
             [
-                'jadwalid' => 'PPL_A_2024',
+                'jadwalid' => '1',
                 'nim' => '24060122140168',
-                'smt' => '3'
+                'smt' => '3'     
             ],
         ];
 

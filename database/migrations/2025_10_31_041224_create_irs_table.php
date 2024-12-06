@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('irs', function (Blueprint $table) {
-            $table->string('jadwalid');
+            $table->integer('jadwalid');
             $table->string('nim', 14);
             $table->integer('smt');
-            $table->boolean('status_verifikasi')->nullable();
+            $table->enum('status_verifikasi',['Belum disetujui', 'Diproses', 'Sudah disetujui'])->default('Belum disetujui');
             $table->timestamp('tanggal_disetujui')->nullable();
 
             // $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');

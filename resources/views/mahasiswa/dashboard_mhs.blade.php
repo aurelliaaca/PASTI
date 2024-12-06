@@ -73,7 +73,7 @@
                 <div class="col-span-2 text-white flex items-center p-0 pt-1 w-full rounded-lg">
                     <div class="flex flex-grow justify-center items-center flex-col">
                         <p class="font-semibold text-center">IPK</p>
-                        <p class="font-semibold text-center text-2xl">3,67</p>
+                        <p class="font-semibold text-center text-2xl">{{ $mhs->IPK }}</p>
                     </div>
                     <div class="flex flex-grow justify-center items-center flex-col">
                         <p class="font-semibold text-center">SKS</p>

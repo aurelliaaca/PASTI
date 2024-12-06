@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('nim', 14)->primary();
             $table->integer('smt');
+            $table->decimal('IPK', 3, 2)->nullable();
+            $table->decimal('IPS_Sebelumnya', 3, 2)->nullable();            
             $table->string('telp', 15);
             $table->string('email', 50);
             $table->string('alamat', 100);

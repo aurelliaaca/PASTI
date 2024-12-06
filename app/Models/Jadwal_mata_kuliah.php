@@ -64,5 +64,10 @@ class Jadwal_mata_kuliah extends Model
     {
         return $this->belongsTo(Dosen::class, 'pengampu2_nip', 'nip');
     }
+
+    public function irs()
+    {
+        return $this->hasMany(Irs::class, 'jadwalid', 'jadwalid');
+    }
 }
 

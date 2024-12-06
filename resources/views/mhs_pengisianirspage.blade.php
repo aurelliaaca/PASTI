@@ -84,17 +84,22 @@
                 <div class="flex">
                     <p class="text-sm align-top  w-[300px] font-semibold">IPK</p>
                     <p class="text-sm align-top  w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">3,67</p>
+                    <p class="text-sm align-middle w-full">{{ $mahasiswa->IPK }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-sm align-top w-[300px] font-semibold">IPS</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">3,75</p>
+                    <p class="text-sm align-middle w-full">{{ $mahasiswa->IPS_Sebelumnya }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-sm align-top w-[300px] font-semibold">MAX BEBAN SKS</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">24</p>
+                    <p class="text-sm align-middle w-full">{{ $sksMax }}</p>
+                </div>
+                <div class="flex">
+                    <p class="text-sm align-top w-[300px] font-semibold">SKS TERPILIH</p>
+                    <p class="text-sm align-top w-[20px] font-semibold">:</p>
+                    <p class="text-sm align-middle w-full">{{ $sksTerpilih }}</p>
                 </div>
                 </div>
             </div>
@@ -131,10 +136,10 @@
                     <table class="table-auto w-full text-center rounded-lg border-collapse">
                         <thead>
                             <tr class="bg-teal-100/80">
+                            <th class="px-4 py-2 border-r border-teal-500">Hari</th>
                                 <th class="px-4 py-2 border-r border-teal-500">Nama Mata Kuliah</th>
                                 <th class="px-4 py-2 border-r border-teal-500">Kode</th>
                                 <th class="px-4 py-2 border-r border-teal-500">SKS</th>
-                                <th class="px-4 py-2 border-r border-teal-500">Hari</th>
                                 <th class="px-4 py-2 border-r border-teal-500">Jam</th>
                                 <th class="px-4 py-2 border-r border-teal-500">Kelas</th>
                                 <th class="px-4 py-2">Aksi</th>
@@ -158,22 +163,52 @@
         <div id="content-jadwal" class="p-4">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-xl font-semibold text-teal-800 mb-0">ISIAN RENCANA MAHASISWA</h1>
-            </div>
+                    <div class="flex items-center gap-2">
+                        <button id="reset-btn" class="bg-amber-400 text-white p-2 px-4 rounded-lg">
+                            <span class="text-base font-semibold italic">RESET</span>
+                        </button>
+                        <button id="ajukan-btn" class="bg-teal-600 text-white p-2 px-4 rounded-lg">
+                            <span class="text-base font-semibold italic">AJUKAN</span>
+                        </button>
+                    </div>
+                </div>
             <div class="border rounded-md">
                 <div class="table-responsive p-2 table-striped">
-                    <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
                     <thead>
-                            <tr>
-                                <th class="font-bold" style="width: 20%;">Nama Mata Kuliah</th>
-                                <th class="font-bold" style="width: 10%;">Kode</th>
-                                <th class="font-bold" style="width: 10%;">SKS</th>
-                                <th class="font-bold" style="width: 15%;">Hari</th>
-                                <th class="font-bold" style="width: 15%;">Jam</th>
-                                <th class="font-bold" style="width: 15%;">Kelas</th>
-                            </tr>
-                        </thead>
-                        <tbody id="jadwalTableBody">
-                        <!-- Jadwal akan ditampilkan di sini setelah pemilihan mata kuliah -->
+                        <tr>
+                            <th class="font-bold px-4 py-2" style="width: 15%;">Hari</th>
+                            <th class="font-bold px-4 py-2" style="width: 20%;">Nama Mata Kuliah</th>
+                            <th class="font-bold px-4 py-2" style="width: 10%;">Kode</th>
+                            <th class="font-bold px-4 py-2" style="width: 10%;">SKS</th>
+                            <th class="font-bold px-4 py-2" style="width: 15%;">Jam</th>
+                            <th class="font-bold px-4 py-2" style="width: 15%;">Kelas</th>
+                            <th class="font-bold px-4 py-2" style="width: 15%;">Status</th>
+                        </tr>
+                    </thead>
+                        <tbody id="irsTableBody">
+                            @php
+                                // Grouping irsTable by 'hari'
+                                $groupedByHari = $irsTable->groupBy('hari');
+                            @endphp
+
+                            @foreach ($groupedByHari as $hari => $irsList)
+                                @foreach ($irsList as $index => $irs)
+                                    <tr class="bg-white">
+                                        @if ($index == 0)
+                                            <!-- Rowspan untuk Hari -->
+                                            <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
+                                        @endif
+                                        <!-- Data untuk mata kuliah -->
+                                        <td class="border px-4 py-2">{{ $irs->nama }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->kodemk }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->sks }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->jam_mulai }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->kelas }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -256,22 +291,23 @@ document.getElementById('matkul-dropdown').addEventListener('change', function (
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
+                        
                         // Tambahkan setiap jadwal ke tabel
                         data.forEach(jadwal => {
                             const baris = document.createElement('tr');
                             baris.classList.add('bg-white', `row-${kodeMatkul}`); // Tambahkan kelas unik untuk mata kuliah
 
                             baris.innerHTML = `
+                                <td class="border px-4 py-2">${jadwal.hari}</td>
                                 <td class="border px-4 py-2">${jadwal.matkul.nama}</td>
                                 <td class="border px-4 py-2">${jadwal.kodemk}</td>
                                 <td class="border px-4 py-2">${jadwal.matkul.sks}</td>
-                                <td class="border px-4 py-2">${jadwal.hari}</td>
                                 <td class="border px-4 py-2">${jadwal.jam_mulai}</td>
                                 <td class="border px-4 py-2">${jadwal.kelas}</td>
                                 <input type="text" id="nim" value="{{ $mahasiswa->nim }}" class="hidden">
                                 <input type="text" id="smt" value="{{ $mahasiswa->smt }}" class="hidden">
                                 <td class="border px-4 py-2">
-                                    <button class="bg-teal-500 text-white px-4 py-1 rounded" onclick="pilihJadwal('${jadwal.jadwalid}')">Pilih</button>
+                                    <button class="bg-teal-500 text-white px-4 py-1 rounded" onclick="pilihJadwal('${jadwal.jadwalid}', this)">Pilih</button>
                                 </td>
                             `;
                             tabelJadwal.appendChild(baris);
@@ -294,17 +330,7 @@ document.getElementById('matkul-dropdown').addEventListener('change', function (
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Menambahkan event listener ke semua tombol "Pilih"
-    document.querySelectorAll('button[data-jadwalid]').forEach(button => {
-        button.addEventListener('click', function() {
-            const jadwalid = this.getAttribute('data-jadwalid');
-            pilihJadwal(jadwalid);
-        });
-    });
-});
-
-function pilihJadwal(jadwalid) {
+function pilihJadwal(jadwalid, button) {
     const nim = document.getElementById('nim').value;  // Ambil nilai NIM
     const smt = document.getElementById('smt').value;  // Ambil nilai Semester
 
@@ -324,8 +350,12 @@ function pilihJadwal(jadwalid) {
             _token: $('meta[name="csrf-token"]').attr('content'),
         },
         success: function(response) {
+            console.log(response);  // Periksa response di console
+
             if (response.exists) {
                 alert('Anda sudah memilih mata kuliah ini.');
+            } else if (response.sks_over_limit) {
+                alert('Anda sudah melebihi batas SKS yang dapat diambil.');
             } else {
                 // Lanjutkan untuk menyimpan jadwal
                 $.ajax({
@@ -340,7 +370,7 @@ function pilihJadwal(jadwalid) {
                     success: function(response) {
                         if (response.success) {
                             alert('Jadwal berhasil dipilih!');
-                            // Update UI sesuai dengan jadwal yang dipilih
+                            button.textContent = 'Batalkan'; // Ganti teks tombol menjadi "Batalkan"
                         } else {
                             alert('Terjadi kesalahan saat memilih jadwal.');
                         }
@@ -351,8 +381,18 @@ function pilihJadwal(jadwalid) {
                 });
             }
         },
-        error: function() {
-            alert('Terjadi kesalahan saat memeriksa jadwal.');
+        error: function(xhr) {
+            // Tangani error dengan response dari server (status 400 atau lainnya)
+            if (xhr.status === 400) {
+                const response = xhr.responseJSON;
+                if (response.sks_over_limit) {
+                    alert('Anda sudah melebihi batas SKS yang dapat diambil.');
+                } else {
+                    alert('Terjadi kesalahan saat memeriksa jadwal.');
+                }
+            } else {
+                alert('Terjadi kesalahan saat memeriksa jadwal.');
+            }
         }
     });
 }

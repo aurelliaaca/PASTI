@@ -31,7 +31,7 @@ class Irs extends Model
     }
 
     public function jadwal()
-{
-    return $this->belongsTo(Jadwal_mata_kuliah::class, 'jadwalid');
-}
+    {
+        return $this->belongsTo(Jadwal_mata_kuliah::class, 'jadwalid', 'jadwalid');
+    }
 }
