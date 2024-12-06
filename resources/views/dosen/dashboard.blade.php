@@ -54,7 +54,7 @@
                 <div class="flex">
                     <p class="w-[140px] font-semibold">PRODI</p>
                     <p class="w-[20px] font-semibold">:</p>
-                    <p class="w-full">{{ $dosen->prodi }}</p>
+                    <p class="w-full">{{ $dosen->nama_prodi }}</p>
                 </div>
                 </div>
             </div>

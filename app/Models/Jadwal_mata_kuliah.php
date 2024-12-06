@@ -18,16 +18,20 @@ class Jadwal_mata_kuliah extends Model
         'jadwalid',
         // nambahin kode prodi buat tabel persetujuan jadwal di dekan
         'kodeprodi',
+        'kodemk',
+        'hari',
         'jam_mulai',
-        'ruangan',
+        'jam_selesai',
+        'ruang_id',
         'kelas',
         'hari',
         'kodemk',
         'kuota',
-        'koordinator',
-        'pengampu1',
-        'pengampu2',
-        'status' //menambahkan status persetujuan
+        'koordinator_nip',
+        'pengampu1_nip',
+        'pengampu2_nip',
+        'kuota',
+        'status'
     ];
 
     public function prodi()
@@ -42,9 +46,9 @@ class Jadwal_mata_kuliah extends Model
     }
 
     //relasi dengan ruang
-    public function ruang()
+    public function ruangan()
     {
-        return $this->belongsTo(Ruangan::class, 'ruang_id', 'id');
+        return $this->belongsTo(Ruangan::class, 'ruang_id', 'ruang');
     }
 
     //relasi dengan dosen
