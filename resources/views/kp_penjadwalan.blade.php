@@ -145,12 +145,12 @@
                     <div class="flex flex-col">
                         <label for="kelas" class="font-medium">Kelas</label>
                         <select name="kelas" id="kelas" class="px-3 py-2 border rounded" required>
-                        <option value="" disabled selected>Pilih Kelas</option> <!-- Placeholder -->
-                            <option value="Kelas A">Kelas A</option>
-                            <option value="Kelas B">Kelas B</option>
-                            <option value="Kelas C">Kelas C</option>
-                            <option value="Kelas D">Kelas D</option>
-                            <option value="Kelas E">Kelas E</option>
+                            <option value="" disabled selected>Pilih Kelas</option>
+                            <option value="A">Kelas A</option>
+                            <option value="B">Kelas B</option>
+                            <option value="C">Kelas C</option>
+                            <option value="D">Kelas D</option>
+                            <option value="E">Kelas E</option>
                         </select>
                     </div>
 
@@ -259,7 +259,7 @@
         $('#jadwalForm').submit(function(e) {
             e.preventDefault();
             var formData = {
-                kodemk: $('#kodemk').val(),
+                kodemk: $('#mata_kuliah_kode').val(),
                 hari: $('#hari').val(),
                 jam_mulai: $('#jam_mulai').val(),
                 jam_selesai: $('#jam_selesai').val(),
@@ -269,18 +269,29 @@
                 pengampu1_nip: $('#pengampu1_nip').val(),
                 pengampu2_nip: $('#pengampu2_nip').val(),
                 kuota: $('#kuota').val(),
+                _token: $('meta[name="csrf-token"]').attr('content')
             };
+
             $.ajax({
                 url: "{{ route('kp.jadwal.store') }}",
                 method: 'POST',
                 data: formData,
+                dataType: 'json',
                 success: function(response) {
-                    Swal.fire('Berhasil', 'Jadwal berhasil ditambahkan', 'success');
-                    location.reload();
+                    Swal.fire('Berhasil', 'Jadwal berhasil ditambahkan', 'success')
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
                 },
                 error: function(xhr, status, error) {
-                    Swal.fire('Gagal', 'Ada kesalahan dalam menambahkan jadwal', 'error');
-                    console.log(xhr.responseText);
+                    let errorMessage = 'Ada kesalahan dalam menambahkan jadwal';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    Swal.fire('Gagal', errorMessage, 'error');
+                    console.error(xhr.responseText);
                 }
             });
         });

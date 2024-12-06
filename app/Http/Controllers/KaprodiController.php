@@ -31,10 +31,21 @@ class KaprodiController extends Controller
     public function storeJadwal(Request $request)
     {
         try {
+            $user = Auth::user();
+            $dosen = $user->dosen;
+            
+            if (!$dosen) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Akses ditolak. Anda harus login sebagai dosen!'
+                ], 403);
+            }
+
             $validatedData = $request->validate([
                 'kodemk' => 'required|exists:matakuliah,kode',
                 'hari' => 'required|string',
                 'jam_mulai' => 'required',
+                'jam_selesai' => 'required',
                 'kelas' => 'required|string',
                 'ruang_id' => 'required',
                 'koordinator_nip' => 'required',
@@ -43,28 +54,42 @@ class KaprodiController extends Controller
                 'kuota' => 'required|integer',
             ]);
 
-            $user = Auth::user();
+            $kelasValue = substr($request->kelas, -1);
 
-            Jadwal_mata_kuliah::create([
-                'kodeprodi' => $user->kodeprodi,
+            $jadwalData = [
+                'kodeprodi' => $dosen->kodeprodi,
                 'kodemk' => $request->kodemk,
                 'hari' => $request->hari,
                 'jam_mulai' => $request->jam_mulai,
                 'jam_selesai' => $request->jam_selesai,
-                'kelas' => $request->kelas,
+                'kelas' => $kelasValue,
                 'ruang_id' => $request->ruang_id,
                 'koordinator_nip' => $request->koordinator_nip,
                 'pengampu1_nip' => $request->pengampu1_nip,
                 'pengampu2_nip' => $request->pengampu2_nip,
                 'kuota' => $request->kuota,
                 'status' => 'belum disetujui',
-            ]);
+            ];
 
-            return response()->json(['message' => 'Jadwal berhasil ditambahkan']);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            \Log::info('Data yang akan disimpan:', $jadwalData);
+
+            $jadwal = Jadwal_mata_kuliah::create($jadwalData);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Jadwal berhasil ditambahkan'
+            ]);
+            
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Terjadi kesalahan saat menyimpan data'], 500);
+            \Log::error('Error dalam menyimpan jadwal:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
+            ], 500);
         }
     }
 
