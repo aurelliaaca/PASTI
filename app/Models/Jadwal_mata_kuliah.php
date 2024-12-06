@@ -27,6 +27,7 @@ class Jadwal_mata_kuliah extends Model
         'koordinator',
         'pengampu1',
         'pengampu2',
+        'status' //menambahkan status persetujuan
     ];
 
     public function prodi()
@@ -38,6 +39,30 @@ class Jadwal_mata_kuliah extends Model
     public function matkul()
     {
         return $this->belongsTo(Matkul::class, 'kodemk', 'kode');
+    }
+
+    //relasi dengan ruang
+    public function ruang()
+    {
+        return $this->belongsTo(Ruangan::class, 'ruang_id', 'id');
+    }
+
+    //relasi dengan dosen
+    public function koordinator()
+    {
+        return $this->belongsTo(Dosen::class, 'koordinator_nip', 'nip');
+    }
+
+    //relasi dengan dosen
+    public function pengampu1()
+    {
+        return $this->belongsTo(Dosen::class, 'pengampu1_nip', 'nip');
+    }
+
+    //relasi dengan dosen
+    public function pengampu2()
+    {
+        return $this->belongsTo(Dosen::class, 'pengampu2_nip', 'nip');
     }
 }
 

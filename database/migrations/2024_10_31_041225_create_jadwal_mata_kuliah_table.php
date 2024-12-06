@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_mata_kuliah', function (Blueprint $table) {
-            $table->string('jadwalid', 20)->primary();
+            // $table->string('jadwalid', 20)->primary();
+            // Mengubah jadwalid menjadi auto increment primary key
+            $table->bigIncrements('jadwalid'); // Auto increment primary key
         // nambahin kode prodi buat tabel persetujuan jadwal di dekan
             $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
@@ -27,6 +29,8 @@ return new class extends Migration
             $table->string('pengampu2')->index('jadwal_pengampu2');
 
             $table->foreign('kodemk')->references('kode')->on('matakuliah')->ondelete('cascade');
+            // Menambahkan kolom `status` dengan default value 'belum disetujui'
+            $table->enum('status', ['belum disetujui', 'diproses', 'sudah disetujui'])->default('belum disetujui');
             // $table->foreign('koordinator')->references('nama')->on('dosen')->ondelete('cascade');
             // $table->foreign('pengampu1')->references('nama')->on('dosen')->ondelete('cascade');
             // $table->foreign('pengampu2')->references('nama')->on('dosen')->ondelete('cascade');

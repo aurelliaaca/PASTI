@@ -20,7 +20,8 @@ class Dosen extends Model
         'telp',
         'email',
         'alamat',
-        'prodi'
+        // 'prodi' //ini aku comment dulu karena mau pake kodeprodi ya
+        'kodeprodi' //ini belum aku sambungin sama tabel prodi
     ];
 
     public function dekan()
@@ -39,4 +40,10 @@ class Dosen extends Model
     {
         return $this->belongsTo(Mahasiswa::class, 'dosenwali', 'nip');
     }
+
+    // public function prodi()
+    // {
+    // return $this->belongsTo(Prodi::class, 'kodeprodi'); // memastikan ada hubungan dengan model Prodi
+    // }
+
 }
