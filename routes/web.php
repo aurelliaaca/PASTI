@@ -102,8 +102,11 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
     //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
     Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
     // Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
-    Route::get('/kp_penjadwalan', [KaprodiController::class, 'showPenjadwalanForm'])->name('Penjadwalan');
-    Route::post('/kp_penjadwalan/tambah', [KaprodiController::class, 'storeJadwal']);
+    Route::get('/kp_penjadwalan', [KaprodiController::class, 'showPenjadwalanForm'])->name('penjadwalan');
+    Route::post('/kp_penjadwalan/store', [KaprodiController::class, 'store'])->name('kp.jadwal.store');
+    Route::put('/kp_penjadwalan/{id}', [KaprodiController::class, 'update'])->name('kp.jadwal.update');
+    Route::delete('/kp_penjadwalan/{id}', [KaprodiController::class, 'destroy'])->name('kp.jadwal.delete');
+    Route::put('/kp_penjadwalan/ajukan/{id}', [KaprodiController::class, 'ajukan'])->name('kp.jadwal.ajukan');
     // Route untuk mendapatkan detail matakuliah
     // Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
     Route::prefix('kp_matakuliah')->group(function () {
@@ -263,3 +266,8 @@ Route::get('/profile', function() {
 //     Auth::logout();
 //     return redirect()->route('login');
 // })->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/jadwal/store', [KaprodiController::class, 'storeJadwal'])
+        ->name('kp.jadwal.store');
+});

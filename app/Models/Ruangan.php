@@ -12,10 +12,15 @@ class Ruangan extends Model
         'gedung',
         'ruang',
         'kapasitas'
-    ];
+    ];   
 
     public function plottingRuangs()
     {
         return $this->hasMany(PlottingRuang::class, 'ruangan_id');
+    }
+
+    public function jadwal_mata_kuliah()
+    {
+        return $this->hasMany(Jadwal_mata_kuliah::class, 'ruang_id');
     }
 }

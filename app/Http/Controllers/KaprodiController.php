@@ -7,7 +7,9 @@ use App\Models\Matkul;
 use App\Models\Ruangan;
 use App\Models\Dosen;
 use App\Models\Jadwal_mata_kuliah;
-use App\Models\PlottingRuang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 
 class KaprodiController extends Controller
@@ -18,57 +20,77 @@ class KaprodiController extends Controller
 
     public function showPenjadwalanForm()
     {
-        $jadwals = Jadwal_mata_kuliah::with(['ruang', 'matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
+        $jadwals = Jadwal_mata_kuliah::with(['ruangan','matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
+        $ruangs = Ruangan::all();
         $matakuliah = Matkul::all();
-        $ruang = PlottingRuang::all();
         $dosen = Dosen::all();
 
-        return view('kp_penjadwalan', compact('jadwals', 'matakuliah', 'ruang', 'dosen'));
+        return view('kp_penjadwalan', compact('jadwals', 'ruangs', 'matakuliah', 'dosen'));
     }
 
     public function storeJadwal(Request $request)
     {
-        // Mendapatkan data user yang sedang login
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
+            $dosen = $user->dosen;
+            
+            if (!$dosen) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Akses ditolak. Anda harus login sebagai dosen!'
+                ], 403);
+            }
 
-        // Mendapatkan kodeprodi dari dosen yang terkait dengan user (Kaprodi)
-        $kodeprodi = $user->dosen->kodeprodi;
-        
-        $validator = Validator::make($request->all(), [
-            'mata_kuliah_kode' => 'required|exists:matakuliah,kode',
-            'hari' => 'required|string',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
-            'kelas' => 'required|string|max:5',
-            'ruang_id' => 'required|exists:ruang,id',
-            'koordinator_nip' => 'required|exists:dosen,nip',
-            'pengampu1_nip' => 'nullable|exists:dosen,nip',
-            'pengampu2_nip' => 'nullable|exists:dosen,nip',
-            'kuota' => 'required|integer'
-        ]);
+            $validatedData = $request->validate([
+                'kodemk' => 'required|exists:matakuliah,kode',
+                'hari' => 'required|string',
+                'jam_mulai' => 'required',
+                'jam_selesai' => 'required',
+                'kelas' => 'required|string',
+                'ruang_id' => 'required',
+                'koordinator_nip' => 'required',
+                'pengampu1_nip' => 'nullable',
+                'pengampu2_nip' => 'nullable',
+                'kuota' => 'required|integer',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+            $kelasValue = substr($request->kelas, -1);
+
+            $jadwalData = [
+                'kodeprodi' => $dosen->kodeprodi,
+                'kodemk' => $request->kodemk,
+                'hari' => $request->hari,
+                'jam_mulai' => $request->jam_mulai,
+                'jam_selesai' => $request->jam_selesai,
+                'kelas' => $kelasValue,
+                'ruang_id' => $request->ruang_id,
+                'koordinator_nip' => $request->koordinator_nip,
+                'pengampu1_nip' => $request->pengampu1_nip,
+                'pengampu2_nip' => $request->pengampu2_nip,
+                'kuota' => $request->kuota,
+                'status' => 'belum disetujui',
+            ];
+
+            \Log::info('Data yang akan disimpan:', $jadwalData);
+
+            $jadwal = Jadwal_mata_kuliah::create($jadwalData);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Jadwal berhasil ditambahkan'
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error dalam menyimpan jadwal:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
+            ], 500);
         }
-
-        $jadwal = new Jadwal_mata_kuliah();
-        $jadwal->mata_kuliah_kode = $request->mata_kuliah_kode;
-        $jadwal->hari = $request->hari;
-        $jadwal->jam_mulai = $request->jam_mulai;
-        $jadwal->jam_selesai = $request->jam_selesai;
-        $jadwal->kelas = $request->kelas;
-        $jadwal->ruang_id = $request->ruang_id;
-        $jadwal->koordinator_nip = $request->koordinator_nip;
-        $jadwal->pengampu1_nip = $request->pengampu1_nip;
-        $jadwal->pengampu2_nip = $request->pengampu2_nip;
-        $jadwal->status = 'belum disetujui'; // Default status
-        $jadwal->kodeprodi = $kodeprodi;
-        $jadwal->kuota = $request->kuota;
-
-
-        $jadwal->save();
-
-        return response()->json(['message' => 'Jadwal berhasil ditambahkan']);
     }
 
     // public function buatJadwal(Request $request) {
@@ -171,6 +193,56 @@ class KaprodiController extends Controller
     //     $dosen = Dosen::all();
     //     return view('kp_penjadwalan', compact('dosen'));
     // }
+
+    public function edit($id)
+    {
+        $jadwal = Jadwal_mata_kuliah::with('ruangan')->find($id);
+        return response()->json($jadwal);
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            // Debug input yang diterima
+            Log::info('Request Data:', $request->all());
+
+            // Validasi
+            $validated = $request->validate([
+                'kodeprodi' => 'required',
+                'kodemk' => 'required|exists:matakuliah,kode',
+                'hari' => 'required',
+                'jam_mulai' => 'required',
+                'kelas' => 'required',
+                'ruang_id' => 'required|exists:ruangan,ruang',
+                'koordinator_nip' => 'required|exists:dosen,nip',
+                'pengampu1_nip' => 'required|exists:dosen,nip',
+                'pengampu2_nip' => 'required|exists:dosen,nip',
+                'kuota' => 'required|numeric',
+            ]);
+
+            Log::info('Validated Data:', $validated);
+
+            // Coba simpan data
+            $jadwal = Jadwal_mata_kuliah::create($validated);
+            
+            Log::info('Saved Data:', $jadwal->toArray());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data jadwal berhasil ditambahkan',
+                'data' => $jadwal
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error saving jadwal: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
 // class KaprodiController extends Controller
 // {
