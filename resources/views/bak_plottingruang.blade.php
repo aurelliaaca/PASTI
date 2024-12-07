@@ -126,15 +126,11 @@
                     @csrf
                     <div class="mb-4">
                         <label for="prodi" class="block">Program Studi</label>
-                        <select class="w-full px-4 py-2 border rounded-lg" id="prodi" name="prodi" required>
+                        <select class="w-full px-4 py-2 border rounded-lg" id="prodi" name="prodi_id" required>
                             <option value="">Pilih Program Studi</option>
-                            <option value="INFORMATIKA">INFORMATIKA</option>
-                            <option value="BIOLOGI">BIOLOGI</option>
-                            <option value="MATEMATIKA">MATEMATIKA</option>
-                            <option value="KIMIA">KIMIA</option>
-                            <option value="FISIKA">FISIKA</option>
-                            <option value="BIOTEKNOLOGI">BIOTEKNOLOGI</option>
-                            <option value="STATISTIKA">STATISTIKA</option>
+                            @foreach($programStudis as $programStudi)
+                                <option value="{{ $programStudi->kodeprodi }}">{{ $programStudi->namaprodi }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-4">

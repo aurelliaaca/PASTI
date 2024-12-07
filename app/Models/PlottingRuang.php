@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Prodi;
 
 class PlottingRuang extends Model
 {
@@ -20,5 +21,10 @@ class PlottingRuang extends Model
     public function ruangan()
     {
         return $this->belongsTo(Ruangan::class, 'ruangan_id');
+    }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(Prodi::class, 'prodi_id', 'kodeprodi');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Dosen;
 use App\Models\Ruangan;
+use Carbon\Carbon;
 
 class JadwalSeeder extends Seeder
 {
@@ -35,66 +36,71 @@ class JadwalSeeder extends Seeder
                 'kodeprodi' => 'E',
                 'kodemk' => 'PAIK6504',
                 'hari' => 'Senin',
-                'jam_mulai' => '07:00:00',
+                'jam_mulai' => '07:00',
                 'kelas' => 'A',
                 'ruang_id' => $ruang,
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
                 'kuota' => 50,
-                'status' => 'belum disetujui'
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString('07:00')->addMinutes(150)->format('H:i')
             ],
             [
                 'kodeprodi' => 'E',
                 'kodemk' => 'PAIK6504',
                 'hari' => 'Senin',
-                'jam_mulai' => '13:00:00',
+                'jam_mulai' => '13:00',
                 'kelas' => 'B',
                 'ruang_id' => $ruang,
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
                 'kuota' => 50,
-                'status' => 'belum disetujui'
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString('13:00')->addMinutes(150)->format('H:i')
             ],
             [
                 'kodeprodi' => 'E',
                 'kodemk' => 'PAIK6504',
                 'hari' => 'Selasa',
-                'jam_mulai' => '07:00:00',
+                'jam_mulai' => '07:00',
                 'kelas' => 'C',
                 'ruang_id' => $ruang,
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
                 'kuota' => 50,
-                'status' => 'belum disetujui'
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString('07:00')->addMinutes(150)->format('H:i')
             ],
             [
                 'kodeprodi' => 'E',
                 'kodemk' => 'PAIK6504',
                 'hari' => 'Selasa',
-                'jam_mulai' => '13:00:00',
+                'jam_mulai' => '13:00',
                 'kelas' => 'D',
                 'ruang_id' => $ruang,
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
                 'kuota' => 50,
-                'status' => 'belum disetujui'
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString('13:00')->addMinutes(150)->format('H:i')
             ],
             [
                 'kodeprodi' => 'E',
                 'kodemk' => 'UNW00007',
                 'hari' => 'Jumat',
-                'jam_mulai' => '09:40:00',
+                'jam_mulai' => '09:40',
                 'kelas' => 'D',
                 'ruang_id' => $ruang,
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
                 'kuota' => 50,
-                'status' => 'belum disetujui'
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString('09:40')->addMinutes(100)->format('H:i')
             ],
         ];
 

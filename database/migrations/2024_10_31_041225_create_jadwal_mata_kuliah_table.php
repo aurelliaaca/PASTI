@@ -9,10 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_mata_kuliah', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('jadwalid');
             $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
-            $table->time('jam_selesai')->nullable();
+            $table->time('jam_selesai');
+            $table->string('ruang_id');
             $table->string('kelas', 1);
             $table->string('hari', 6);
             $table->string('kodemk', 8);
@@ -21,14 +22,13 @@ return new class extends Migration
             $table->string('pengampu1_nip')->nullable();
             $table->string('pengampu2_nip')->nullable();
             $table->enum('status', ['belum disetujui', 'diproses', 'sudah disetujui'])->default('belum disetujui');
-            $table->string('ruang_id');
             
             // Foreign keys
             $table->foreign('kodemk')->references('kode')->on('matakuliah');
+            $table->foreign('ruang_id')->references('ruang')->on('ruangan');
             $table->foreign('koordinator_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu1_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu2_nip')->references('nip')->on('dosen');
-            $table->foreign('ruang_id')->references('ruang')->on('ruangan');
             
             $table->timestamps();
         });
@@ -39,3 +39,4 @@ return new class extends Migration
         Schema::dropIfExists('jadwal_mata_kuliah');
     }
 };
+
