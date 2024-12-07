@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Dosen;
 use App\Models\Irs;
-
+use App\Models\Jadwal_mata_kuliah;
+use App\Models\Matkul;
 
 class DosenController extends Controller
 {
@@ -29,9 +30,26 @@ class DosenController extends Controller
     {
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
-        $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
+        $mahasiswaperwalian = Mahasiswa::join('Irs', 'mahasiswa.nim', '=', 'irs.nim')
+        ->where('dosenwali', $dosenwali->nip)
+        ->select('mahasiswa.*', 'status_verifikasi as status')
+        ->get();
 
+        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
+    }
+
+    // Mendapatkan SKS maksimal berdasarkan IPS
+    private function getMaxSksByIps($ips)
+    {
+        if ($ips < 2.00) {
+            return 18;
+        } elseif ($ips >= 2.00 && $ips <= 2.49) {
+            return 20;
+        } elseif ($ips >= 2.50 && $ips <= 2.99) {
+            return 22;
+        } else {
+            return 24;
+        }
     }
 
     public function showIRSMahasiswa(Request $request)
@@ -47,11 +65,27 @@ class DosenController extends Controller
             abort(404, 'Mahasiswa not found');
         }
 
-        // jumlahin sks yang dipilih
-        // $jumlahsks = 
+        // Ambil data IRS yang diajukan oleh mahasiswa beserta relasi Jadwal
+        $irs = Irs::join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid') // yang ini harus disesuaiin lagi
+            ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->where('irs.nim', $nim)
+            ->select('Irs.*', 'matakuliah.kode as kodemk', 'matakuliah.nama as namamk', 'jadwal_mata_kuliah.kelas as kelas', 
+            'jadwal_mata_kuliah.hari as hari', 'jadwal_mata_kuliah.jam_mulai as start', 'jadwal_mata_kuliah.jam_selesai as finish', 'matakuliah.sks as sks')
+            ->get();
+
+        // Mengambil IPS terakhir dan menentukan SKS maksimal yang dapat diambil
+        $ipsTerakhir = $mahasiswa->IPS_Sebelumnya;
+        $sksMax = $this->getMaxSksByIps($ipsTerakhir);
+
+        // Menghitung jumlah SKS yang sudah diambil oleh mahasiswa
+        $sksTerpilih = Irs::where('nim', $mahasiswa->nim)
+            ->where('smt', $mahasiswa->smt)
+            ->join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid') //id nanti ganti jadwalid
+            ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->sum('matakuliah.sks');
 
         // Tampilkan halaman IRS dengan data mahasiswa
-        return view('dosen.irsmahasiswa', compact('mahasiswa'));
+        return view('dosen.irsmahasiswa', compact('mahasiswa', 'irs', 'sksTerpilih', 'sksMax'));
 
     }
 
@@ -61,8 +95,8 @@ class DosenController extends Controller
 
         // Cari semua data IRS berdasarkan NIM
         $affectedRows = IRS::where('nim', $nim)->update([
-            'status_verifikasi' => true, // Gunakan true untuk boolean
-            'tanggal_disetujui' => now(), // Menambahkan tanggal persetujuan
+            'status_verifikasi' => 'Sudah disetujui', // 'Belum disetujui', 'Diproses', 'Sudah disetujui'
+            'tanggal_disetujui' => now(),  
         ]);
 
         // Jika tidak ada data IRS yang diperbarui
@@ -71,8 +105,9 @@ class DosenController extends Controller
         }
 
         // Kembali ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil disetujui.");
+        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil disetujui");
     }
+
 
     public function tolakIRS(Request $request)
     {
@@ -80,7 +115,7 @@ class DosenController extends Controller
 
         // Cari semua data IRS berdasarkan NIM
         $affectedRows = IRS::where('nim', $nim)->update([
-            'status_verifikasi' => false, // Menandai belum disetujui
+            'status_verifikasi' => 'Diproses', // 'Belum disetujui', 'Diproses', 'Sudah disetujui'
             'tanggal_disetujui' => null,  // Mengosongkan tanggal persetujuan
         ]);
 
@@ -93,17 +128,25 @@ class DosenController extends Controller
         return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil ditolak.");
     }
 
-    // public function index()
-    // {
-    //     $data = Mahasiswa::all(); // Mengambil semua data mahasiswa
-    //     dd($data);
-    //     return view('pa_perwalian', compact('data')); // Kirim ke view
-    // }
+    public function setujuiSemuaIRS(Request $request){
+        try {
+            // Logika untuk menyetujui semua ruangan
+            Irs::where('status_verifikasi', 'Diproses')->update(['status_verifikasi' => 'Sudah disetujui', 'tanggal_disetujui' => now()]);
 
-    // public function index() {
-    //     $data = Mahasiswa::all(); // Mengambil semua data mahasiswa
-    //     return view('pa_perwalian', compact('data')); // Kirim ke view
-    // }
+            return redirect()->back()->with('success', 'Semua IRS telah disetujui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyetujui IRS.');
+        }
+    }
     
+    public function resetIRS(Request $request){
+        try {
+            // Logika untuk menyetujui semua ruangan
+            Irs::where('status_verifikasi', 'Sudah disetujui')->update(['status_verifikasi' => 'Diproses', 'tanggal_disetujui' => now()]);
 
+            return redirect()->back()->with('success', 'Semua IRS telah disreset.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat reset IRS.');
+        }
+    }
 }

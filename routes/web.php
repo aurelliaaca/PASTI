@@ -86,6 +86,9 @@ Route::middleware(['auth', 'dosen'])->group(function () {
     Route::get('dosen/irs-mahasiswa', [DosenController::class, 'showIRSMahasiswa'])->name('IRS_Mahasiswa');
     Route::post('dosen/setujui-irs', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
     Route::post('dosen/tolak-irs', [DosenController::class, 'tolakIRS'])->name('tolakIRS');
+    Route::post('dosen/setujui-semua-IRS', [DosenController::class, 'setujuiSemuaIRS'])->name('setujuiSemuaIrs');
+    Route::post('dosen/reset-IRS', [DosenController::class, 'resetIRS'])->name('resetIrs');
+    
 });
 
 // Grup untuk Akademik

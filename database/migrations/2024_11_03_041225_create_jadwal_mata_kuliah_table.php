@@ -25,10 +25,10 @@ return new class extends Migration
             
             // Foreign keys
             $table->foreign('kodemk')->references('kode')->on('matakuliah');
-            $table->foreign('ruang_id')->references('ruang')->on('ruangan');
             $table->foreign('koordinator_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu1_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu2_nip')->references('nip')->on('dosen');
+            // $table->foreign('ruang_id')->references('id')->on('plotting_ruang');
             
             $table->timestamps();
         });

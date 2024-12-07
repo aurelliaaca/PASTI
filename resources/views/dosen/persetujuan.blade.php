@@ -30,9 +30,14 @@
 
             <!-- Tombol Setujui Semua -->
             <td class="pb-2 pt-2 text-right button-container">
-                <div class="flex justify-end">
-                    <button class="btn bg-teal-500 btn-icon-text p-2 rounded-lg">
-                        <!-- <i class="fa fa-check mr-1 ml-1 text-white"></i> -->
+                <div class="flex justify-end space-x-2">
+                    <!-- Tombol Reset -->
+                    <button id="rejectAllButton" class="btn bg-teal-500 p-2 rounded-lg">
+                        <strong class="text-white">Reset</strong>
+                    </button>
+                    
+                    <!-- Tombol Setujui Semua -->
+                    <button id="approveAllButton" class="btn bg-teal-500 p-2 rounded-lg">
                         <strong class="text-white">Setujui Semua</strong>
                     </button>
                 </div>
@@ -68,7 +73,7 @@
                             <td class="px-6 py-4 text-center"> {{ $mahasiswa->smt }} </td>
 
                             <!-- yang ini masih boongan -->
-                            <td class="px-6 py-4 text-center"> <span class="text-white text-sm w-1/3 pb-1 bg-yellow-600 px-2 rounded-full"> Belum Disetujui </span> </td>
+                            <td class="px-6 py-4 text-center"> {{ $mahasiswa->status }} </td>
                             <td class="px-6 py-4 text-center">
                                 <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" 
                                 class="text-teal-800 hover:underline">Lihat</a>
@@ -81,6 +86,59 @@
         </div>
 
     </div>
+
+    <!-- Pop-up Modal Setujui Semua -->
+    <div id="approvalModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 class="text-xl font-bold mb-4">Konfirmasi Persetujuan Semua</h2>
+            <p class="mb-4">Apakah Anda yakin ingin menyetujui semua IRS?</p>
+            <div class="flex justify-end space-x-4">
+                <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <form id="approveAllForm" action="{{ route('setujuiSemuaIrs') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Setujui</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop-up Modal RESET -->
+    <div id="rejectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h2 class="text-xl font-bold mb-4">Konfirmasi Reset IRS</h2>
+        <p class="mb-4">Apakah Anda yakin ingin menolak atau membuka semua akses IRS?</p>
+        <div class="flex justify-end space-x-4">
+            <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+            <form id="rejectForm" action="{{ route('resetIrs') }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Buka Akses</button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.getElementById('approveAllButton').addEventListener('click', function () {
+            const modal = document.getElementById('approvalModal');
+            modal.classList.remove('hidden');
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            const modal = document.getElementById('approvalModal');
+            modal.classList.add('hidden');
+        });
+
+        // reset
+        document.getElementById('rejectAllButton').addEventListener('click', function () {
+            const modal = document.getElementById('rejectModal');
+            modal.classList.remove('hidden');
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            const modal = document.getElementById('rejectModal');
+            modal.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>
 @endsection

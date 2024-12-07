@@ -62,7 +62,13 @@
                             <td class="border px-4 py-2">{{ $jadwal->hari }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kelas }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->ruangan->ruang ?? '-' }}</td>
+                            <td class="py-2">
+                                @if($jadwal->plottingRuang && $jadwal->plottingRuang->ruangan)
+                                    {{ $jadwal->plottingRuang->ruangan->ruang }}
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td class="border px-4 py-2">{{ $jadwal->kuota }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->koordinator->nama ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->pengampu1->nama ?? '-' }}</td>
@@ -122,7 +128,7 @@
                     <div class="flex flex-col">
                         <label for="hari" class="font-medium">Hari</label>
                         <select name="hari" id="hari" class="px-3 py-2 border rounded" required>
-                        <option value="" disabled selected>Pilih Hari</option> <!-- Placeholder -->
+                        <option value="" disabled selected>Pilih Hari</option> 
                             <option value="Senin">Senin</option>
                             <option value="Selasa">Selasa</option>
                             <option value="Rabu">Rabu</option>
@@ -158,9 +164,9 @@
                         <label for="ruang_id" class="font-medium">Ruang</label>
                         <select name="ruang_id" id="ruang_id" class="px-3 py-2 border rounded" required>
                             <option value="">Pilih Ruangan</option>
-                            @foreach($ruangs as $ruang)
-                                @if($ruang->ruangan)
-                                    <option value="{{ $ruang->ruangan->id }}">{{ $ruang->ruangan->ruang }}</option>
+                            @foreach($plottingRuang as $plotting)
+                                @if($plotting->ruangan)
+                                    <option value="{{ $plotting->id }}">{{ $plotting->ruangan->ruang }}</option>
                                 @endif
                             @endforeach
                         </select>

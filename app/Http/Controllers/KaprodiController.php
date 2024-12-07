@@ -22,18 +22,12 @@ class KaprodiController extends Controller
 
     public function showPenjadwalanForm(Request $request)
     {
-        $jadwals = Jadwal_mata_kuliah::with(['matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
-        $kodeprodi = $request->input('prodi_id');
-        
-        // Ambil ruangan yang sudah disetujui berdasarkan kodeprodi
-        $ruangs = PlottingRuang::where('status', 'sudah disetujui')
-                    ->where('prodi_id', $kodeprodi)
-                    ->with('ruangan')
-                    ->get();
+        $plottingRuang = PlottingRuang::where('status', 'sudah disetujui')->with('ruangan')->get();
+        $jadwals = Jadwal_mata_kuliah::with(['plottingRuang.ruangan', 'matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
         $matakuliah = Matkul::all();
         $dosen = Dosen::all();
 
-        return view('kp_penjadwalan', compact('jadwals', 'ruangs', 'matakuliah', 'dosen'));
+        return view('kp_penjadwalan', compact('jadwals', 'plottingRuang', 'matakuliah', 'dosen'));
     }
 
     public function storeJadwal(Request $request)
@@ -51,16 +45,20 @@ class KaprodiController extends Controller
 
             $validatedData = $request->validate([
                 'kodemk' => 'required|exists:matakuliah,kode',
-                'hari' => 'required|string',
+                'sks' => 'required|integer',
+                'semester' => 'required|string',
                 'jam_mulai' => 'required',
                 'jam_selesai' => 'required',
-                'kelas' => 'required|string',
-                'ruang_id' => 'required',
+                'ruang_id' => 'required|exists:plotting_ruang,id',
+                'kuota' => 'required|integer',
+                'hari' => 'required|string',
                 'koordinator_nip' => 'required',
                 'pengampu1_nip' => 'nullable',
                 'pengampu2_nip' => 'nullable',
-                'kuota' => 'required|integer',
             ]);
+
+            // Log untuk memastikan ruang_id yang diterima
+            \Log::info('Ruang ID yang diterima:', ['ruang_id' => $request->ruang_id]);
 
             $kelasValue = substr($request->kelas, -1);
 
