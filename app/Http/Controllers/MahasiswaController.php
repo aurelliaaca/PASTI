@@ -71,7 +71,7 @@ class MahasiswaController extends Controller
     private function getMaxSksByIps($ips)
     {
         if ($ips < 2.00) {
-            return 18;
+            return 7;
         } elseif ($ips >= 2.00 && $ips <= 2.49) {
             return 20;
         } elseif ($ips >= 2.50 && $ips <= 2.99) {

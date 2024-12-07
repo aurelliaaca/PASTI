@@ -136,13 +136,13 @@
                     <table class="table-auto w-full text-center rounded-lg border-collapse">
                         <thead>
                             <tr class="bg-teal-100/80">
-                            <th class="px-4 py-2 border-r border-teal-500">Hari</th>
-                                <th class="px-4 py-2 border-r border-teal-500">Nama Mata Kuliah</th>
-                                <th class="px-4 py-2 border-r border-teal-500">Kode</th>
-                                <th class="px-4 py-2 border-r border-teal-500">SKS</th>
-                                <th class="px-4 py-2 border-r border-teal-500">Jam</th>
-                                <th class="px-4 py-2 border-r border-teal-500">Kelas</th>
-                                <th class="px-4 py-2">Aksi</th>
+                            <th class="px-4 py-2 border-r border-teal-500"style="width: 5%;">Jam</th>
+                            <th class="px-4 py-2 border-r border-teal-500"style="width: 15.8%;">Senin</th>
+                                <th class="px-4 py-2 border-r border-teal-500"style="width: 15.8%;">Selasa</th>
+                                <th class="px-4 py-2 border-r border-teal-500"style="width: 15.8%;">Rabu</th>
+                                <th class="px-4 py-2 border-r border-teal-500"style="width: 15.8%;">Kamis</th>
+                                <th class="px-4 py-2 border-r border-teal-500"style="width: 15.8%;">Jumat</th>
+                                <th class="px-4 py-2"style="width: 15.8%;">Sabtu</th>
                             </tr>
                         </thead>
                         <tbody id="jadwalTableBody">
@@ -217,7 +217,8 @@
     </div>
   </div>
 
-  <script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.btn');
     const buatirsContent = document.querySelector('.BuatIRS');
@@ -259,12 +260,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.getElementById('matkul-dropdown').addEventListener('change', function () {
-    const opsiDipilih = this.options[this.selectedIndex]; // Ambil opsi yang dipilih
-    const kodeMatkul = this.value; // Ambil nilai kode mata kuliah
-    const namaMatkul = opsiDipilih.getAttribute('data-name'); // Ambil nama mata kuliah dari atribut
-    const sksMatkul = opsiDipilih.getAttribute('data-sks'); // Ambil SKS mata kuliah dari atribut
-    const tabelJadwal = document.getElementById('jadwalTableBody'); // Elemen body tabel jadwal
+    const opsiDipilih = this.options[this.selectedIndex];
+    const kodeMatkul = this.value;
+    const namaMatkul = opsiDipilih.getAttribute('data-name');
+    const sksMatkul = opsiDipilih.getAttribute('data-sks');
+    const tabelJadwal = document.getElementById('jadwalTableBody');
+    const jamRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+    const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
+    // Cek apakah mata kuliah sudah dipilih sebelumnya
+    if (document.getElementById(`matkul-${kodeMatkul}`)) {
+        alert('Jadwal untuk mata kuliah ini sudah tersedia di tabel!');
+        return; // Hentikan eksekusi jika sudah dipilih
+    }
+    
     // Periksa apakah mata kuliah dipilih (kode tidak kosong)
     if (kodeMatkul && namaMatkul) {
         // Buat elemen untuk menampilkan mata kuliah yang dipilih
@@ -290,112 +299,147 @@ document.getElementById('matkul-dropdown').addEventListener('change', function (
             fetch(`/get-jadwal-mk/${kodeMatkul}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.length > 0) {
-                        
-                        // Tambahkan setiap jadwal ke tabel
-                        data.forEach(jadwal => {
-                            const baris = document.createElement('tr');
-                            baris.classList.add('bg-white', `row-${kodeMatkul}`); // Tambahkan kelas unik untuk mata kuliah
+                    if (data && data.length > 0) {
+                        // Menampilkan jadwal di tabel
+                        jamRange.forEach(jam => {
+                            let row = document.querySelector(`#jadwalTableBody .row-${jam}`);
+                            if (!row) {
+                                row = document.createElement('tr');
+                                row.classList.add(`row-${jam}`);
+                                const jamCell = document.createElement('td');
+                                jamCell.classList.add('border', 'px-2', 'py-2', 'text-xs', 'bg-white');
+                                jamCell.textContent = `${String(jam).padStart(2, '0')}:00`;
+                                row.appendChild(jamCell);
+                                tabelJadwal.appendChild(row);
+                            }
 
-                            baris.innerHTML = `
-                                <td class="border px-4 py-2">${jadwal.hari}</td>
-                                <td class="border px-4 py-2">${jadwal.matkul.nama}</td>
-                                <td class="border px-4 py-2">${jadwal.kodemk}</td>
-                                <td class="border px-4 py-2">${jadwal.matkul.sks}</td>
-                                <td class="border px-4 py-2">${jadwal.jam_mulai}</td>
-                                <td class="border px-4 py-2">${jadwal.kelas}</td>
-                                <input type="text" id="nim" value="{{ $mahasiswa->nim }}" class="hidden">
-                                <input type="text" id="smt" value="{{ $mahasiswa->smt }}" class="hidden">
-                                <td class="border px-4 py-2">
-                                    <button class="bg-teal-500 text-white px-4 py-1 rounded" onclick="pilihJadwal('${jadwal.jadwalid}', this)">Pilih</button>
-                                </td>
-                            `;
-                            tabelJadwal.appendChild(baris);
+                            hariList.forEach(hari => {
+                                let hariCell = row.querySelector(`.cell-${hari}`);
+                                if (!hariCell) {
+                                    hariCell = document.createElement('td');
+                                    hariCell.classList.add('border', 'px-2', 'pt-0', 'pb-2', 'bg-white');
+                                    hariCell.classList.add(`cell-${hari}`);
+                                    row.appendChild(hariCell);
+                                }
+
+                                const matchingJadwal = data.filter(jadwal => {
+                                    const jamMulai = jadwal.jam_mulai.substr(0, 2);
+                                    return jamMulai === String(jam).padStart(2, '0') && jadwal.hari === hari;
+                                });
+
+                                if (matchingJadwal.length > 0) {
+                                    matchingJadwal.forEach(jadwal => {
+                                        // Menambahkan informasi jadwal tanpa tombol
+                                        const jadwalInfo = document.createElement('div');
+                                        jadwalInfo.classList.add('p-2', 'mt-2', 'mb-0', 'w-full', 'bg-teal-100/80', 'rounded-t-lg',);
+                                        jadwalInfo.style.fontSize = '13px';
+
+                                        jadwalInfo.innerHTML = `
+                                            <p class="text-center font-semibold">${jadwal.matkul.nama}</p>
+                                            <div class="flex justify-center gap-1" style="font-size: 10px;">
+                                                <p class="text-center text-amber-600 uppercase italic font-semibold" style="width: 30%;">${jadwal.matkul.status}</p>
+                                                <p class="text-center" style="width: 30%;">(SMT ${jadwal.matkul.semester})</p>
+                                                <p class="text-center" style="width: 30%;">(${jadwal.matkul.sks} SKS)</p>
+                                            </div>
+                                            <div class="flex justify-center gap-1" style="font-size: 10px;">
+                                                <p class="text-center" style="width: 30%;">Kelas ${jadwal.kelas}</p>
+                                                <p class="text-center" style="width: 30%;">${jadwal.jam_mulai}</p>
+                                                <p class="text-center" style="width: 30%;">${jadwal.kuota}</p>
+                                            </div>
+                                        `;
+
+                                        // Create the Pilih button
+                                        const pilihButton = document.createElement('button');
+                                        pilihButton.classList.add('bg-teal-500', 'text-white', 'px-4', 'py-1', 'rounded-b-lg', 'w-full');
+                                        pilihButton.style.fontSize = '13px';
+                                        pilihButton.textContent = 'Pilih';
+                                        hariCell.appendChild(jadwalInfo);
+                                        hariCell.appendChild(pilihButton);
+                                        // Event listener untuk tombol jadwal
+                                        pilihButton.addEventListener('click', function () {
+                                            const jadwalid = jadwal.jadwalid;
+                                            const nim = '{{ $mahasiswa->nim }}'; // Ensure this is available
+                                            const smt = '{{ $mahasiswa->smt }}'; // Ensure this is available
+
+                                            if (!nim || !smt) {
+                                                alert('NIM atau Semester tidak valid.');
+                                                return;
+                                            }
+
+                                            // Kirim AJAX untuk cek apakah jadwal sudah dipilih
+                                            $.ajax({
+                                                url: '/cek-jadwal',
+                                                method: 'POST',
+                                                data: {
+                                                    nim: nim,
+                                                    jadwalid: jadwalid,
+                                                    _token: $('meta[name="csrf-token"]').attr('content'),
+                                                },
+                                                success: function(response) {
+                                                    if (response.exists) {
+                                                        alert('Anda sudah memilih mata kuliah ini.');
+                                                    } else if (response.sks_over_limit) {
+                                                        alert('Anda sudah melebihi batas SKS yang dapat diambil.');
+                                                    } else {
+                                                        // Lanjutkan untuk menyimpan jadwal
+                                                        $.ajax({
+                                                            url: '/store-jadwal',
+                                                            method: 'POST',
+                                                            data: {
+                                                                nim: nim,
+                                                                smt: smt,
+                                                                jadwalid: jadwalid,
+                                                                _token: $('meta[name="csrf-token"]').attr('content'),
+                                                            },
+                                                            success: function(response) {
+                                                                if (response.success) {
+                                                                    alert('Jadwal berhasil dipilih!');
+                                                                    pilihButton.textContent = 'Batalkan'; // Ganti teks tombol menjadi "Batalkan"
+                                                                } else {
+                                                                    alert('Terjadi kesalahan saat memilih jadwal.');
+                                                                }
+                                                            },
+                                                            error: function() {
+                                                                alert('Terjadi kesalahan saat menyimpan jadwal.');
+                                                            }
+                                                        });
+                                                    }
+                                                },
+                                                error: function(xhr) {
+                                                    if (xhr.status === 400) {
+                                                        const response = xhr.responseJSON;
+                                                        if (response.sks_over_limit) {
+                                                            alert('Anda sudah melebihi batas SKS yang dapat diambil.');
+                                                        } else {
+                                                            alert('Terjadi kesalahan saat memeriksa jadwal.');
+                                                        }
+                                                    } else {
+                                                        alert('Terjadi kesalahan saat memeriksa jadwal.');
+                                                    }
+                                                }
+                                            });
+                                        });
+
+                                        // Append the jadwalInfo and button to the hariCell
+                                        hariCell.appendChild(jadwalInfo);
+                                        hariCell.appendChild(pilihButton);
+                                    });
+                                }
+                            });
                         });
                     } else {
-                        divMatkulDipilih.classList.add('bg-red-500', 'text-white'); // Ubah warna background menjadi merah dan teks menjadi putih
-                        alert('Jadwal untuk mata kuliah ini belum tersedia, silakan pilih mata kuliah lain!');
+                        divMatkulDipilih.classList.add('bg-red-500', 'text-white');
+                        alert('Jadwal untuk mata kuliah ini belum tersedia!');
                     }
                 })
                 .catch(error => {
-                    console.error('Terjadi kesalahan saat mengambil data jadwal:', error);
-
-                    // Tambahkan pesan error ke tabel
-                    const baris = document.createElement('tr');
-                    baris.classList.add(`row-${kodeMatkul}`);
-                    baris.innerHTML = '<td colspan="7">Terjadi kesalahan saat mengambil data jadwal.</td>';
-                    tabelJadwal.appendChild(baris);
+                    console.error('Terjadi kesalahan:', error);
+                    alert('Terjadi kesalahan dalam mengambil data jadwal!');
                 });
         }
     }
 });
 
-function pilihJadwal(jadwalid, button) {
-    const nim = document.getElementById('nim').value;  // Ambil nilai NIM
-    const smt = document.getElementById('smt').value;  // Ambil nilai Semester
-
-    // Pastikan nim dan smt terisi
-    if (!nim || !smt) {
-        alert('NIM atau Semester tidak valid.');
-        return;
-    }
-
-    // Kirim AJAX untuk cek apakah jadwal sudah dipilih
-    $.ajax({
-        url: '/cek-jadwal',
-        method: 'POST',
-        data: {
-            nim: nim,
-            jadwalid: jadwalid,
-            _token: $('meta[name="csrf-token"]').attr('content'),
-        },
-        success: function(response) {
-            console.log(response);  // Periksa response di console
-
-            if (response.exists) {
-                alert('Anda sudah memilih mata kuliah ini.');
-            } else if (response.sks_over_limit) {
-                alert('Anda sudah melebihi batas SKS yang dapat diambil.');
-            } else {
-                // Lanjutkan untuk menyimpan jadwal
-                $.ajax({
-                    url: '/store-jadwal',
-                    method: 'POST',
-                    data: {
-                        nim: nim,
-                        smt: smt,
-                        jadwalid: jadwalid,
-                        _token: $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Jadwal berhasil dipilih!');
-                            button.textContent = 'Batalkan'; // Ganti teks tombol menjadi "Batalkan"
-                        } else {
-                            alert('Terjadi kesalahan saat memilih jadwal.');
-                        }
-                    },
-                    error: function() {
-                        alert('Terjadi kesalahan saat menyimpan jadwal.');
-                    }
-                });
-            }
-        },
-        error: function(xhr) {
-            // Tangani error dengan response dari server (status 400 atau lainnya)
-            if (xhr.status === 400) {
-                const response = xhr.responseJSON;
-                if (response.sks_over_limit) {
-                    alert('Anda sudah melebihi batas SKS yang dapat diambil.');
-                } else {
-                    alert('Terjadi kesalahan saat memeriksa jadwal.');
-                }
-            } else {
-                alert('Terjadi kesalahan saat memeriksa jadwal.');
-            }
-        }
-    });
-}
 
 </script> 
 </body>

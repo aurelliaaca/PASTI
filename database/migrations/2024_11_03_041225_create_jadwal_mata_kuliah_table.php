@@ -12,8 +12,8 @@ return new class extends Migration
             $table->bigIncrements('jadwalid');
             $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
-            $table->time('jam_selesai');
             $table->string('namaruang');
+            $table->time('jam_selesai')->nullable();
             $table->string('kelas', 1);
             $table->string('hari', 6);
             $table->string('kodemk', 8);

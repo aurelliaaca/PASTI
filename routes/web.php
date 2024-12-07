@@ -35,13 +35,27 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('mahasiswa/dashboard', [HomeController::class, 'dashboardMahasiswa']);
     Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'bebanSKS']);
-    Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMK'])->name('Pengisian_IRS');
+    Route::get('/mhs_pengisianirspage', [MahasiswaController::class, 'listMk'])->name('Pengisian_IRS');
     Route::get('/get-jadwal-mk/{kodeMk}', [MahasiswaController::class, 'getJadwalByMatkul']);
     Route::get('/get-jadwal-mk/{courseId}', [MahasiswaController::class, 'getJadwalByMatkul']);
     Route::post('/cek-tabrakan-jadwal', [MahasiswaController::class, 'cekTabrakan']);
     Route::post('/cek-jadwal', [MahasiswaController::class, 'cekJadwal']);
     Route::post('/store-jadwal', [MahasiswaController::class, 'store']);
     Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal']);
+    Route::get('/getJadwalByKodeMK', [MahasiswaController::class, 'getJadwalByKodeMK'])->name('getJadwalByKodeMK');
+    Route::get('/api/jadwal', [MahasiswaController::class, 'getJadwal']);
+    Route::get('/get-sks-terpilih', [MahasiswaController::class, 'getSksTerpilih'])->name('get.sks.terpilih');
+    Route::get('/mahasiswa/getJadwalByMatkul/{kodeMatkul}', [MahasiswaController::class, 'getJadwalByMatkul']);
+    Route::post('/mahasiswa/store', [MahasiswaController::class, 'store']);
+    Route::post('/save-jadwal', [MahasiswaController::class, 'store']);
+    
+
+// routes/web.php
+Route::post('/submit-jadwal', [MahasiswaController::class, 'store']);
+
+Route::get('/jadwal/{kode_matkul}', [MahasiswaController::class, 'getJadwalByMatkul']);
+
+
 
     
 
@@ -72,6 +86,9 @@ Route::middleware(['auth', 'dosen'])->group(function () {
     Route::get('dosen/irs-mahasiswa', [DosenController::class, 'showIRSMahasiswa'])->name('IRS_Mahasiswa');
     Route::post('dosen/setujui-irs', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
     Route::post('dosen/tolak-irs', [DosenController::class, 'tolakIRS'])->name('tolakIRS');
+    Route::post('dosen/setujui-semua-IRS', [DosenController::class, 'setujuiSemuaIRS'])->name('setujuiSemuaIrs');
+    Route::post('dosen/reset-IRS', [DosenController::class, 'resetIRS'])->name('resetIrs');
+    
 });
 
 // Grup untuk Akademik

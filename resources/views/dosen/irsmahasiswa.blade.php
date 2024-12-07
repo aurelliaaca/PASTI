@@ -81,7 +81,7 @@
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Total SKS</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full">100</p>
+          <p class="text-sm align-middle w-full"> </p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Beban SKS Maks</p>
@@ -99,19 +99,12 @@
     <!-- Tombol setujui dan tolak -->
     <div id="approvalButtons" class="grid grid-cols-2 w-full gap-4 mt-4">
       <!-- Tombol Tolak -->
-      <form id='rejectForm' action="{{ route('tolakIRS') }}" method="POST" class="w-full">
-          @csrf
-          <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
-          <button type="submit" class="bg-white text-amber-400 p-3 rounded-lg flex justify-center items-center w-full">
+          <button id="rejectButton" class="bg-white text-amber-400 p-3 rounded-lg flex justify-center items-center w-full">
               <span class="text-base font-semibold italic">TOLAK</span>
           </button>
-      </form>
 
       <!-- Tombol Setujui -->
-      <form id="approvalForm" action="{{ route('setujuiIRS') }}" method="POST" class="w-full">
-        @csrf
-        <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
-        <button type="button" id="approvalButton" class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full">
+        <button  id="approveButton" class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full">
           <span class="text-base font-semibold italic">SETUJUI</span>
         </button>
       </form>
@@ -208,13 +201,37 @@
 
   </div>
 </div>
-  <!-- Pop-up Modal -->
-  <div id="popupModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white rounded-lg p-6 w-96 text-center">
-      <h2 class="text-lg font-bold mb-4">IRS Berhasil Disetujui</h2>
-      <p class="text-gray-700 mb-4">Data IRS mahasiswa telah berhasil disetujui.</p>
-      <button id="closePopup" class="bg-amber-400 text-white py-2 px-4 rounded-lg hover:bg-amber-500">Tutup</button>
-    </div>
+
+
+<!-- Pop-up Modal SETUJU -->
+<div id="approvalModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Konfirmasi Persetujuan IRS</h2>
+      <p class="mb-4">Apakah Anda yakin ingin menyetujui IRS?</p>
+      <div class="flex justify-end space-x-4">
+          <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+          <form id="approveForm" action="{{ route('setujuiIRS') }}" method="POST">
+            @csrf
+            <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+            <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Setujui</button>
+          </form>
+      </div>
+  </div>
+</div>
+
+<!-- Pop-up Modal TOLAK -->
+<div id="rejectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Konfirmasi Tolak IRS</h2>
+      <p class="mb-4">Apakah Anda yakin ingin menolak atau membuka akses IRS?</p>
+      <div class="flex justify-end space-x-4">
+          <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+          <form id="rejectForm" action="{{ route('tolakIRS') }}" method="POST">
+            @csrf
+            <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
+            <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Buka Akses</button>
+          </form>
+      </div>
   </div>
 </div>
 
@@ -282,88 +299,27 @@
     });
   });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    // Simpan elemen awal approvalButtons
-    const originalButtonsHTML = document.getElementById('approvalButtons').innerHTML;
+  // setujui
+  document.getElementById('approveButton').addEventListener('click', function () {
+      const modal = document.getElementById('approvalModal');
+      modal.classList.remove('hidden');
+  });
 
-    document.getElementById('approvalButton').addEventListener('click', function () {
-        // Tampilkan pop-up
-        const popupModal = document.getElementById('popupModal');
-        popupModal.classList.remove('hidden');
+  document.getElementById('cancelButton').addEventListener('click', function () {
+      const modal = document.getElementById('approvalModal');
+      modal.classList.add('hidden');
+  });
 
-        // Ganti tombol "Tolak" dan "Setujui" dengan "Buka Akses" setelah beberapa detik
-        setTimeout(() => {
-            const approvalButtons = document.getElementById('approvalButtons');
+  // tolak
+  document.getElementById('rejectButton').addEventListener('click', function () {
+      const modal = document.getElementById('rejectModal');
+      modal.classList.remove('hidden');
+  });
 
-            // Buat form "Buka Akses"
-            const bukaAksesForm = document.createElement('form');
-            bukaAksesForm.action = "{{ route('tolakIRS') }}"; // Route ke fungsi tolakIRS
-            bukaAksesForm.method = "POST";
-            bukaAksesForm.classList.add('w-full');
-
-            // Tambahkan CSRF token
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = "{{ csrf_token() }}";
-            bukaAksesForm.appendChild(csrfInput);
-
-            // Tambahkan NIM mahasiswa
-            const nimInput = document.createElement('input');
-            nimInput.type = 'hidden';
-            nimInput.name = 'nim';
-            nimInput.value = "{{ $mahasiswa->nim }}"; // Pastikan nim berasal dari data yang valid
-            bukaAksesForm.appendChild(nimInput);
-
-            // Buat tombol "Buka Akses"
-            const bukaAksesButton = document.createElement('button');
-            bukaAksesButton.textContent = 'BUKA AKSES';
-            bukaAksesButton.type = 'submit';
-            bukaAksesButton.classList.add(
-                'bg-teal-600',
-                'text-white',
-                'p-3',
-                'rounded-lg',
-                'flex',
-                'justify-center',
-                'items-center',
-                'w-full',
-                'font-semibold',
-                'italic'
-            );
-            bukaAksesForm.appendChild(bukaAksesButton);
-
-            // Hapus tombol lama dan tambahkan form baru
-            approvalButtons.innerHTML = '';
-            approvalButtons.appendChild(bukaAksesForm);
-
-            // Tambahkan event listener ke tombol "Buka Akses"
-            bukaAksesButton.addEventListener('click', function () {
-                // Kembalikan tampilan awal approvalButtons setelah form di-submit
-                setTimeout(() => {
-                    approvalButtons.innerHTML = originalButtonsHTML;
-                    restoreApprovalListeners(); // Pulihkan event listeners awal
-                }, 500);
-            });
-        }, 2000);
-    });
-
-    document.getElementById('closePopup').addEventListener('click', function () {
-        // Sembunyikan pop-up
-        const popupModal = document.getElementById('popupModal');
-        popupModal.classList.add('hidden');
-    });
-
-    function restoreApprovalListeners() {
-        // Tambahkan kembali event listener untuk tombol "Setujui"
-        document.getElementById('approvalButton').addEventListener('click', function () {
-            // Logika tombol "Setujui" seperti di awal
-            const popupModal = document.getElementById('popupModal');
-            popupModal.classList.remove('hidden');
-        });
-    }
-});
-
+  document.getElementById('cancelButton').addEventListener('click', function () {
+      const modal = document.getElementById('rejectModal');
+      modal.classList.add('hidden');
+  });
 
 </script>
 
