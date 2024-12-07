@@ -111,7 +111,6 @@
             <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
             <form id="rejectForm" action="{{ route('resetIrs') }}" method="POST">
                 @csrf
-                <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
                 <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Buka Akses</button>
             </form>
         </div>
