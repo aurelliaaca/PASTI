@@ -12,7 +12,7 @@ return new class extends Migration
             $table->bigIncrements('jadwalid');
             $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
-            $table->time('jam_selesai');
+            $table->time('jam_selesai')->nullable();
             $table->string('ruang_id');
             $table->string('kelas', 1);
             $table->string('hari', 6);
