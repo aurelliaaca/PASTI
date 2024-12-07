@@ -48,20 +48,21 @@
                         @foreach($programStudiList as $index => $programStudi)
                         <tr>
                             <td class="pb-2 pt-0">
-                                <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="{{ $index }}" onclick="toggleApproveButton(this)">+</button>
-                                {{ $programStudi }}
-                            </td>
-                            <td class="pb-2 pt-0 text-right">
-                                <!-- Tombol Setujui Semua -->
-                                <form action="{{ route('setujuiSemua') }}" method="POST" class="w-full">
-                                    @csrf
-                                    <div class="flex justify-end items-center mb-4">
-                                        <button type="submit" id="approveAllButton" class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg flex justify-end items-center hidden">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <button class="toggle-button bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="{{ $index }}">+</button>
+                                        {{ $programStudi }}
+                                    </div>
+                                    <!-- Form untuk Tombol Setujui Semua -->
+                                    <form action="{{ route('setujuiSemua') }}" method="POST" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="program_studi_id" value="{{ $index }}">
+                                        <button type="submit" id="approveBtn-{{ $index }}" class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg flex justify-end items-center hidden">
                                             <i class="fa fa-check text-white mr-2"></i>
                                             <strong class="text-white">SETUJUI SEMUA</strong>
                                         </button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <tr class="ruangan-table" id="ruangan-{{ $index }}" style="display: none;">
@@ -78,15 +79,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="ruanganTableBody-{{ $index }}">
-                                                @foreach($plottingRuangData[$programStudi] as $plotting)
+                                                @foreach($ruangans as $ruangan)
                                                 <tr class="border-b border-gray-200">
-                                                    <td class="border border-gray-300">{{ $plotting->ruangan->gedung }}</td>
-                                                    <td class="border border-gray-300">{{ $plotting->ruangan->ruang }}</td>
-                                                    <td class="border border-gray-300">{{ $plotting->ruangan->kapasitas }}</td>
+                                                    <td class="border border-gray-300">{{ $ruangan->gedung }}</td>
+                                                    <td class="border border-gray-300">{{ $ruangan->namaruang }}</td>
+                                                    <td class="border border-gray-300">{{ $ruangan->kapasitas }}</td>
                                                     <td class="text-center py-2 border border-gray-300">
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                            {{ $plotting->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                                            {{ ucfirst($plotting->status) }}
+                                                            {{ $ruangan->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                                            {{ ucfirst($ruangan->status) }}
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -118,11 +119,11 @@
                 // Toggle visibility of ruangan table and approve button
                 if (table.style.display === 'none' || table.style.display === '') {
                     table.style.display = 'table-row';
-                    approveButton.style.display = 'inline-block';
+                    approveButton.classList.remove('hidden');
                     this.textContent = '-';
                 } else {
                     table.style.display = 'none';
-                    approveButton.style.display = 'none';
+                    approveButton.classList.add('hidden');
                     this.textContent = '+';
                 }
             });
@@ -148,26 +149,34 @@
         setTimeout(() => alertBox.addClass('hidden'), 3000); // Menyembunyikan alert setelah 3 detik
     }
 
-    function approveAll() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
+    function setujuisemua(url, namaprodi) {
         $.ajax({
-            url: '/approve-all',
+            url: url,
             type: 'POST',
-            contentType: 'application/json',
+            data: {
+                namaprodi: namaprodi,
+                _token: $('meta[name="csrf-token"]').attr('content') // Pastikan CSRF token disertakan
+            },
             success: function(response) {
-                if (response.success) {
-                    showApprovalAlert('Semua ruangan berhasil disetujui.', 'success');
+                console.log(response); // Log respons untuk debugging
+                if (response.success === true) {
+                    showAlert(response.message, 'success');
+
+                    // Perbarui status di tabel untuk semua entri dengan namaprodi yang sama
+                    $(`#plottingRuangTableBody tr`).each(function() {
+                        const row = $(this);
+                        const prodiCell = row.find('td:first'); // Asumsikan kolom pertama adalah prodi
+
+                        if (prodiCell.data('namaprodi') === namaprodi) {
+                            row.find('span').removeClass('bg-red-100 text-red-800').addClass('bg-green-100 text-green-800').text('telah disetujui');
+                        }
+                    });
                 } else {
-                    showApprovalAlert('Gagal menyetujui ruangan.', 'danger');
+                    showAlert(response.message, 'danger');
                 }
             },
             error: function() {
-                showApprovalAlert('Terjadi kesalahan saat menyetujui ruangan.', 'danger');
+                showAlert('Terjadi kesalahan saat menyetujui semua plotting ruang.', 'danger');
             }
         });
     }

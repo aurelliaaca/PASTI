@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('ruangan', function (Blueprint $table) {
             $table->id();
+            $table->string('namaprodi');
             $table->string('gedung');
-            $table->string('ruang')->unique();
+            $table->string('namaruang')->unique();
             $table->integer('kapasitas');
+            $table->string('status')->default('Belum disetujui');
             $table->timestamps();
         });
     }

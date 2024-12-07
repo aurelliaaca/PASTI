@@ -92,19 +92,22 @@
               </tr>
             </thead>
             <tbody id="plottingRuangTableBody">
-              @foreach($plottingRuang as $plotting)
-              <tr id="plotting_{{ $plotting->id }}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
-                <td>{{ $plotting->prodi_id }}</td>
-                <td>{{ $plotting->ruangan->gedung ?? 'N/A' }}</td>
-                <td>{{ $plotting->ruangan->ruang ?? 'N/A' }}</td>
-                <td>{{ $plotting->ruangan->kapasitas ?? 'N/A' }}</td>
-                <td class="text-center py-2">
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                    {{ $plotting->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                    {{ $plotting->status }}
-                  </span>
-                </td>
-              </tr>
+              @foreach($ruangans as $ruangan)
+                @php
+                    $rowClass = $ruangan->status == 'belum disetujui' ? 'bg-red-100' : 'bg-white';
+                @endphp
+                <tr id="plotting_{{ $ruangan->id }}" class="{{ $rowClass }} odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                    <td>{{ $ruangan->programStudi ? $ruangan->programStudi->namaprodi : 'N/A' }}</td>
+                    <td>{{ $ruangan->gedung }}</td>
+                    <td>{{ $ruangan->namaruang }}</td>
+                    <td>{{ $ruangan->kapasitas }}</td>
+                    <td class="text-center py-2">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                            {{ $ruangan->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                            {{ $ruangan->status }}
+                        </span>
+                    </td>
+                </tr>
               @endforeach
             </tbody>
           </table>
@@ -126,22 +129,22 @@
                     @csrf
                     <div class="mb-4">
                         <label for="prodi" class="block">Program Studi</label>
-                        <select class="w-full px-4 py-2 border rounded-lg" id="prodi" name="prodi_id" required>
+                        <select class="w-full px-4 py-2 border rounded-lg" id="prodi" name="namaprodi" required>
                             <option value="">Pilih Program Studi</option>
-                            @foreach($programStudis as $programStudi)
-                                <option value="{{ $programStudi->kodeprodi }}">{{ $programStudi->namaprodi }}</option>
+                            @foreach($programStudis as $prodi)
+                                <option value="{{ $prodi->namaprodi }}">{{ $prodi->namaprodi }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-4">
                         <label for="ruangan_id" class="block">Ruangan</label>
-                        @foreach($ruangan as $r)
-                        <div class="flex items-center mb-2">
-                            <input class="form-check-input h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500" type="checkbox" id="ruangan_{{ $r->id }}" name="ruangan_id[]" value="{{ $r->id }}">
-                            <label class="ml-2 text-sm text-gray-700" for="ruangan_{{ $r->id }}">
-                                {{ $r->ruang }} - Kapasitas: {{ $r->kapasitas }}
-                            </label>
-                        </div>
+                        @foreach($ruangans as $ruangan)
+                            <div class="flex items-center mb-2">
+                                <input class="form-check-input h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500" type="checkbox" id="ruangan_{{ $ruangan->id }}" name="ruangan_id[]" value="{{ $ruangan->id }}">
+                                <label class="ml-2 text-sm text-gray-700" for="ruangan_{{ $ruangan->id }}">
+                                    {{ $ruangan->namaruang }} - Kapasitas: {{ $ruangan->kapasitas }}
+                                </label>
+                            </div>
                         @endforeach
                     </div>
                 </form>
@@ -197,7 +200,8 @@
         }
 
         function submitPlottingRuang() {
-            const formData = new FormData(document.getElementById('plottingRuangForm'));
+            const form = document.getElementById('plottingRuangForm');
+            const formData = new FormData(form);
 
             $.ajax({
                 url: '/plotting-ruang/store',
@@ -206,12 +210,32 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    if (response.success) {
+                    console.log(response); // Log respons untuk debugging
+
+                    if (response.success === true) {
                         closeModal(); // Tutup modal setelah berhasil
                         showAlert(response.message, 'success');
-                        loadPlottingRuangData(); // Muat ulang data tabel
+
+                        // Tambahkan baris baru ke tabel tanpa refresh
+                        response.data.forEach(ruangan => {
+                            const newRow = `<tr id="plotting_${ruangan.id}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                                <td>${ruangan.kodeprodi || 'N/A'}</td>
+                                <td>${ruangan.gedung}</td>
+                                <td>${ruangan.namaruang}</td>
+                                <td>${ruangan.kapasitas}</td>
+                                <td class="text-center py-2">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                                        ${ruangan.status}
+                                    </span>
+                                </td>
+                            </tr>`;
+                            $('#plottingRuangTableBody').append(newRow);
+                        });
+                        // Reset form setelah sukses
+                        form.reset();
                     } else {
-                        showAlert('Terjadi kesalahan saat memproses ruangan.', 'danger');
+                        showAlert(response.message || 'Terjadi kesalahan saat memproses ruangan.', 'danger');
                     }
                 },
                 error: function() {
@@ -228,16 +252,16 @@
                     const tableBody = $('#plottingRuangTableBody');
                     tableBody.empty(); // Kosongkan tabel sebelum menambahkan data baru
 
-                    data.forEach(plotting => {
-                        const newRow = `<tr id="plotting_${plotting.id}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
-                            <td>${plotting.prodi_id}</td>
-                            <td>${plotting.ruangan.gedung || 'N/A'}</td>
-                            <td>${plotting.ruangan.ruang || 'N/A'}</td>
-                            <td>${plotting.ruangan.kapasitas || 'N/A'}</td>
+                    data.forEach(ruangan => {
+                        const newRow = `<tr id="plotting_${ruangan.id}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                            <td>${ruangan.kodeprodi}</td>
+                            <td>${ruangan.gedung}</td>
+                            <td>${ruangan.namaruang}</td>
+                            <td>${ruangan.kapasitas}</td>
                             <td class="text-center py-2">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    ${plotting.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
-                                    ${plotting.status}
+                                    ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                                    ${ruangan.status}
                                 </span>
                             </td>
                         </tr>`;

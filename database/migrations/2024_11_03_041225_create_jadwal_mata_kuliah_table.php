@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('kodeprodi', 1);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->integer('ruang_id');
+            $table->string('namaruang');
             $table->string('kelas', 1);
             $table->string('hari', 6);
             $table->string('kodemk', 8);
@@ -28,7 +28,6 @@ return new class extends Migration
             $table->foreign('koordinator_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu1_nip')->references('nip')->on('dosen');
             $table->foreign('pengampu2_nip')->references('nip')->on('dosen');
-            $table->foreign('ruang_id')->references('id')->on('plotting_ruang');
             
             $table->timestamps();
         });
