@@ -9,7 +9,7 @@ class CreatePlottingRuangTable extends Migration
     public function up()
     {
         Schema::create('plotting_ruang', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->string('prodi_id');
             $table->foreignId('ruangan_id')->constrained('ruangan')->onDelete('cascade');
             $table->string('status')->default('Belum Disetujui');

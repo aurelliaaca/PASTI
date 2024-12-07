@@ -19,8 +19,8 @@ class Ruangan extends Model
         return $this->hasMany(PlottingRuang::class, 'ruangan_id');
     }
 
-    public function jadwal_mata_kuliah()
+    public function plottingRuang()
     {
-        return $this->hasMany(Jadwal_mata_kuliah::class, 'ruang_id');
+        return $this->hasMany(PlottingRuang::class, 'ruang_id');
     }
 }

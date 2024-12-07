@@ -46,9 +46,9 @@ class Jadwal_mata_kuliah extends Model
     }
 
     //relasi dengan ruang
-    public function ruangan()
+    public function plottingRuang()
     {
-        return $this->belongsTo(Ruangan::class, 'ruang_id', 'ruang');
+        return $this->belongsTo(PlottingRuang::class, 'ruang_id', 'id');
     }
 
     //relasi dengan dosen
