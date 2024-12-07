@@ -30,9 +30,12 @@ class DosenController extends Controller
     {
         $useremail = Auth::user()->email;
         $dosenwali = Dosen::where('email',$useremail)->first();
-        $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
+        $mahasiswaperwalian = Mahasiswa::join('Irs', 'mahasiswa.nim', '=', 'irs.nim')
+        ->where('dosenwali', $dosenwali->nip)
+        ->select('mahasiswa.*', 'status_verifikasi as status')
+        ->get();
 
+        return view('dosen.persetujuan', compact('mahasiswaperwalian'));
     }
 
     // Mendapatkan SKS maksimal berdasarkan IPS
@@ -93,7 +96,7 @@ class DosenController extends Controller
         // Cari semua data IRS berdasarkan NIM
         $affectedRows = IRS::where('nim', $nim)->update([
             'status_verifikasi' => 'Sudah disetujui', // 'Belum disetujui', 'Diproses', 'Sudah disetujui'
-            'tanggal_disetujui' => now(), // Menambahkan tanggal persetujuan
+            'tanggal_disetujui' => now(),  
         ]);
 
         // Jika tidak ada data IRS yang diperbarui
@@ -102,8 +105,9 @@ class DosenController extends Controller
         }
 
         // Kembali ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil disetujui.");
+        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil disetujui");
     }
+
 
     public function tolakIRS(Request $request)
     {
@@ -123,5 +127,26 @@ class DosenController extends Controller
         // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil ditolak.");
     }
+
+    public function setujuiSemuaIRS(Request $request){
+        try {
+            // Logika untuk menyetujui semua ruangan
+            Irs::where('status_verifikasi', 'Diproses')->update(['status_verifikasi' => 'Sudah disetujui', 'tanggal_disetujui' => now()]);
+
+            return redirect()->back()->with('success', 'Semua IRS telah disetujui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyetujui IRS.');
+        }
+    }
     
+    public function resetIRS(Request $request){
+        try {
+            // Logika untuk menyetujui semua ruangan
+            Irs::where('status_verifikasi', 'Sudah disetujui')->update(['status_verifikasi' => 'Diproses', 'tanggal_disetujui' => now()]);
+
+            return redirect()->back()->with('success', 'Semua IRS telah disreset.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat reset IRS.');
+        }
+    }
 }
