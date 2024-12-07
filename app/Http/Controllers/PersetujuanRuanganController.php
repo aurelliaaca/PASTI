@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PlottingRuang;
+use App\Models\Prodi;
 
 class PersetujuanRuanganController extends Controller
 {
     public function index()
     {
-        $programStudiList = ['INFORMATIKA', 'BIOLOGI', 'MATEMATIKA', 'FISIKA', 'KIMIA', 'BIOTEKNOLOGI', 'STATISTIKA'];
+        $programStudiList = Prodi::pluck('namaprodi', 'kodeprodi');
 
         $plottingRuangData = [];
-        foreach ($programStudiList as $programStudi) {
-            $plottingRuangData[$programStudi] = PlottingRuang::where('prodi_id', $programStudi)->with('ruangan')->get();
+        foreach ($programStudiList as $kodeprodi => $namaprodi) {
+            $plottingRuangData[$namaprodi] = PlottingRuang::where('prodi_id', $kodeprodi)
+                ->with('ruangan')
+                ->get();
         }
 
         return view('dk_persetujuanruangan', compact('plottingRuangData', 'programStudiList'));

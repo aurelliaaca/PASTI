@@ -10,6 +10,8 @@ use App\Models\Jadwal_mata_kuliah;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Models\PlottingRuang;
+use App\Models\ProgramStudi;
 
 
 class KaprodiController extends Controller
@@ -18,10 +20,16 @@ class KaprodiController extends Controller
         return view('user');
     }
 
-    public function showPenjadwalanForm()
+    public function showPenjadwalanForm(Request $request)
     {
-        $jadwals = Jadwal_mata_kuliah::with(['ruangan','matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
-        $ruangs = Ruangan::all();
+        $jadwals = Jadwal_mata_kuliah::with(['matkul', 'koordinator', 'pengampu1', 'pengampu2'])->get();
+        $kodeprodi = $request->input('prodi_id');
+        
+        // Ambil ruangan yang sudah disetujui berdasarkan kodeprodi
+        $ruangs = PlottingRuang::where('status', 'sudah disetujui')
+                    ->where('prodi_id', $kodeprodi)
+                    ->with('ruangan')
+                    ->get();
         $matakuliah = Matkul::all();
         $dosen = Dosen::all();
 
@@ -202,46 +210,48 @@ class KaprodiController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            // Debug input yang diterima
-            Log::info('Request Data:', $request->all());
+        // Ambil dosen yang sedang login
+        $dosen = Dosen::where('email', Auth::user()->email)->first();
 
-            // Validasi
-            $validated = $request->validate([
-                'kodeprodi' => 'required',
-                'kodemk' => 'required|exists:matakuliah,kode',
-                'hari' => 'required',
-                'jam_mulai' => 'required',
-                'kelas' => 'required',
-                'ruang_id' => 'required|exists:ruangan,ruang',
-                'koordinator_nip' => 'required|exists:dosen,nip',
-                'pengampu1_nip' => 'required|exists:dosen,nip',
-                'pengampu2_nip' => 'required|exists:dosen,nip',
-                'kuota' => 'required|numeric',
-            ]);
-
-            Log::info('Validated Data:', $validated);
-
-            // Coba simpan data
-            $jadwal = Jadwal_mata_kuliah::create($validated);
-            
-            Log::info('Saved Data:', $jadwal->toArray());
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data jadwal berhasil ditambahkan',
-                'data' => $jadwal
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Error saving jadwal: ' . $e->getMessage());
-            Log::error('Stack trace: ' . $e->getTraceAsString());
-
+        if (!$dosen || !$dosen->kodeprodi) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
-            ], 500);
+                'message' => 'Dosen tidak memiliki kode prodi'
+            ], 403);
         }
+
+        // Validasi input
+        $validatedData = $request->validate([
+            'kodemk' => 'required|string|max:8',
+            'hari' => 'required|string|max:6',
+            'jam_mulai' => 'required|date_format:H:i',
+            'kelas' => 'required|string|max:1',
+            'ruang_id' => 'required|string|exists:ruangan,ruang',
+            'koordinator_nip' => 'required|string|exists:dosen,nip',
+            'pengampu1_nip' => 'nullable|string|exists:dosen,nip',
+            'pengampu2_nip' => 'nullable|string|exists:dosen,nip',
+            'kuota' => 'required|integer|min:1',
+        ]);
+
+        // Tambahkan kodeprodi dari dosen yang login
+        $validatedData['kodeprodi'] = $dosen->kodeprodi;
+
+        // Simpan data ke database
+        $jadwal = Jadwal_mata_kuliah::create($validatedData);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data jadwal berhasil ditambahkan',
+            'data' => $jadwal
+        ]);
+    }
+
+    public function create()
+    {
+        // Ambil ruangan yang sudah disetujui
+        $ruangs = PlottingRuang::where('status', 'Disetujui')->get();
+
+        return view('kp_penjadwalan', compact('ruangs'));
     }
 }
 // class KaprodiController extends Controller

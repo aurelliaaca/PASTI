@@ -272,6 +272,5 @@ Route::get('/profile', function() {
 // })->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/jadwal/store', [KaprodiController::class, 'storeJadwal'])
-        ->name('kp.jadwal.store');
+    Route::post('/kp_penjadwalan/store', [KaprodiController::class, 'store'])->name('kp.jadwal.store');
 });

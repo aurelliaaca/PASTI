@@ -139,7 +139,7 @@
 
                     <div class="flex flex-col">
                         <label for="jam_selesai" class="font-medium">Jam Selesai</label>
-                        <input type="time" name="jam_selesai" id="jam_selesai" class="px-3 py-2 border rounded" readonly>
+                        <input type="time" id="jam_selesai" name="jam_selesai" class="px-3 py-2 border rounded" readonly>
                     </div>
 
                     <div class="flex flex-col">
@@ -159,7 +159,9 @@
                         <select name="ruang_id" id="ruang_id" class="px-3 py-2 border rounded" required>
                             <option value="">Pilih Ruangan</option>
                             @foreach($ruangs as $ruang)
-                                <option value="{{ $ruang->ruang }}">{{ $ruang->ruang }}</option>
+                                @if($ruang->ruangan)
+                                    <option value="{{ $ruang->ruangan->id }}">{{ $ruang->ruangan->ruang }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -305,6 +307,46 @@
 
         // Di console browser
         console.log($('#jadwalForm').serialize());
+
+        $('#simpanBtn').click(function(e) {
+            e.preventDefault();
+            
+            let jamMulai = $('#jam_mulai').val();
+            
+            // No need to add seconds, just ensure it's in H:i format
+            console.log('Jam Mulai:', jamMulai); // Debug: Log the time format
+
+            let formData = {
+                kodeprodi: $('#kodeprodi').val(),
+                kodemk: $('#kodemk').val(),
+                hari: $('#hari').val(),
+                jam_mulai: jamMulai,
+                kelas: $('#kelas').val(),
+                ruang_id: $('#ruang_id').val(),
+                koordinator_nip: $('#koordinator_nip').val(),
+                pengampu1_nip: $('#pengampu1_nip').val(),
+                pengampu2_nip: $('#pengampu2_nip').val(),
+                kuota: $('#kuota').val(),
+                _token: $('meta[name="csrf-token"]').attr('content')
+            };
+            
+            $.ajax({
+                url: "{{ route('kp.jadwal.store') }}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    console.log('Response:', response);
+                    if(response.status == 'success') {
+                        alert('Berhasil menyimpan data');
+                        location.reload();
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr);
+                    alert('Gagal menyimpan data: ' + (xhr.responseJSON?.message || 'Unknown error'));
+                }
+            });
+        });
     </script>
 </body>
 </html>
