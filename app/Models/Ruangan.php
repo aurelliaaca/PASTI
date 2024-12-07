@@ -9,18 +9,15 @@ class Ruangan extends Model
     public $timestamps = false;
     
     protected $fillable = [ 
+        'kodeprodi',
         'gedung',
-        'ruang',
-        'kapasitas'
+        'namaruang',
+        'kapasitas',
+        'status'
     ];   
 
-    public function plottingRuangs()
+    public function prodi()
     {
-        return $this->hasMany(PlottingRuang::class, 'ruangan_id');
-    }
-
-    public function plottingRuang()
-    {
-        return $this->hasMany(PlottingRuang::class, 'ruang_id');
+        return $this->belongsTo(Prodi::class, 'kodeprodi', 'namaprodi');
     }
 }

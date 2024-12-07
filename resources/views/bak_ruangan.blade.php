@@ -24,23 +24,22 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5); /* Gelap di belakang form */
-            display: none; /* Sembunyikan overlay secara default */
-            justify-content: flex center;
-            align-items: center; /* Membuat konten berada di tengah */
-            z-index: 999; /* Pastikan overlay berada di atas konten lainnya */
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
         .popup-form {
             background-color: white;
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow atas dan bawah */
-            width: 40%; /* Atur lebar form sesuai kebutuhan */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 40%;
             max-width: 500px;
             padding: 20px;
             margin: 0 auto;
-            animation: popup 0.5s ease-out; /* Animasi halus */
+            animation: popup 0.5s ease-out;
         }
-        /* Animasi popup */
         @keyframes popup {
             0% {
                 opacity: 0;
@@ -56,7 +55,6 @@
 <body class="min-h-screen relative">
     <div class="bg-white shadow-lg rounded-lg">
         <div id="content-ruangan" class="p-4">
-            <!-- Header dan Tombol -->
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-xl font-semibold text-teal-800 mb-0">RUANGAN</h1>
                 <div class="flex items-center">
@@ -67,7 +65,6 @@
                 </div>
             </div>
 
-            <!-- Tabel -->
             <div class="border rounded-md overflow-x-auto">
                 <div class="table-responsive p-2">
                     <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
@@ -83,10 +80,10 @@
                             @foreach($paginatedRuangans as $ruangan)
                                 <tr id="ruangan_{{ $ruangan->id }}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
                                     <td class="text-sm px-4 py-2">{{ $ruangan->gedung }}</td>
-                                    <td class="text-sm px-4 py-2">{{ $ruangan->ruang }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $ruangan->namaruang }}</td>
                                     <td class="text-sm px-4 py-2">{{ $ruangan->kapasitas }}</td>
                                     <td class="text-sm px-4 py-2 text-center">
-                                        @if($ruangan->plottingRuangs->where('status', 'sudah disetujui')->isEmpty())
+                                        @if($ruangan->status !== 'sudah disetujui')
                                             <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRuangan({{ $ruangan->id }})">Hapus</button>
                                             <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
                                         @else
@@ -99,7 +96,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- Custom Pagination Links -->
                 <div class="mt-4 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                     <div class="flex flex-1 justify-between sm:hidden">
                         @if ($paginatedRuangans->onFirstPage())
@@ -195,8 +191,8 @@
                 @csrf
                 <h2 class="text-lg font-semibold mb-4 text-center">Tambah Ruangan</h2>
                 <div class="mb-4">
-                    <label class="block">Ruang</label>
-                    <input type="text" name="ruang" id="ruang" class="w-full px-4 py-2 border rounded-lg" required>
+                    <label class="block">Nama Ruang</label>
+                    <input type="text" name="namaruang" id="namaruang" class="w-full px-4 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
                     <label class="block">Gedung</label>
@@ -277,19 +273,18 @@
         $('#overlay').hide(); // Menyembunyikan overlay
     }
 
-    // Menangani perubahan pada input "Ruang"
-    $('#ruang').on('input', function() {
-        var ruangValue = $(this).val();
-        if (ruangValue.length > 0) {
-            var gedungValue = ruangValue.charAt(0).toUpperCase(); // Ambil huruf pertama dan ubah ke huruf besar
+    // Menangani perubahan pada input "namaruang"
+    $('#namaruang').on('input', function() {
+        var namaruangValue = $(this).val();
+        if (namaruangValue.length > 0) {
+            var gedungValue = namaruangValue.charAt(0).toUpperCase(); // Ambil huruf pertama dan ubah ke huruf besar
             $('#gedung').val(gedungValue); // Isi otomatis input "Gedung"
         } else {
-            $('#gedung').val(''); // Kosongkan input "Gedung" jika "Ruang" kosong
+            $('#gedung').val(''); // Kosongkan input "Gedung" jika "namaruang" kosong
         }
     });
 
     // Menangani pengiriman form untuk tambah atau edit ruangan
-    // Fungsi untuk menangani pengiriman form
     $('#tambahForm').on('submit', function (e) {
         e.preventDefault();  // Mencegah pengiriman form default
         var formData = new FormData(this);
@@ -308,9 +303,9 @@
                         var currentRuang = updatedRow.find('td:eq(1)').text();
 
                         // Cek apakah nama ruang berbeda
-                        if (currentRuang !== response.data.ruang) {
+                        if (currentRuang !== response.data.namaruang) {
                             updatedRow.find('td:eq(0)').text(response.data.gedung);
-                            updatedRow.find('td:eq(1)').text(response.data.ruang);
+                            updatedRow.find('td:eq(1)').text(response.data.namaruang);
                             updatedRow.find('td:eq(2)').text(response.data.kapasitas);
                             showAlert('Ruangan berhasil diedit!', 'success'); // Alert sukses edit
                         } else {
@@ -321,7 +316,7 @@
                         // Jika ini adalah tambah ruangan, tambahkan baris baru
                         var newRow = '<tr id="ruangan_' + response.data.id + '" class="odd:bg-teal-800/10 even:bg-white mb-2">';
                         newRow += '<td>' + response.data.gedung + '</td>';
-                        newRow += '<td>' + response.data.ruang + '</td>';
+                        newRow += '<td>' + response.data.namaruang + '</td>';
                         newRow += '<td>' + response.data.kapasitas + '</td>';
                         newRow += '<td class="text-center py-2">';
                         newRow += '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg mr-1" onclick="deleteRuangan(' + response.data.id + ')">Hapus</button>';
