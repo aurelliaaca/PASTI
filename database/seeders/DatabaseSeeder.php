@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ProdiSeeder::class,
             // IrsSeeder::class,
             JadwalSeeder::class
+
         ]);
     }
 }

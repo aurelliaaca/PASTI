@@ -139,14 +139,14 @@
 
           <!-- Container for Centered Buttons -->
           <div class="col-span-3 flex justify-center space-x-4 mt-4">
-              <!-- Periode Akses IRS Button -->
-              <a href="{{ route('dk_persetujuanruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <!-- Persetujuan Ruangan Button -->
+              <a href="{{ route('persetujuanruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="fa fa-building text-3xl"></i>
                 <span class="text-2xl">Persetujuan Alokasi Ruangan</span>
             </a>
 
-              <!-- Data Mahasiswa Button -->
-              <a href="{{ route('Persetujuan_Jadwal') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+              <!-- Persetujuan Jadwal Button -->
+              <a href="{{ route('persetujuanjadwal') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                   <i class="fa fa-book text-3xl"></i>
                   <span class="text-2xl">Persetujuan Jadwal</span>
               </a>
@@ -156,6 +156,7 @@
     </div>
   </div>
   <script>
+    
   const data = {
             labels: ['Belum Disetujui', 'Sudah Disetujui'], // Categories
             datasets: [{

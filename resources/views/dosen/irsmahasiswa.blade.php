@@ -81,7 +81,7 @@
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Total SKS</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full"> </p>
+          <p class="text-sm align-middle w-full">50</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Beban SKS Maks</p>

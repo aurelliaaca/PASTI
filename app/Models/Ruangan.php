@@ -9,7 +9,7 @@ class Ruangan extends Model
     public $timestamps = false;
     
     protected $fillable = [ 
-        'kodeprodi',
+        'namaprodi',
         'gedung',
         'namaruang',
         'kapasitas',
@@ -18,7 +18,7 @@ class Ruangan extends Model
 
     public function prodi()
     {
-        return $this->belongsTo(Prodi::class, 'kodeprodi', 'namaprodi');
+        return $this->belongsTo(Prodi::class, 'namaprodi');
     }
 
     public function jadwalMataKuliah()

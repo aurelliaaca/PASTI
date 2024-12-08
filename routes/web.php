@@ -5,18 +5,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\BAKController;
-use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProfileController; //bismillah
-
-use App\Http\Controllers\PlottingRuangController;
 use App\Http\Controllers\PersetujuanRuanganController;
 
 // Pembaruan Login
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -48,7 +45,13 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('/mahasiswa/getJadwalByMatkul/{kodeMatkul}', [MahasiswaController::class, 'getJadwalByMatkul']);
     Route::post('/mahasiswa/store', [MahasiswaController::class, 'store']);
     Route::post('/save-jadwal', [MahasiswaController::class, 'store']);
-    
+    Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal'])->name('batalkan.jadwal');
+    Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
+// Pastikan route ini sesuai dengan nama yang digunakan di form
+Route::post('/ajukan-semua-IRS', [MahasiswaController::class, 'ajukanSemuaIRS'])->name('ajukanSemuaIrs');
+Route::post('/reset-irs', [MahasiswaController::class, 'resetIrs'])->name('resetIrs');
+
+
 
 // routes/web.php
 Route::post('/submit-jadwal', [MahasiswaController::class, 'store']);
@@ -69,10 +72,11 @@ Route::middleware(['auth', 'dekan'])->group(function () {
     Route::get('dekan/dashboard', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan');
     Route::get('dekan/dashboard2', [HomeController::class, 'dashboardDekan'])->name('dashboard.dekan2');
     Route::get('dosen/dashboard2', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen2');
-    Route::get('/dk_persetujuanruangan', [PersetujuanRuanganController::class, 'index'])->name('dk_persetujuanruangan');
-    Route::get('/dk_persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('Persetujuan_Jadwal');
+    Route::get('/persetujuanruangan', [DekanController::class, 'showPersetujuan'])->name('persetujuanruangan');
+    Route::get('/persetujuanjadwal', [DekanController::class, 'showJadwal'])->name('persetujuanjadwal');
     Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
-    Route::post('/persetujuan-ruangan/setujuisemua', [PersetujuanRuanganController::class, 'setujuisemua'])->name('setujuiSemua');
+    Route::post('/setujui-semua-ruang', [DekanController::class, 'approveAllRooms'])->name('setujui.semua.ruang');
+    Route::post('/setujui-semua-jadwal', [DekanController::class, 'approveAllJadwal'])->name('setujui.semua.jadwal');
     // Route::get('/user1', function () {return view('user1');})->name('user1');
 });
 
@@ -94,23 +98,22 @@ Route::middleware(['auth', 'dosen'])->group(function () {
 // Grup untuk Akademik
 Route::middleware(['auth', 'akademik'])->group(function () {
     Route::get('akademik/dashboard', [HomeController::class, 'dashboardAkademik']);
-    Route::get('/bak_jadwal', [BAKController::class, 'index'])->name('Jadwal');
-    Route::get('/bak_plottingruang', [RuanganController::class, 'index'])->name('bak_plottingruang');
-    Route::get('/bak_ruangan', [RuanganController::class, 'index'])->name('bak_ruangan');
-    Route::prefix('ruangan')->name('ruangan.')->group(function () {
-        Route::post('/store', [RuanganController::class, 'store'])->name('store');
-        Route::get('/', [RuanganController::class, 'index'])->name('index');
-        Route::delete('/{id}', [RuanganController::class, 'destroy'])->name('destroy');
-        
-    });
-    // Rute resource untuk operasi CRUD pada 'jadwal' (auto CRUD routes untuk store, show, update, destroy)
-    Route::resource('jadwal', BAKController::class);
-    Route::resource('ruang', RuanganController::class);
-    Route::get('/bak_plottingruang', [RuanganController::class, 'index'])->name('bak_plottingruang');
-    Route::post('/plotting-ruang/approve/{id}', [RuanganController::class, 'approve'])->name('plotting-ruang.approve');
-    Route::post('/plotting-ruang/store', [RuanganController::class, 'store'])->name('plotting-ruang.store');
-    Route::get('/plotting-ruang/data', [RuanganController::class, 'getData'])->name('plotting-ruang.data');
-
+    
+    // Rute untuk ruangan
+    Route::get('/ruangan', [BAKController::class, 'ruangan'])->name('ruangan');
+    Route::post('/ruangan/store', [BAKController::class, 'store'])->name('ruangan.store');
+    Route::delete('/ruangan/{id}', [BAKController::class, 'destroyRuangan'])->name('ruangan.destroy');
+    Route::get('/ruangan/{id}/edit', [BAKController::class, 'edit'])->name('ruangan.edit');
+    Route::put('/ruangan/{id}', [BAKController::class, 'updateRuangan'])->name('ruangan.update');
+    
+    // Rute untuk plotting ruang
+    Route::get('/plottingruang', [BAKController::class, 'plotruang'])->name('plottingruang');
+    Route::get('/plotting-ruang/data', [BAKController::class, 'getData'])->name('plotting-ruang.data');
+    Route::post('/plottingruang/store', [BAKController::class, 'storePlottingRuang'])->name('storePlottingRuang');
+    
+    // Rute untuk periode
+    Route::get('/periode', [BAKController::class, 'showJadwal'])->name('periode');
+    Route::post('/periode/store', [BAKController::class, 'storePeriode'])->name('periode.store');
 });
 
 

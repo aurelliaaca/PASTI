@@ -141,20 +141,20 @@
 
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4">
-            <!-- Periode Akses IRS Button -->
-            <a href="{{ route('bak_ruangan') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <!-- Ruangan Button -->
+            <a href="{{ route('ruangan') }}" class="bg-yellow-500 text-white px-8 py-3 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
               <i class="fas fa-building text-3xl"></i>
               <span class="text-2xl">Ruangan</span>
             </a>
 
-            <!-- Ruangan Button -->
-            <a href="{{ route('bak_plottingruang') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <!-- Plotting Ruang Button -->
+            <a href="{{ route('plottingruang') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="fas fa-city text-3xl"></i>
                 <span class="text-2xl">Plotting Ruang</span>
             </a>
 
-            <!-- Ruangan Button -->
-            <a href="{{ route('Jadwal') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
+            <!-- Periode Akses IRS Button -->
+            <a href="{{ route('periode') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
                 <i class="fas fa-calendar-alt text-3xl"></i>
                 <span class="text-2xl">Periode Akses IRS</span>
             </a>
