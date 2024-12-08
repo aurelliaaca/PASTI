@@ -80,7 +80,7 @@
                             </tr>
                         </thead>
                         <tbody id="jadwalTableBody">
-                            @foreach($jadwals as $jadwal)
+                            @foreach($periode as $jadwal)
                                 <tr id="jadwal_{{ $jadwal->id }}" class="odd:bg-teal-800/10 even:bg-white mb-2">
                                     <td>{{ $jadwal->keterangan }}</td>
                                     <td>{{ $jadwal->jadwal_mulai }}</td>
@@ -97,13 +97,13 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Overlay untuk popup -->
     <div id="overlay" class="overlay">
         <div class="popup-form">
-            <form id="tambahForm" action="{{ route('jadwal.store') }}" method="POST">
+            <form id="tambahForm" action="{{ route('periode.store') }}" method="POST">
                 @csrf
-                <h2 class="text-lg font-semibold mb-4 text-center">Tambah Jadwal</h2>
+                <h2 class="text-lg font-semibold mb-4 text-center">Tambah Jadwal Periode</h2>
                 <div class="mb-4">
                     <label class="block">Keterangan</label>
                     <input type="text" name="keterangan" id="keterangan" class="w-full px-4 py-2 border rounded-lg" required>
@@ -137,7 +137,7 @@
     function addRow() {
         document.getElementById('overlay').style.display = 'flex';
         $('#tambahForm').trigger('reset'); // Reset form
-            $('#tambahForm').attr('action', '{{ route('jadwal.store') }}'); // Reset action URL untuk tambah
+            $('#tambahForm').attr('action', '{{ route('periode.store') }}'); // Reset action URL untuk tambah
             $('#tambahForm').find('input[name="_method"]').remove(); // Remove hidden method field jika ada
     }
 
