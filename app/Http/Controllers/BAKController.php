@@ -13,7 +13,7 @@ class BAKController extends Controller
     public function ruangan()
     {
         $perPage = 10;
-        $ruangans = Ruangan::all();
+        $ruangans = Ruangan::orderByRaw("CASE WHEN status = 'sudah disetujui' THEN 1 ELSE 0 END, created_at DESC")->get();
         $currentPage = request()->get('page', 1);
         $currentItems = $ruangans->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginatedRuangans = new \Illuminate\Pagination\LengthAwarePaginator($currentItems, $ruangans->count(), $perPage, $currentPage, [
@@ -69,7 +69,7 @@ class BAKController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ruangan berhasil ditambahkan.',
-            'data' => [$ruangan]
+            'data' => $ruangan
         ]);
     }
 
