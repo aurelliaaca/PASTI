@@ -48,7 +48,13 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('/mahasiswa/getJadwalByMatkul/{kodeMatkul}', [MahasiswaController::class, 'getJadwalByMatkul']);
     Route::post('/mahasiswa/store', [MahasiswaController::class, 'store']);
     Route::post('/save-jadwal', [MahasiswaController::class, 'store']);
-    
+    Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal'])->name('batalkan.jadwal');
+    Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
+// Pastikan route ini sesuai dengan nama yang digunakan di form
+Route::post('/ajukan-semua-IRS', [MahasiswaController::class, 'ajukanSemuaIRS'])->name('ajukanSemuaIrs');
+Route::post('/reset-irs', [MahasiswaController::class, 'resetIrs'])->name('resetIrs');
+
+
 
 // routes/web.php
 Route::post('/submit-jadwal', [MahasiswaController::class, 'store']);

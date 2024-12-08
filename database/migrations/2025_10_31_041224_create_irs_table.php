@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nim', 14);
             $table->integer('smt');
             $table->enum('status_verifikasi',['Belum disetujui', 'Diproses', 'Sudah disetujui'])->default('Belum disetujui');
+            $table->integer('queue')->nullable();
             $table->timestamp('tanggal_disetujui')->nullable();
 
             $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');
