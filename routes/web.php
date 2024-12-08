@@ -46,10 +46,13 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::post('/mahasiswa/store', [MahasiswaController::class, 'store']);
     Route::post('/save-jadwal', [MahasiswaController::class, 'store']);
     Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal'])->name('batalkan.jadwal');
-    Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
+        Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
 // Pastikan route ini sesuai dengan nama yang digunakan di form
 Route::post('/ajukan-semua-IRS', [MahasiswaController::class, 'ajukanSemuaIRS'])->name('ajukanSemuaIrs');
 Route::post('/reset-irs', [MahasiswaController::class, 'resetIrs'])->name('resetIrs');
+Route::post('/batal-jadwal', [MahasiswaController::class, 'batalJadwal'])->name('batalJadwal');
+Route::get('/cek-status-jadwal/{jadwalId}/{nim}', [MahasiswaController::class, 'cekStatusJadwal']);
+
 
 
 

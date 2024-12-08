@@ -176,30 +176,40 @@
                             <th class="font-bold px-4 py-2" style="width: 15%;">Status</th>
                         </tr>
                     </thead>
-                        <tbody id="irsTableBody">
-                            @php
-                                // Grouping irsTable by 'hari'
-                                $groupedByHari = $irsTable->groupBy('hari');
-                            @endphp
+                    <tbody id="irsTableBody">
+    @php
+        // Array urutan hari dari Senin hingga Sabtu
+        $hariUrutan = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                            @foreach ($groupedByHari as $hari => $irsList)
-                                @foreach ($irsList as $index => $irs)
-                                    <tr class="bg-white">
-                                        @if ($index == 0)
-                                            <!-- Rowspan untuk Hari -->
-                                            <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
-                                        @endif
-                                        <!-- Data untuk mata kuliah -->
-                                        <td class="border px-4 py-2">{{ $irs->nama }}</td>
-                                        <td class="border px-4 py-2">{{ $irs->kodemk }}</td>
-                                        <td class="border px-4 py-2">{{ $irs->sks }}</td>
-                                        <td class="border px-4 py-2">{{ $irs->jam_mulai }}</td>
-                                        <td class="border px-4 py-2">{{ $irs->kelas }}</td>
-                                        <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
-                                    </tr>
-                                @endforeach
-                            @endforeach
-                        </tbody>
+        // Grouping irsTable by 'hari'
+        $groupedByHari = $irsTable->groupBy('hari');
+
+        // Urutkan grup berdasarkan hari sesuai urutan yang diinginkan
+        $groupedByHari = $groupedByHari->sortBy(function ($value, $key) use ($hariUrutan) {
+            return array_search($key, $hariUrutan);
+        });
+    @endphp
+
+    @foreach ($groupedByHari as $hari => $irsList)
+        @foreach ($irsList as $index => $irs)
+            <tr class="bg-white">
+                @if ($index == 0)
+                    <!-- Rowspan untuk Hari -->
+                    <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
+                @endif
+                <!-- Data untuk mata kuliah -->
+                <td class="border px-4 py-2">{{ $irs->nama }}</td>
+                <td class="border px-4 py-2">{{ $irs->kodemk }}</td>
+                <td class="border px-4 py-2">{{ $irs->sks }}</td>
+                <td class="border px-4 py-2">{{ $irs->jam_mulai }}</td>
+                <td class="border px-4 py-2">{{ $irs->kelas }}</td>
+                <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
+            </tr>
+        @endforeach
+    @endforeach
+</tbody>
+
+
                     </table>
                 </div>
             </div>
@@ -314,6 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.getElementById('ajukan-btn').addEventListener('click', function () {
+    if (confirm('Apakah Anda yakin ingin mengajukan irs?')) {
     const nim = '{{ $mahasiswa->nim }}'; // Pastikan ini digantikan dengan nilai NIM yang benar dari server
 
     // Mengirimkan permintaan AJAX menggunakan Fetch API
@@ -336,9 +347,11 @@ document.getElementById('ajukan-btn').addEventListener('click', function () {
     .catch(error => {
         alert('Terjadi kesalahan saat mengajukan IRS: ' + error);
     });
+}
 });
 
 document.getElementById('reset-btn').addEventListener('click', function () {
+    if (confirm('Apakah Anda yakin ingin mengreset irs?')) {
     const nim = '{{ $mahasiswa->nim }}'; // Gantikan dengan NIM mahasiswa yang benar
     const smt = '{{ $mahasiswa->smt }}'; // Gantikan dengan semester mahasiswa yang benar
 
@@ -362,192 +375,266 @@ document.getElementById('reset-btn').addEventListener('click', function () {
     .catch(error => {
         alert('Terjadi kesalahan saat mereset data IRS: ' + error);
     });
+}
 });
 
 
-document.getElementById('matkul-dropdown').addEventListener('change', function () {
-    const opsiDipilih = this.options[this.selectedIndex];
-    const kodeMatkul = this.value;
-    const namaMatkul = opsiDipilih.getAttribute('data-name');
-    const sksMatkul = opsiDipilih.getAttribute('data-sks');
-    const tabelJadwal = document.getElementById('jadwalTableBody');
+
+
+// document.getElementById('batal-btn').addEventListener('click', function () {
+//     const nim = '{{ $mahasiswa->nim }}';
+//     const smt = '{{ $mahasiswa->smt }}';
+//     const jadwalid = this.getAttribute('data-jadwalid'); // Get the schedule ID from the button's data attribute
+
+//     fetch('/batal-jadwal', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for security
+//         },
+//         body: JSON.stringify({
+//             nim: nim,
+//             smt: smt,
+//             jadwalid: jadwalid,
+//         })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         // Check if the request was successful
+//         if (data.status === 'success') {
+//             alert('Jadwal berhasil dibatalkan!');
+//             document.querySelector(`#jadwal-${jadwalid}`).remove();
+//         } else {
+//             alert(data.message || 'Terjadi kesalahan saat membatalkan jadwal.');
+//         }
+//     })
+//     .catch(error => {
+//         alert('Terjadi kesalahan saat membatalkan jadwal: ' + error);
+//     });
+// });
+
+function deleteJadwal(btn, id) {
+    if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+        // Get the necessary data, such as nim and smt
+        const nim = '{{ $mahasiswa->nim }}';  // Replace with actual student NIM
+        const smt = '{{ $mahasiswa->smt }}';  // Replace with actual student semester
+
+        // Send the request using Fetch API
+        fetch(`/batal-jadwal`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}', // CSRF token for security
+            },
+            body: JSON.stringify({
+                nim: nim,              // Student's NIM
+                smt: smt,              // Student's semester
+                jadwalid: id           // The schedule ID to be canceled
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Jadwal berhasil dibatalkan!');
+                // Remove the row from the table
+                $(btn).closest('tr').remove();
+            } else {
+                alert(data.message || 'Terjadi kesalahan saat membatalkan jadwal.');
+            }
+        })
+        .catch(error => {
+            alert('Terjadi kesalahan saat membatalkan jadwal: ' + error);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Ambil data jadwal yang sudah ada dari controller
+    const jadwalLain = {!! json_encode($jadwalLain) !!}; // Data jadwal dengan kode_mk yang sama
+
     const jamRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
     const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-    // Cek apakah mata kuliah sudah dipilih sebelumnya
-    if (document.getElementById(`matkul-${kodeMatkul}`)) {
-        alert('Jadwal untuk mata kuliah ini sudah tersedia di tabel!');
-        return; // Hentikan eksekusi jika sudah dipilih
-    }
-    
-    // Periksa apakah mata kuliah dipilih (kode tidak kosong)
-    if (kodeMatkul && namaMatkul) {
-        // Buat elemen untuk menampilkan mata kuliah yang dipilih
-        const divMatkulDipilih = document.createElement('div');
-        divMatkulDipilih.classList.add('flex', 'items-center', 'bg-teal-500', 'p-2', 'rounded', 'mb-2');
-        divMatkulDipilih.id = `matkul-${kodeMatkul}`; // Beri ID unik berdasarkan kode mata kuliah
+    // Inisialisasi struktur tabel kosong
+    jamRange.forEach(jam => {
+        let row = document.createElement('tr');
+        row.classList.add(`row-${jam}`);
 
-        divMatkulDipilih.innerHTML = `
-            <div class="flex-grow overflow-hidden break-words">
-                <p class="text-[12px] text-justify">${namaMatkul}</p>
-            </div>
-            <div class="flex items-center justify-end min-w-[120px] max-w-[120px]">
-                <p class="text-[12px] text-right font-semibold pr-2">${kodeMatkul} (${sksMatkul} SKS)</p>
-            </div>
-        `;
-        document.getElementById('selected-matkul').appendChild(divMatkulDipilih);
+        // Buat cell untuk jam
+        const jamCell = document.createElement('td');
+        jamCell.classList.add('border', 'px-2', 'py-2', 'text-xs', 'bg-white');
+        jamCell.textContent = `${String(jam).padStart(2, '0')}:00`;
+        row.appendChild(jamCell);
 
-        // Periksa apakah jadwal untuk mata kuliah ini sudah ada di tabel
-        const barisJadwalExist = document.querySelector(`#jadwalTableBody .row-${kodeMatkul}`);
+        // Buat cell untuk setiap hari
+        hariList.forEach(hari => {
+            const hariCell = document.createElement('td');
+            hariCell.classList.add('border', 'px-2', 'pt-0', 'pb-2', 'bg-white', `cell-${hari}`);
+            row.appendChild(hariCell);
+        });
 
-        // Jika belum ada, ambil data jadwal dari server
-        if (!barisJadwalExist) {
-            fetch(`/get-jadwal-mk/${kodeMatkul}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.length > 0) {
-                        // Menampilkan jadwal di tabel
-                        jamRange.forEach(jam => {
-                            let row = document.querySelector(`#jadwalTableBody .row-${jam}`);
-                            if (!row) {
-                                row = document.createElement('tr');
-                                row.classList.add(`row-${jam}`);
-                                const jamCell = document.createElement('td');
-                                jamCell.classList.add('border', 'px-2', 'py-2', 'text-xs', 'bg-white');
-                                jamCell.textContent = `${String(jam).padStart(2, '0')}:00`;
-                                row.appendChild(jamCell);
-                                tabelJadwal.appendChild(row);
-                            }
+        document.getElementById('jadwalTableBody').appendChild(row);
+    });
 
-                            hariList.forEach(hari => {
-                                let hariCell = row.querySelector(`.cell-${hari}`);
-                                if (!hariCell) {
-                                    hariCell = document.createElement('td');
-                                    hariCell.classList.add('border', 'px-2', 'pt-0', 'pb-2', 'bg-white');
-                                    hariCell.classList.add(`cell-${hari}`);
-                                    row.appendChild(hariCell);
-                                }
+    // Menambahkan data jadwalLain ke dalam tabel
+    jadwalLain.forEach(jadwal => {
+        const jamMulai = jadwal.jam_mulai.substr(0, 2);
+        const row = document.querySelector(`.row-${parseInt(jamMulai)}`);
+        if (row) {
+            const cell = row.querySelector(`.cell-${jadwal.hari}`);
+            if (cell) {
+                const jadwalButton = document.createElement('button');
+                
+                // Cek status jadwal di IRS
+                const jadwalTerpilih = {!! json_encode($irsTable->pluck('jadwalid')->toArray()) !!};
+                const kodeMKTerpilih = {!! json_encode($irsTable->pluck('kodemk')->toArray()) !!};
+                
+                // Set warna awal button
+                if (jadwalTerpilih.includes(jadwal.jadwalid)) {
+                    jadwalButton.classList.add('w-full', 'bg-amber-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
+                } else if (kodeMKTerpilih.includes(jadwal.kodemk)) {
+                    jadwalButton.classList.add('w-full', 'bg-red-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
+                } else {
+                    jadwalButton.classList.add('w-full', 'bg-teal-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
+                }
 
-                                const matchingJadwal = data.filter(jadwal => {
-                                    const jamMulai = jadwal.jam_mulai.substr(0, 2);
-                                    return jamMulai === String(jam).padStart(2, '0') && jadwal.hari === hari;
-                                });
-
-                                if (matchingJadwal.length > 0) {
-                                    matchingJadwal.forEach(jadwal => {
-                                        // Menambahkan informasi jadwal tanpa tombol
-                                        const jadwalInfo = document.createElement('div');
-                                        jadwalInfo.classList.add('p-2', 'mt-2', 'mb-0', 'w-full', 'bg-teal-100/80', 'rounded-t-lg',);
-                                        jadwalInfo.style.fontSize = '13px';
-
-                                        jadwalInfo.innerHTML = `
-                                            <p class="text-center font-semibold">${jadwal.matkul.nama}</p>
-                                            <div class="flex justify-center gap-1" style="font-size: 10px;">
-                                                <p class="text-center text-amber-600 uppercase italic font-semibold" style="width: 30%;">${jadwal.matkul.status}</p>
-                                                <p class="text-center" style="width: 30%;">(SMT ${jadwal.matkul.semester})</p>
-                                                <p class="text-center" style="width: 30%;">(${jadwal.matkul.sks} SKS)</p>
-                                            </div>
-                                            <div class="flex justify-center gap-1" style="font-size: 10px;">
-                                                <p class="text-center" style="width: 30%;">Kelas ${jadwal.kelas}</p>
-                                                <p class="text-center" style="width: 30%;">${jadwal.jam_mulai}</p>
-                                                <p class="text-center" style="width: 30%;">${jadwal.kuota}</p>
-                                            </div>
-                                        `;
-
-                                        // Create the Pilih button
-                                        const pilihButton = document.createElement('button');
-                                        pilihButton.classList.add('bg-teal-500', 'text-white', 'px-4', 'py-1', 'rounded-b-lg', 'w-full');
-                                        pilihButton.style.fontSize = '13px';
-                                        pilihButton.textContent = 'Pilih';
-                                        hariCell.appendChild(jadwalInfo);
-                                        hariCell.appendChild(pilihButton);
-                                        // Event listener untuk tombol jadwal
-                                        pilihButton.addEventListener('click', function () {
-                                            const jadwalid = jadwal.jadwalid;
-                                            const nim = '{{ $mahasiswa->nim }}'; // Ensure this is available
-                                            const smt = '{{ $mahasiswa->smt }}'; // Ensure this is available
-
-                                            if (!nim || !smt) {
-                                                alert('NIM atau Semester tidak valid.');
-                                                return;
-                                            }
-
-                                            // Kirim AJAX untuk cek apakah jadwal sudah dipilih
-                                            $.ajax({
-                                                url: '/cek-jadwal',
-                                                method: 'POST',
-                                                data: {
-                                                    nim: nim,
-                                                    jadwalid: jadwalid,
-                                                    _token: $('meta[name="csrf-token"]').attr('content'),
-                                                },
-                                                success: function(response) {
-                                                    if (response.exists) {
-                                                        alert('Anda sudah memilih mata kuliah ini.');
-                                                    } else if (response.sks_over_limit) {
-                                                        alert('Anda sudah melebihi batas SKS yang dapat diambil.');
-                                                    } else if (response.jadwal_bentrok) {
-                                                        alert('Jadwal sudah ada pada hari dan jam yang sama.');
-                                                    } else {
-                                                        // Lanjutkan untuk menyimpan jadwal
-                                                        $.ajax({
-                                                            url: '/store-jadwal',
-                                                            method: 'POST',
-                                                            data: {
-                                                                nim: nim,
-                                                                smt: smt,
-                                                                jadwalid: jadwalid,
-                                                                _token: $('meta[name="csrf-token"]').attr('content'),
-                                                            },
-                                                            success: function(response) {
-                                                                if (response.success) {
-                                                                    alert('Jadwal berhasil dipilih!');
-                                                                    pilihButton.textContent = 'Batalkan'; // Ganti teks tombol menjadi "Batalkan"
-                                                                } else {
-                                                                    alert('Terjadi kesalahan saat memilih jadwal.');
-                                                                }
-                                                            },
-                                                            error: function() {
-                                                                alert('Terjadi kesalahan saat menyimpan jadwal.');
-                                                            }
-                                                        });
-                                                    }
-                                                },
-                                                error: function(xhr) {
-                                                    if (xhr.status === 400) {
-                                                        const response = xhr.responseJSON;
-                                                        if (response.sks_over_limit) {
-                                                            alert('Anda sudah melebihi batas SKS yang dapat diambil.');
-                                                        } else {
-                                                            alert('Terjadi kesalahan saat memeriksa jadwal.');
-                                                        }
-                                                    } else {
-                                                        alert('Terjadi kesalahan saat memeriksa jadwal.');
-                                                    }
-                                                }
-                                            });
-                                        });
-
-                                        // Append the jadwalInfo and button to the hariCell
-                                        hariCell.appendChild(jadwalInfo);
-                                        hariCell.appendChild(pilihButton);
-                                    });
+                jadwalButton.style.fontSize = '13px';
+                jadwalButton.innerHTML = `
+                    <p class="text-center font-semibold">${jadwal.nama}</p>
+                    <div class="flex justify-center gap-1" style="font-size: 10px;">
+                        <p class="text-center text-amber-600 uppercase italic font-semibold" style="width: 30%;">${jadwal.status}</p>
+                        <p class="text-center" style="width: 30%;">(SMT ${jadwal.semester})</p>
+                        <p class="text-center" style="width: 30%;">(${jadwal.sks} SKS)</p>
+                    </div>
+                    <div class="flex justify-center gap-1" style="font-size: 10px;">
+                        <p class="text-center" style="width: 30%;">Kelas ${jadwal.kelas}</p>
+                        <p class="text-center" style="width: 30%;">${jadwal.jam_mulai}</p>
+                        <p class="text-center" style="width: 30%;">${jadwal.kuota}</p>
+                    </div>
+                `;
+                
+                // Event listener untuk tombol
+                jadwalButton.addEventListener('click', function() {
+                    const nim = '{{ $mahasiswa->nim }}';
+                    const smt = '{{ $mahasiswa->smt }}';
+                    
+                    // Jika tombol merah (mata kuliah sudah dipilih)
+                    if (jadwalButton.classList.contains('bg-red-100/80')) {
+                        alert('Anda sudah memilih mata kuliah ini.');
+                        return;
+                    }
+                    
+                    // Jika tombol amber (jadwal sudah dipilih - fungsi batalkan)
+                    if (jadwalButton.classList.contains('bg-amber-100/80')) {
+                        if (confirm('Apakah Anda yakin ingin membatalkan jadwal ini?')) {
+                            $.ajax({
+                                url: '/batal-jadwal',
+                                method: 'POST',
+                                data: {
+                                    nim: nim,
+                                    smt: smt,
+                                    jadwalid: jadwal.jadwalid,
+                                    _token: $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                success: function(response) {
+                                    if (response.status === 'success') {
+                                        alert('Jadwal berhasil dibatalkan!');
+                                        // Ubah warna button kembali ke teal
+                                        jadwalButton.classList.remove('bg-amber-100/80');
+                                        jadwalButton.classList.add('bg-teal-100/80');
+                                        // Update tampilan jadwal lain dengan kode MK yang sama
+                                        updateRelatedJadwalButtons(jadwal.kodemk, 'teal');
+                                        // Update tabel IRS
+                                        updateIRSTable();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                },
+                                error: function() {
+                                    alert('Terjadi kesalahan saat membatalkan jadwal.');
                                 }
                             });
-                        });
-                    } else {
-                        divMatkulDipilih.classList.add('bg-red-500', 'text-white');
-                        alert('Jadwal untuk mata kuliah ini belum tersedia!');
+                        }
+                        return;
                     }
-                })
-                .catch(error => {
-                    console.error('Terjadi kesalahan:', error);
-                    alert('Terjadi kesalahan dalam mengambil data jadwal!');
+                    
+                    // Jika tombol teal (jadwal belum dipilih - fungsi pilih)
+                    if (confirm('Apakah Anda yakin ingin memilih jadwal ini?')) {
+                        $.ajax({
+                            url: '/cek-jadwal',
+                            method: 'POST',
+                            data: {
+                                nim: nim,
+                                jadwalid: jadwal.jadwalid,
+                                _token: $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            success: function(response) {
+                                if (response.exists) {
+                                    alert('Anda sudah memilih mata kuliah ini.');
+                                } else if (response.jadwal_bentrok) {
+                                    alert('Jadwal ini tidak dapat dipilih karena terjadi bentrok dengan jadwal lain.');
+                                } else if (response.kuota_habis) {
+                                    alert(response.error);
+                                } else if (response.sks_over_limit) {
+                                    alert(response.error);
+                                } else {
+                                    // Simpan jadwal jika semua pengecekan berhasil
+                                    $.ajax({
+                                        url: '/store-jadwal',
+                                        method: 'POST',
+                                        data: {
+                                            nim: nim,
+                                            smt: smt,
+                                            jadwalid: jadwal.jadwalid,
+                                            _token: $('meta[name="csrf-token"]').attr('content'),
+                                        },
+                                        success: function(response) {
+                                            if (response.success) {
+                                                alert('Jadwal berhasil dipilih!');
+                                                // Ubah warna button menjadi amber
+                                                jadwalButton.classList.remove('bg-teal-100/80');
+                                                jadwalButton.classList.add('bg-amber-100/80');
+                                                // Update tampilan jadwal lain dengan kode MK yang sama
+                                                updateRelatedJadwalButtons(jadwal.kodemk, 'red');
+                                                // Update tabel IRS
+                                                updateIRSTable();
+                                            } else {
+                                                alert('Terjadi kesalahan saat memilih jadwal.');
+                                            }
+                                        },
+                                        error: function() {
+                                            alert('Terjadi kesalahan saat menyimpan jadwal.');
+                                        }
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                const response = xhr.responseJSON;
+                                alert(response.error || 'Terjadi kesalahan saat memeriksa jadwal.');
+                            }
+                        });
+                    }
                 });
+
+                if (!cell.querySelector('.jadwal-button')) {
+                    jadwalButton.classList.add('jadwal-button');
+                    cell.appendChild(jadwalButton);
+                }
+            }
         }
-    }
+    });
 });
 
+// Fungsi untuk mengupdate warna button jadwal yang terkait
+function updateRelatedJadwalButtons(kodeMK, color) {
+    const allButtons = document.querySelectorAll('.jadwal-button');
+    allButtons.forEach(button => {
+        if (button.getAttribute('data-kodemk') === kodeMK) {
+            button.classList.remove('bg-teal-100/80', 'bg-amber-100/80', 'bg-red-100/80');
+            button.classList.add(`bg-${color}-100/80`);
+        }
+    });
+}
 
 </script> 
 </body>

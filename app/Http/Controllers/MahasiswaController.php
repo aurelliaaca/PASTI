@@ -63,30 +63,28 @@ class MahasiswaController extends Controller
             ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
             ->where('irs.nim', $mahasiswa->nim)
             ->get();
-            $jadwalTable = Irs::join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
-    ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
-    ->where('irs.nim', $mahasiswa->nim)
-    ->where('irs.smt', $mahasiswa->smt)
-    ->select(
-        'jadwal_mata_kuliah.kodemk',
-        'matakuliah.nama',
-        'matakuliah.semester',
-        'matakuliah.sks',
-        'jadwal_mata_kuliah.jam_mulai',
-        'jadwal_mata_kuliah.kelas',
-        'jadwal_mata_kuliah.hari',
-        'jadwal_mata_kuliah.jadwalid'
-    )
-    ->get();
-            
-    $kodeMkSama = $jadwalTable->pluck('kodemk')->unique(); // Dapatkan semua kode_mk yang ada di jadwalTable
-    $jadwalLain = Jadwal_mata_kuliah::whereIn('kodemk', $kodeMkSama)
-                        ->whereNotIn('jadwalid', $jadwalTable->pluck('jadwalid'))
-                        ->get();
 
+    
             
+            $jadwalLain = Jadwal_mata_kuliah::whereIn('kodemk', $matkul->pluck('kode'))
+            ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->select(
+                'jadwal_mata_kuliah.kodemk',
+                'matakuliah.nama',
+                'matakuliah.semester',
+                'matakuliah.sks',
+                'jadwal_mata_kuliah.jam_mulai',
+                'jadwal_mata_kuliah.kelas',
+                'jadwal_mata_kuliah.hari',
+                'jadwal_mata_kuliah.jadwalid',
+                'jadwal_mata_kuliah.kuota',
+                'matakuliah.status'
+            )
+            ->get();
+        
+    
 
-        return view('mhs_pengisianirspage', compact('jadwalList', 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable', 'jadwalTable' ,'jadwalLain'));
+        return view('mhs_pengisianirspage', compact('jadwalList', 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable' ,'jadwalLain'));
     }
 
 
@@ -156,140 +154,163 @@ class MahasiswaController extends Controller
     }
     // Menyimpan data IRS (pengisian mata kuliah)
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'jadwalid' => 'required',
-            'nim' => 'required',
-            'smt' => 'required',
+{
+    // Validasi input request
+    $validated = $request->validate([
+        'jadwalid' => 'required',
+        'nim' => 'required',
+        'smt' => 'required',
+    ]);
+
+    // Cek apakah jadwal dengan jadwalid tersebut ada
+    $jadwal = Jadwal_mata_kuliah::where('jadwalid', $request->jadwalid)->first();
+    if (!$jadwal) {
+        return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan.']);
+    }
+
+    // Ambil kodemk dari jadwal
+    $kodemk = $jadwal->kodemk;
+
+    // Cek apakah mahasiswa sudah memilih mata kuliah dengan kodemk yang sama
+    $existingIRS = Irs::where('nim', $request->nim)
+        ->whereHas('jadwal', function ($query) use ($kodemk) {
+            $query->where('kodemk', $kodemk);
+        })
+        ->exists();
+
+    if ($existingIRS) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Anda sudah memilih mata kuliah dengan kode MK yang sama.',
         ]);
+    }
 
-        $jadwal = Jadwal_mata_kuliah::where('jadwalid', $request->jadwalid)->first();
+    // Tentukan nilai queue berdasarkan nilai terbesar yang ada di jadwalid yang sama
+    $lastQueue = Irs::where('jadwalid', $request->jadwalid)
+                    ->max('queue');
 
-        // Cek jika jadwal tidak ditemukan
-        if (!$jadwal) {
-            return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan.']);
+    $newQueue = $lastQueue ? $lastQueue + 1 : 1;  // Mulai dari 1 jika tidak ada antrean sebelumnya
+
+    // Simpan data IRS ke tabel IRS
+    $irs = Irs::create([
+        'jadwalid' => $request->jadwalid,
+        'nim' => $request->nim,
+        'smt' => $request->smt,
+        'queue' => $newQueue,  // Menambahkan antrean berdasarkan jadwalid
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Jadwal berhasil dipilih.',
+        'data' => $irs,
+    ]);
+}
+public function cekJadwal(Request $request)
+{
+    $request->validate([
+        'nim' => 'required',
+        'jadwalid' => 'required',
+    ]);
+
+    try {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan!');
         }
 
-        $kodemk = $jadwal->kodemk;
+        // Ambil informasi jadwal yang dipilih
+        $jadwalBaru = Jadwal_mata_kuliah::where('jadwalid', $request->jadwalid)->first();
+        if (!$jadwalBaru) {
+            return response()->json(['error' => 'Jadwal tidak valid.'], 400);
+        }
 
-        // Cek apakah mahasiswa sudah memilih jadwal dengan kodemk yang sama
-        $existingIRS = Irs::where('nim', $request->nim)
-            ->whereHas('jadwal', function ($query) use ($kodemk) {
-                $query->where('kodemk', $kodemk);
+        // Cek apakah mahasiswa sudah memilih jadwal yang sama berdasarkan kodemk
+        $exists = Irs::where('nim', $request->nim)
+            ->whereHas('jadwal', function ($query) use ($jadwalBaru) {
+                $query->where('kodemk', $jadwalBaru->kodemk);
             })
             ->exists();
 
-        if ($existingIRS) {
+        // Cek bentrok jadwal
+        $jadwalBentrok = Irs::where('nim', $request->nim)
+            ->where('smt', $mahasiswa->smt)
+            ->whereHas('jadwal', function ($query) use ($jadwalBaru) {
+                $query->where('hari', $jadwalBaru->hari)
+                    ->where(function ($q) use ($jadwalBaru) {
+                        $q->whereRaw("
+                            (TIME(jam_mulai) <= TIME(?) AND TIME(jam_selesai) >= TIME(?))
+                            OR (TIME(jam_mulai) <= TIME(?) AND TIME(jam_selesai) >= TIME(?))
+                            OR (TIME(jam_mulai) >= TIME(?) AND TIME(jam_selesai) <= TIME(?))",
+                            [
+                                $jadwalBaru->jam_mulai,
+                                $jadwalBaru->jam_mulai,
+                                $jadwalBaru->jam_selesai,
+                                $jadwalBaru->jam_selesai,
+                                $jadwalBaru->jam_mulai,
+                                $jadwalBaru->jam_selesai
+                            ]
+                        );
+                    });
+            })
+            ->exists();
+
+        // Cek SKS
+        $ipsTerakhir = $mahasiswa->IPS_Sebelumnya;
+        $sksMax = $this->getMaxSksByIps($ipsTerakhir, $mahasiswa->smt);
+        $sksTerpilih = Irs::where('nim', $mahasiswa->nim)
+            ->where('smt', $mahasiswa->smt)
+            ->join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
+            ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->sum('matakuliah.sks') ?? 0;
+
+        $mataKuliahSks = Jadwal_mata_kuliah::join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->where('jadwal_mata_kuliah.jadwalid', $request->jadwalid)
+            ->value('matakuliah.sks');
+        
+        // Cek apakah total SKS yang dipilih melebihi batas
+        if (($sksTerpilih + $mataKuliahSks) > $sksMax) {
             return response()->json([
-                'success' => false,
-                'message' => 'Anda sudah memilih mata kuliah dengan kode MK yang sama.',
-            ]);
+                'error' => 'Total SKS melebihi batas beban SKS.',
+                'sks_over_limit' => true,
+                'jadwal_bentrok' => false,
+                'max_sks' => $sksMax
+            ], 400);
         }
 
-        // Simpan jadwal ke tabel IRS
-        $irs = Irs::create([
-            'jadwalid' => $request->jadwalid,
-            'nim' => $request->nim,
-            'smt' => $request->smt,
-        ]);
+        
+        // **Cek Kuota**: Periksa kuota dari jadwal yang dipilih
+        $kuotaJadwal = $jadwalBaru->kuota; // Kuota yang disediakan untuk jadwal ini (dari tabel Jadwal_mata_kuliah)
+        
+        // Ambil antrean terbesar untuk jadwal ini
+        $lastQueue = Irs::where('jadwalid', $request->jadwalid)->max('queue');
+        
+        // Tentukan apakah kuota sudah penuh
+        if ($lastQueue >= $kuotaJadwal) {
+            return response()->json([
+                'error' => 'Jadwal ini tidak dapat dipilih karena kuota sudah terpenuhi.',
+                'kuota_habis' => true,
+                'jadwal_bentrok' => false
+            ], 400);
+        }
 
+        // Jika lolos semua pengecekan, kembalikan hasil pengecekan
         return response()->json([
-            'success' => true,
-            'message' => 'Jadwal berhasil dipilih.',
-            'data' => $irs,
-        ]);
-    }
-
-    // Memeriksa apakah mahasiswa sudah memilih jadwal tertentu
-    public function cekJadwal(Request $request)
-    {
-        $request->validate([
-            'nim' => 'required',
-            'jadwalid' => 'required',
+            'exists' => $exists,
+            'sks_over_limit' => false,
+            'jadwal_bentrok' => $jadwalBentrok,
+            'kuota_habis' => false
         ]);
 
-        try {
-            $user = Auth::user();
-            $mahasiswa = Mahasiswa::where('email', $user->email)->first();
-
-            if (!$mahasiswa) {
-                return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan!');
-            }
-
-            $jadwalBaru = Jadwal_mata_kuliah::where('jadwalid', $request->jadwalid)->first();
-            if (!$jadwalBaru) {
-                return response()->json(['error' => 'Jadwal tidak valid.'], 400);
-            }
-
-            // Cek jadwal yang sudah ada
-            $exists = Irs::where('nim', $request->nim)
-                ->whereHas('jadwal', function ($query) use ($jadwalBaru) {
-                    $query->where('kodemk', $jadwalBaru->kodemk);
-                })
-                ->exists();
-
-            // Cek bentrok jadwal
-            $jadwalBentrok = Irs::where('nim', $request->nim)
-                ->where('smt', $mahasiswa->smt)
-                ->whereHas('jadwal', function ($query) use ($jadwalBaru) {
-                    $query->where('hari', $jadwalBaru->hari)
-                        ->where(function ($q) use ($jadwalBaru) {
-                            // Kondisi bentrok:
-                            // 1. Jam mulai jadwal baru di antara jam mulai dan selesai jadwal yang ada
-                            // 2. Jam selesai jadwal baru di antara jam mulai dan selesai jadwal yang ada
-                            // 3. Jadwal baru mencakup keseluruhan jadwal yang ada
-                            $q->whereRaw("
-                                (TIME(jam_mulai) <= TIME(?) AND TIME(jam_selesai) >= TIME(?))
-                                OR (TIME(jam_mulai) <= TIME(?) AND TIME(jam_selesai) >= TIME(?))
-                                OR (TIME(jam_mulai) >= TIME(?) AND TIME(jam_selesai) <= TIME(?))",
-                                [
-                                    $jadwalBaru->jam_mulai,
-                                    $jadwalBaru->jam_mulai,
-                                    $jadwalBaru->jam_selesai,
-                                    $jadwalBaru->jam_selesai,
-                                    $jadwalBaru->jam_mulai,
-                                    $jadwalBaru->jam_selesai
-                                ]
-                            );
-                        });
-                })
-                ->exists();
-
-            // Cek SKS
-            $ipsTerakhir = $mahasiswa->IPS_Sebelumnya;
-            $sksMax = $this->getMaxSksByIps($ipsTerakhir, $mahasiswa->smt);
-            $sksTerpilih = Irs::where('nim', $mahasiswa->nim)
-                ->where('smt', $mahasiswa->smt)
-                ->join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
-                ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
-                ->sum('matakuliah.sks') ?? 0;
-
-            $mataKuliahSks = Jadwal_mata_kuliah::join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
-                ->where('jadwal_mata_kuliah.jadwalid', $request->jadwalid)
-                ->value('matakuliah.sks');
-            
-            if (($sksTerpilih + $mataKuliahSks) > $sksMax) {
-                return response()->json([
-                    'error' => 'Total SKS melebihi batas beban SKS.',
-                    'sks_over_limit' => true,
-                    'jadwal_bentrok' => false,
-                    'max_sks' => $sksMax
-                ], 400);
-            }
-
-            return response()->json([
-                'exists' => $exists,
-                'sks_over_limit' => false,
-                'jadwal_bentrok' => $jadwalBentrok
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Terjadi kesalahan saat memeriksa jadwal.',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Terjadi kesalahan saat memeriksa jadwal.',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
+
     public function hapusJadwal(Request $request)
     {
         $validated = $request->validate([
@@ -338,10 +359,10 @@ class MahasiswaController extends Controller
 
         // Update status IRS menjadi 'Diproses' dan tentukan nilai queue
         foreach ($irsData as $irs) {
-            // Tentukan nilai queue berdasarkan kombinasi jadwalid dan nim
-            $lastQueue = Irs::where('jadwalid', $irs->jadwalid)
-                            ->max('queue');
-            $newQueue = $lastQueue ? $lastQueue + 1 : 1;
+            // // Tentukan nilai queue berdasarkan kombinasi jadwalid dan nim
+            // $lastQueue = Irs::where('jadwalid', $irs->jadwalid)
+            //                 ->max('queue');
+            // $newQueue = $lastQueue ? $lastQueue + 1 : 1;
 
             // Lakukan update status dan queue dengan query builder, menggunakan kombinasi jadwalid dan nim
             Irs::where('jadwalid', $irs->jadwalid)
@@ -349,7 +370,7 @@ class MahasiswaController extends Controller
                 ->where('smt', $irs->smt)
                 ->update([
                     'status_verifikasi' => 'Diproses',
-                    'queue' => $newQueue,
+                    // 'queue' => $newQueue,
                 ]);
         }
 
@@ -394,7 +415,56 @@ public function resetIrs(Request $request)
         return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat mereset IRS: ' . $e->getMessage()]);
     }
 }
+    public function batalJadwal(Request $request)
+    {
+        $validated = $request->validate([
+            'nim' => 'required',
+            'jadwalid' => 'required',
+            'smt' => 'required', 
+        ]);
 
+        try {
+            // Hapus data IRS berdasarkan nim dan jadwalid
+            $deleted = Irs::where('nim', $validated['nim'])
+                ->where('jadwalid', $validated['jadwalid'])
+                ->where('smt', $validated['smt'])
+                ->delete();
 
-    
+            if ($deleted) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Jadwal berhasil dibatalkan.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jadwal tidak ditemukan.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat membatalkan jadwal: ' . $e->getMessage()
+            ]);
+        }
+    }
+    public function cekStatusJadwal($jadwalId, $nim)
+{
+    $irs = IRS::where('nim', $nim)
+             ->where('jadwalid', $jadwalId)
+             ->first();
+
+    $jadwal = Jadwal_mata_kuliah::find($jadwalId);
+    $kodeMKTerpilih = IRS::where('nim', $nim)
+                        ->whereHas('jadwal', function($query) use ($jadwal) {
+                            $query->where('kodemk', $jadwal->kodemk);
+                        })
+                        ->exists();
+
+    return response()->json([
+        'terpilih' => $irs !== null,
+        'kodeMKTerpilih' => $kodeMKTerpilih
+    ]);
+}
+
 }
