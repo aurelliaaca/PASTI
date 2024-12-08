@@ -72,9 +72,5 @@ class Jadwal_mata_kuliah extends Model
         return $this->hasMany(Irs::class, 'jadwalid', 'jadwalid');
     }
 
-    public function ruangan()
-    {
-        return $this->belongsTo(Ruangan::class, 'namaruang', 'namaruang');
-    }
 }
 
