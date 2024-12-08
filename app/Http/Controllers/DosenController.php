@@ -29,12 +29,14 @@ class DosenController extends Controller
     public function showPersetujuanIRS()
     {
         $useremail = Auth::user()->email;
-        $dosenwali = Dosen::where('email',$useremail)->first();
+        $dosenwali = Dosen::where('email', $useremail)->first();
+        
         $mahasiswaperwalian = Mahasiswa::join('Irs', 'mahasiswa.nim', '=', 'irs.nim')
-        ->where('dosenwali', $dosenwali->nip)
-        ->select('mahasiswa.*', 'status_verifikasi as status')
-        ->get();
-
+            ->where('dosenwali', $dosenwali->nip)
+            ->select('mahasiswa.*', 'status_verifikasi as status')
+            ->distinct('mahasiswa.nim') //setiap nim cuma muncul sekali
+            ->get();
+    
         return view('dosen.persetujuan', compact('mahasiswaperwalian'));
     }
 
