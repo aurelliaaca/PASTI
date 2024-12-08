@@ -103,7 +103,7 @@
                                                     <td class="border border-gray-300">{{ $ruangan->kapasitas }}</td>
                                                     <td class="text-center py-2 border border-gray-300">
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                            {{ $ruangan->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                                            {{ $ruangan->status == 'menunggu persetujuan' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
                                                             {{ ucfirst($ruangan->status) }}
                                                         </span>
                                                     </td>

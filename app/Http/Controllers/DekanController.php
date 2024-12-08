@@ -14,7 +14,7 @@ class DekanController extends Controller
     public function showPersetujuan()
     {
         $ruangans = Ruangan::where('is_plotted', true)
-            ->whereIn('status', ['belum disetujui', 'sudah disetujui'])
+            ->whereIn('status', ['menunggu persetujuan', 'sudah disetujui'])
             ->get();
 
         $ruanganByProdi = $ruangans->groupBy('namaprodi');
@@ -41,7 +41,7 @@ class DekanController extends Controller
 
         // Cari semua ruangan berdasarkan namaprodi yang belum disetujui dan is_plotted = true
         $affectedRows = Ruangan::where('namaprodi', $namaprodi)
-            ->where('status', 'belum disetujui') // Pastikan hanya yang belum disetujui
+            ->where('status', 'menunggu persetujuan') // Pastikan hanya yang belum disetujui
             ->where('is_plotted', true) // Pastikan is_plotted bernilai true
             ->update([
                 'status' => 'sudah disetujui', // Ubah status menjadi sudah disetujui
@@ -77,6 +77,6 @@ class DekanController extends Controller
             return redirect()->back()->with('error', 'Tidak ada jadwal yang ditemukan untuk prodi tersebut.');
         }
 
-        return redirect()->back()->with('success', "Semua jadwal untuk prodi $kodeprodi berhasil disetujui.");
+        return redirect()->back()->with('success', "Semua jadwal untuk prodi tersebut berhasil disetujui.");
     }
 }

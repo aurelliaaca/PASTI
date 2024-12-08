@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -117,19 +118,10 @@
                     <input type="date" name="jadwal_berakhir" id="jadwal_berakhir" class="w-full px-4 py-2 border rounded-lg" required>
                 </div>
                 <div class="flex justify-end">
-                    <button type="button" onclick="showSuccessPopup()" class="mr-2 px-4 py-2 bg-teal-500 text-white rounded-lg">Cancel</button>
+                    <button type="button" onclick="closeTambahForm()" class="mr-2 px-4 py-2 bg-teal-500 text-white rounded-lg">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-amber-400 text-white rounded-lg">Save</button>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Popup untuk notifikasi berhasil -->
-    <div id="successPopup" class="overlay">
-        <div class="popup-form text-center">
-            <h2 class="text-lg font-semibold mb-4 text-green-700">Berhasil!</h2>
-            <p class="text-gray-700">Periode berhasil diatur.</p>
-            <button onclick="closeSuccessPopup()" class="mt-4 px-4 py-2 bg-teal-500 text-white rounded-lg">Tutup</button>
         </div>
     </div>
 <script>
@@ -161,13 +153,6 @@
             contentType: false,
             success: function (response) {
                 if (response.success) {
-                    // Jika berhasil, tampilkan popup berhasil
-                    showSuccessPopup();
-
-                    // Reset form dan tutup form tambah
-                    $('#tambahForm').trigger('reset');
-                    closeTambahForm();
-
                     // Jika ini adalah update, kita perlu mengganti row yang ada
                     if (response.is_edit) {
                         var updatedRow = $('#jadwal_' + response.data.id);
@@ -225,17 +210,6 @@
             });
         }
     }
-
-    // Fungsi untuk menampilkan popup berhasil
-    function showSuccessPopup() {
-        document.getElementById('successPopup').style.display = 'flex';
-    }
-
-    // Fungsi untuk menutup popup berhasil
-    function closeSuccessPopup() {
-        document.getElementById('successPopup').style.display = 'none';
-    }
-
 </script>
 </body>
 </html>
