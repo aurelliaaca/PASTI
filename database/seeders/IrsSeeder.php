@@ -12,16 +12,16 @@ class IrsSeeder extends Seeder
      */
     public function run(): void
     {
-        $irs = [
-            [
-                'jadwalid' => '1',
-                'nim' => '24060122140168',
-                'smt' => '3'     
-            ],
-        ];
+        // $irs = [
+        //     [
+        //         'jadwalid' => '1',
+        //         'nim' => '24060122140168',
+        //         'smt' => '3'     
+        //     ],
+        // ];
 
-        foreach ($irs as $i) {
-            Irs::create($i);
-        }
+        // foreach ($irs as $i) {
+        //     Irs::create($i);
+        // }
     }
 }
