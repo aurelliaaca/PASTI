@@ -19,16 +19,12 @@
 </head>
 <!-- Background -->
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
-  <div class="max-w-7xl mx-auto p-4 min-h-screen">
+  <div class="min-h-screen">
   
   <!-- header -->
   <div class="flex w-full mb-4">
-    <!-- Back Button -->
-    <a href="{{ url()->previous()}}" class="absolute top-15 left-7 bg-teal-800 text-white p-2 rounded-full hover:bg-teal-700">
-      <i class="fas fa-arrow-left text-xl"></i>
-    </a>
     
-    <div class="flex w-full">
+    <div class="flex w-full a inline-flex">
         <button class="a flex-1 bg-amber-400 text-teal-800 p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".IRS">
             <span class="text-white font-semibold italic text-center">IRS</span>
         </button>
@@ -113,12 +109,12 @@
 </div>
 
 <!-- Right Section IRS or KHS -->
-<div class="col-span-6">
+<div class="col-span-6 w-full h-full overflow-auto">
 
   <!-- IRS Content -->
-  <div class="IRS">
-    <div class="bg-white text-teal-900 p-4 rounded-lg">
-      <table class="w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+  <div class="IRS w-full">
+    <div class="bg-white text-teal-900 p-4 rounded-lg h-full\ overflow-auto">
+      <table class="w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-x-auto">
         <thead style="background-color: #FADBA9;">
           <tr class="text-black text-center">
             <th class="font-semibold text-sm uppercase px-6 py-4"> Kode </th>
