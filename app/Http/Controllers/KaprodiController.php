@@ -192,35 +192,84 @@ class KaprodiController extends Controller
             ], 404);
         }
     }
-
     public function update(Request $request, $jadwalid)
     {
         try {
             $jadwal = Jadwal_mata_kuliah::findOrFail($jadwalid);
-            
-            $validatedData = $request->validate([
-                'kodemk' => 'required',
-                'hari' => 'required',
-                'jam_mulai' => 'required',
-                'jam_selesai' => 'required',
-                'kelas' => 'required',
-                'namaruang' => 'required',
-                'koordinator_nip' => 'required',
-                'pengampu1_nip' => 'nullable',
-                'pengampu2_nip' => 'nullable',
-                'kuota' => 'required|numeric'
-            ]);
 
-            $jadwal->update($validatedData);
+            // Cek duplikasi (kecuali jadwal yang sedang diedit)
+            $duplikat = Jadwal_mata_kuliah::where('jadwalid', '!=', $jadwalid)
+                ->where('kodemk', $request->kodemk)
+                ->where('kelas', $request->kelas)
+                ->exists();
+
+            if ($duplikat) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Mata kuliah dengan kelas ini sudah ada!'
+                ], 422);
+            }
+
+            // Pengecekan irisan jadwal (bentrok)
+            $irisan = Jadwal_mata_kuliah::where('jadwalid', '!=', $jadwalid)
+                ->where(function ($query) use ($request) {
+                    $query->where('kelas', $request->kelas)
+                        ->orWhere('namaruang', $request->namaruang);
+                })
+                ->where('hari', $request->hari)
+                ->where(function ($query) use ($request) {
+                    $query->where(function ($q) use ($request) {
+                        $q->where('jam_mulai', '<=', $request->jam_mulai)
+                          ->where('jam_selesai', '>', $request->jam_mulai);
+                    })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('jam_mulai', '<', $request->jam_selesai)
+                          ->where('jam_selesai', '>=', $request->jam_selesai);
+                    })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('jam_mulai', '>=', $request->jam_mulai)
+                          ->where('jam_selesai', '<=', $request->jam_selesai);
+                    });
+                })
+                ->exists();
+
+            if ($irisan) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jadwal bentrok! Terdapat jadwal lain yang menggunakan ruangan atau kelas yang sama pada waktu tersebut.'
+                ], 422);
+            }
+
+            // Jika tidak ada duplikasi dan bentrok, update data
+            $jadwal->update([
+                'kodemk' => $request->kodemk,
+                'hari' => $request->hari,
+                'jam_mulai' => $request->jam_mulai,
+                'jam_selesai' => $request->jam_selesai,
+                'kelas' => $request->kelas,
+                'namaruang' => $request->namaruang,
+                'koordinator_nip' => $request->koordinator_nip,
+                'pengampu1_nip' => $request->pengampu1_nip,
+                'pengampu2_nip' => $request->pengampu2_nip,
+                'kuota' => $request->kuota,
+                'status' => 'belum disetujui'
+            ]);
 
             return response()->json([
-                'success' => true,
-                'message' => 'Jadwal berhasil diupdate'
+                'status' => 'success',
+                'message' => 'Jadwal berhasil diperbarui',
+                'data' => $jadwal
             ]);
+
         } catch (\Exception $e) {
+            \Log::error('Error dalam memperbarui jadwal:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengupdate jadwal: ' . $e->getMessage()
+                'status' => 'error',
+                'message' => 'Gagal memperbarui jadwal: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -292,121 +341,4 @@ class KaprodiController extends Controller
 
     }
 
- 
- 
 }
-    
-   // public function storeJadwal(Request $request)
-    // {
-    //     try {
-    //         $user = Auth::user();
-    //         $dosen = $user->dosen;
-
-    //         // Validasi dasar
-    //         $validatedData = $request->validate([
-    //             'kodemk' => 'required|exists:matakuliah,kode',
-    //             'hari' => 'required|string',
-    //             'jam_mulai' => 'required',
-    //             'jam_selesai' => 'required',
-    //             'kelas' => 'required|string',
-    //             'namaruang' => 'required|exists:ruangan,namaruang',
-    //             'koordinator_nip' => 'required|exists:dosen,nip',
-    //             'kuota' => 'required|integer',
-    //         ]);
-
-    //         // 1. Cek duplikasi jadwal yang persis sama
-    //         $existingExactJadwal = Jadwal_mata_kuliah::where([
-    //             'kodemk' => $request->kodemk,
-    //             'hari' => $request->hari,
-    //             'kelas' => $request->kelas,
-    //             'namaruang' => $request->namaruang,
-    //         ])->first();
-
-    //         if ($existingExactJadwal) {
-    //             return response()->json([
-    //                 'status' => 'error',
-    //                 'message' => 'Jadwal dengan mata kuliah, hari, kelas, dan ruang yang sama sudah ada!'
-    //             ], 422);
-    //         }
-
-    //         // 2. Cek bentrok waktu untuk ruangan yang sama
-    //         $bentrokRuangan = Jadwal_mata_kuliah::where('hari', $request->hari)
-    //             ->where('namaruang', $request->namaruang)
-    //             ->where(function($query) use ($request) {
-    //                 $query->where(function($q) use ($request) {
-    //                     $q->where('jam_mulai', '<=', $request->jam_mulai)
-    //                       ->where('jam_selesai', '>', $request->jam_mulai);
-    //                 })->orWhere(function($q) use ($request) {
-    //                     $q->where('jam_mulai', '<', $request->jam_selesai)
-    //                       ->where('jam_selesai', '>=', $request->jam_selesai);
-    //                 });
-    //             })->first();
-
-    //         if ($bentrokRuangan) {
-    //             return response()->json([
-    //                 'status' => 'error',
-    //                 'message' => 'Ruangan sudah digunakan pada waktu tersebut!'
-    //             ], 422);
-    //         }
-
-    //         // 3. Cek bentrok mata kuliah dan kelas
-    //         $bentrokMatkul = Jadwal_mata_kuliah::where('kodemk', $request->kodemk)
-    //             ->where('kelas', $request->kelas)
-    //             ->where('hari', $request->hari)
-    //             ->where(function($query) use ($request) {
-    //                 $query->where(function($q) use ($request) {
-    //                     $q->where('jam_mulai', '<=', $request->jam_mulai)
-    //                       ->where('jam_selesai', '>', $request->jam_mulai);
-    //                 })->orWhere(function($q) use ($request) {
-    //                     $q->where('jam_mulai', '<', $request->jam_selesai)
-    //                       ->where('jam_selesai', '>=', $request->jam_selesai);
-    //                 });
-    //             })->first();
-
-    //         if ($bentrokMatkul) {
-    //             return response()->json([
-    //                 'status' => 'error',
-    //                 'message' => 'Mata kuliah dengan kelas yang sama sudah terjadwal pada waktu tersebut!'
-    //             ], 422);
-    //         }
-
-    //         // Jika semua validasi lolos, simpan jadwal
-    //         $jadwalData = [
-    //             'kodeprodi' => $dosen->kodeprodi,
-    //             'kodemk' => $request->kodemk,
-    //             'hari' => $request->hari,
-    //             'jam_mulai' => $request->jam_mulai,
-    //             'jam_selesai' => $request->jam_selesai,
-    //             'kelas' => $request->kelas,
-    //             'namaruang' => $request->namaruang,
-    //             'koordinator_nip' => $request->koordinator_nip,
-    //             'pengampu1_nip' => $request->pengampu1_nip,
-    //             'pengampu2_nip' => $request->pengampu2_nip,
-    //             'kuota' => $request->kuota,
-    //             'status' => 'belum disetujui'
-    //         ];
-
-    //         $jadwal = Jadwal_mata_kuliah::create($jadwalData);
-
-    //         return response()->json([
-    //             'status' => 'success',
-    //             'message' => 'Jadwal berhasil ditambahkan'
-    //         ]);
-
-    //     } catch (\Exception $e) {
-    //         \Log::error('Error dalam menyimpan jadwal:', [
-    //             'message' => $e->getMessage(),
-    //             'trace' => $e->getTraceAsString()
-    //         ]);
-            
-    //         return response()->json([
-    //             'status' => 'error',
-    //             'message' => 'Gagal menyimpan jadwal: ' . $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
-
-
-
-

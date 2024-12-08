@@ -77,6 +77,10 @@
                       <i class="fas fa-plus text-white"></i>
                       <strong class="text-white">Tambah Plotting Ruang</strong>
                   </button>
+                  <button class="btn bg-amber-400 btn-icon-text mr-2 p-2 rounded-lg" onclick="ajukanSemuaPlotting()">
+                    <i class="fas fa-paper-plane text-white"></i>
+                    <strong class="text-white">Ajukan Semua Plotting Ruang</strong>
+                </button>
               </div>
           </div>
       <div class="border rounded-md">
@@ -100,7 +104,7 @@
                     <td>{{ $ruangan->kapasitas }}</td>
                     <td class="text-center py-2">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                            {{ $ruangan->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                            {{ $ruangan->status == 'belum disetujui' ? 'bg-red-100 text-red-800' : ($ruangan->status == 'menunggu persetujuan' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
                             {{ $ruangan->status }}
                         </span>
                     </td>
@@ -222,7 +226,7 @@
                                 <td>${ruangan.kapasitas}</td>
                                 <td class="text-center py-2">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                                        ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : ($ruangan.status == 'menunggu persetujuan' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')}">
                                         ${ruangan.status}
                                     </span>
                                 </td>
@@ -257,7 +261,7 @@
                             <td>${ruangan.kapasitas}</td>
                             <td class="text-center py-2">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                                    ${ruangan.status === 'belum disetujui' ? 'bg-red-100 text-red-800' : ($ruangan.status == 'menunggu persetujuan' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')}">
                                     ${ruangan.status}
                                 </span>
                             </td>
@@ -286,6 +290,33 @@
                     console.log(`Cleared input for room ID: ${id}`); // Log untuk konfirmasi
                 } else {
                     console.log(`Input not found for room ID: ${id}`); // Log jika input tidak ditemukan
+                }
+            });
+        }
+
+        function ajukanSemuaPlotting() {
+            $.ajax({
+                url: '/plottingruang/ajukan', // Pastikan rute ini sesuai dengan yang ada di server
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showAlert('Semua plotting ruang berhasil diajukan!', 'success');
+                        // Update status ruangan di tampilan
+                        $('#plottingRuangTableBody tr').each(function() {
+                            $(this).find('td:last-child span').removeClass('bg-red-100 text-red-800')
+                                .addClass('bg-yellow-100 text-yellow-800')
+                                .text('menunggu persetujuan');
+                        });
+                    } else {
+                        showAlert('Gagal mengajukan plotting ruang!', 'danger');
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr);
+                    showAlert('Terjadi kesalahan saat mengajukan plotting ruang!', 'danger');
                 }
             });
         }

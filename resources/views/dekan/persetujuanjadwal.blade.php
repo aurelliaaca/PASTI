@@ -113,7 +113,7 @@
                                                         <td class="py-3 font-normal pl-2">{{ $jadwal->koordinator->nama }}/{{ $jadwal->pengampu1->nama }} / {{ $jadwal->pengampu2->nama }}</td>
                                                         <td class="text-center py-2 border ">
                                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                        @if($jadwal->status == 'sudah disetujui') bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
+                                                        @if($jadwal->status == 'sudah disetujui') bg-green-100 text-green-800 @else bg-yellow-100 text-red-800 @endif">
                                                                 {{ $jadwal->status }}
                                                             </span>
                                                         </td>
