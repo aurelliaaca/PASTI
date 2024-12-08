@@ -47,7 +47,7 @@ class BAKController extends Controller
     public function showJadwal()
     {
         // Ambil semua data jadwal
-        $jadwals = JadwalIrs::all();
+        $periode = JadwalIrs::all();
         return view('akademik.periode', compact('periode')); // Kirim data ke view
     }
 
