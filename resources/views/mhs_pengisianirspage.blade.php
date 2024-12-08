@@ -104,18 +104,18 @@
                 </div>
             </div>
 
-            <div class="w-full mt-4">
+            <!-- <div class="w-full mt-4">
                 <select id="matkul-dropdown" class="w-full p-4 rounded bg-white text-teal-800 text-xs">
                     <option value="">-- Pilih Mata Kuliah --</option>
                     @foreach($matkul as $mk)
                         <option value="{{ $mk->kode }}" data-name="{{ $mk->nama }}" data-sks="{{ $mk->sks }}">{{ $mk->nama }}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> -->
 
-            <div id="selected-matkul" class="w-full mt-4">
+            <!-- <div id="selected-matkul" class="w-full mt-4"> -->
                 <!-- Info for selected courses will be added dynamically here -->
-            </div>
+            <!-- </div> -->
         </div>
         </div>
     
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (jadwalTerpilih.includes(jadwal.jadwalid)) {
                     jadwalButton.classList.add('w-full', 'bg-amber-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
                 } else if (kodeMKTerpilih.includes(jadwal.kodemk)) {
-                    jadwalButton.classList.add('w-full', 'bg-red-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
+                    jadwalButton.classList.add('w-full', 'bg-red-100/80', 'text-red-700', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
                 } else {
                     jadwalButton.classList.add('w-full', 'bg-teal-100/80', 'text-teal-800', 'rounded-lg', 'p-2', 'mt-2', 'mb-0');
                 }
