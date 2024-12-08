@@ -3,350 +3,120 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Jadwal_mata_kuliah;
-use App\Models\Ruangan;
+use Illuminate\Support\Facades\DB;
 use App\Models\Dosen;
 use Carbon\Carbon;
+use App\Models\Jadwal_mata_kuliah;
 
 class JadwalSeeder extends Seeder
 {
+    private function getRandomTime()
+    {
+        // Membuat array waktu yang tersedia (07:00 - 19:00 dengan interval 30 menit)
+        $times = [];
+        $start = Carbon::createFromTime(7, 0);
+        $end = Carbon::createFromTime(19, 0);
+        
+        while ($start <= $end) {
+            $times[] = $start->format('H:i');
+            $start->addMinutes(30);
+        }
+        
+        return $times[array_rand($times)];
+    }
+
+    private function getRandomDay()
+    {
+        $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        return $days[array_rand($days)];
+    }
+
     public function run(): void
     {
-        $dosen = Dosen::first();
-        if (!$dosen) {
-            return;
+        // Ambil data dosen yang ada
+        $dosen = Dosen::pluck('nip')->toArray();
+        
+        // Jika dosen kurang dari yang dibutuhkan, gunakan yang ada dengan pengulangan
+        $koordinator = $dosen[0] ?? null;
+        $pengampu1 = $dosen[1] ?? $dosen[0] ?? null;
+        $pengampu2 = $dosen[2] ?? $dosen[0] ?? null;
+        
+        if (!$koordinator) {
+            throw new \Exception('Minimal harus ada 1 dosen di database');
         }
 
-        $jadwals = [
-            [
-                'kodeprodi' => 'E',
-                'kodemk' => 'PAIK6504',
-                'hari' => 'Senin',
-                'jam_mulai' => '07:00',
-                'kelas' => 'A',
-                'ruang_id' => 'E102',
-                'koordinator_nip' => $koordinator,
-                'pengampu1_nip' => $pengampu1,
-                'pengampu2_nip' => $pengampu2,
-                'kuota' => 50,
-                'status' => 'belum disetujui',
-                'jam_selesai' => Carbon::createFromTimeString('07:00')->addMinutes(150)->format('H:i')
-            ],
-            [
-                'kodeprodi' => 'E',
-                'kodemk' => 'PAIK6504',
-                'hari' => 'Senin',
-                'jam_mulai' => '13:00',
-                'kelas' => 'B',
-                'ruang_id' => 'E103',
-                'koordinator_nip' => $koordinator,
-                'pengampu1_nip' => $pengampu1,
-                'pengampu2_nip' => $pengampu2,
-                'kuota' => 50,
-                'status' => 'belum disetujui',
-                'jam_selesai' => Carbon::createFromTimeString('13:00')->addMinutes(150)->format('H:i')
-            ],
-            [
-                'kodeprodi' => 'E',
-                'kodemk' => 'PAIK6504',
-                'hari' => 'Selasa',
-                'jam_mulai' => '07:00',
-                'kelas' => 'C',
-                'ruang_id' => 'E103',
-                'koordinator_nip' => $koordinator,
-                'pengampu1_nip' => $pengampu1,
-                'pengampu2_nip' => $pengampu2,
-                'kuota' => 50,
-                'status' => 'belum disetujui',
-                'jam_selesai' => Carbon::createFromTimeString('07:00')->addMinutes(150)->format('H:i')
-            ],
-            [
-                'kodeprodi' => 'E',
-                'kodemk' => 'PAIK6504',
-                'hari' => 'Selasa',
-                'jam_mulai' => '13:00',
-                'kelas' => 'D',
-                'ruang_id' => 'E103',
-                'koordinator_nip' => $koordinator,
-                'pengampu1_nip' => $pengampu1,
-                'pengampu2_nip' => $pengampu2,
-                'kuota' => 50,
-                'status' => 'belum disetujui',
-                'jam_selesai' => Carbon::createFromTimeString('13:00')->addMinutes(150)->format('H:i')
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'A',
-                'hari' => 'Senin',
-                'kodemk' => 'PAIK6502',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'B',
-                'hari' => 'Senin',
-                'kodemk' => 'PAIK6502',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'C',
-                'hari' => 'Selasa',
-                'kodemk' => 'PAIK6502',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'D',
-                'hari' => 'Selasa',
-                'kodemk' => 'PAIK6502',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            // SI
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'A',
-                'hari' => 'Rabu',
-                'kodemk' => 'PAIK6503',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [ 
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'B',
-                'hari' => 'Selasa',
-                'kodemk' => 'PAIK6503',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'C',
-                'hari' => 'Senin',
-                'kodemk' => 'PAIK6503',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'D',
-                'hari' => 'Kamis',
-                'kodemk' => 'PAIK6503',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            // ML
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'F201',
-                'kelas' => 'A',
-                'hari' => 'Selasa',
-                'kodemk' => 'PAIK6505',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'F201',
-                'kelas' => 'B',
-                'hari' => 'Kamis',
-                'kodemk' => 'PAIK6505',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'F201',
-                'kelas' => 'C',
-                'hari' => 'Rabu',
-                'kodemk' => 'PAIK6505',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'F201',
-                'kelas' => 'D',
-                'hari' => 'Senin',
-                'kodemk' => 'PAIK6505',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            //PBP
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E101',
-                'kelas' => 'A',
-                'hari' => 'Kamis',
-                'kodemk' => 'PAIK6501',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E101',
-                'kelas' => 'B',
-                'hari' => 'Kamis',
-                'kodemk' => 'PAIK6501',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E101',
-                'kelas' => 'C',
-                'hari' => 'Rabu',
-                'kodemk' => 'PAIK6501',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E101',
-                'kelas' => 'D',
-                'hari' => 'Rabu',
-                'kodemk' => 'PAIK6501',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            // KJI
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '09:40:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'A',
-                'hari' => 'Jumat',
-                'kodemk' => 'PAIK6506',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'B',
-                'hari' => 'Jumat',
-                'kodemk' => 'PAIK6506',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'C',
-                'hari' => 'Jumat',
-                'kodemk' => 'PAIK6506',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E102',
-                'kelas' => 'D',
-                'hari' => 'Kamis',
-                'kodemk' => 'PAIK6506',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'A',
-                'hari' => 'Jumat',
-                'kodemk' => 'UNW00007',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '13:00:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'B',
-                'hari' => 'Jumat',
-                'kodemk' => 'UNW00007',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-
-            ],
-            [
-                'kodeprodi' => 'E',
-                'jam_mulai' => '07:00:00',
-                'ruang_id' => 'E103',
-                'kelas' => 'C',
-                'hari' => 'Kamis',
-                'kodemk' => 'UNW00007',
-                'kuota' => 50,
-                'koordinator_nip' => '197505152005012001',
-            ],
-            [
-                'kodeprodi' => 'E',
-                'kodemk' => 'UNW00007',
-                'hari' => 'Jumat',
-                'jam_mulai' => '09:40',
-                'kelas' => 'D',
-                'ruang_id' => 'E103',
-                'koordinator_nip' => $koordinator,
-                'pengampu1_nip' => $pengampu1,
-                'pengampu2_nip' => $pengampu2,
-                'kuota' => 50,
-                'status' => 'belum disetujui',
-                'jam_selesai' => Carbon::createFromTimeString('09:40')->addMinutes(100)->format('H:i')
-            ],
+        $baseJadwal = [
+            // PAIK6501 (PBP)
+            ['kodemk' => 'PAIK6501', 'namaruang' => 'E101', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6501', 'namaruang' => 'E101', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6501', 'namaruang' => 'E101', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6501', 'namaruang' => 'E101', 'kelas' => 'D'],
+            
+            // PAIK6502
+            ['kodemk' => 'PAIK6502', 'namaruang' => 'E102', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6502', 'namaruang' => 'E102', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6502', 'namaruang' => 'E102', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6502', 'namaruang' => 'E102', 'kelas' => 'D'],
+            
+            // PAIK6503 (SI)
+            ['kodemk' => 'PAIK6503', 'namaruang' => 'E103', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6503', 'namaruang' => 'E103', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6503', 'namaruang' => 'E103', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6503', 'namaruang' => 'E103', 'kelas' => 'D'],
+            
+            // PAIK6504
+            ['kodemk' => 'PAIK6504', 'namaruang' => 'E102', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6504', 'namaruang' => 'E103', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6504', 'namaruang' => 'E103', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6504', 'namaruang' => 'E103', 'kelas' => 'D'],
+            
+            // PAIK6505 (ML)
+            ['kodemk' => 'PAIK6505', 'namaruang' => 'F201', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6505', 'namaruang' => 'F201', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6505', 'namaruang' => 'F201', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6505', 'namaruang' => 'F201', 'kelas' => 'D'],
+            
+            // PAIK6506 (KJI)
+            ['kodemk' => 'PAIK6506', 'namaruang' => 'E102', 'kelas' => 'A'],
+            ['kodemk' => 'PAIK6506', 'namaruang' => 'E102', 'kelas' => 'B'],
+            ['kodemk' => 'PAIK6506', 'namaruang' => 'E102', 'kelas' => 'C'],
+            ['kodemk' => 'PAIK6506', 'namaruang' => 'E102', 'kelas' => 'D'],
+            
+            // UNW00007
+            ['kodemk' => 'UNW00007', 'namaruang' => 'E103', 'kelas' => 'A'],
+            ['kodemk' => 'UNW00007', 'namaruang' => 'E103', 'kelas' => 'B'],
+            ['kodemk' => 'UNW00007', 'namaruang' => 'E103', 'kelas' => 'C'],
+            ['kodemk' => 'UNW00007', 'namaruang' => 'E103', 'kelas' => 'D'],
         ];
 
-        foreach ($jadwal as $j) {
-            Jadwal_mata_kuliah::create($j);
+        $jadwals = [];
+        foreach ($baseJadwal as $jadwal) {
+            $jamMulai = $this->getRandomTime();
+            $durasi = $jadwal['kodemk'] === 'UNW00007' ? 100 : 150;
+            
+            $jadwals[] = [
+                'kodeprodi' => 'E',
+                'kodemk' => $jadwal['kodemk'],
+                'hari' => $this->getRandomDay(),
+                'jam_mulai' => $jamMulai,
+                'kelas' => $jadwal['kelas'],
+                'namaruang' => $jadwal['namaruang'],
+                'koordinator_nip' => $koordinator,
+                'pengampu1_nip' => $pengampu1,
+                'pengampu2_nip' => $pengampu2,
+                'kuota' => 50,
+                'status' => 'belum disetujui',
+                'jam_selesai' => Carbon::createFromTimeString($jamMulai)->addMinutes($durasi)->format('H:i')
+            ];
+        }
+
+        // Urutkan berdasarkan kodemk
+        usort($jadwals, function($a, $b) {
+            return $a['kodemk'] <=> $b['kodemk'];
+        });
+
+        foreach ($jadwals as $jadwal) {
+            DB::table('jadwal_mata_kuliah')->insert($jadwal);
         }
     }
-} 
+}
