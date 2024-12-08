@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
             JadwalIrsSeeder::class,
             RuanganSeeder::class,
             ProdiSeeder::class,
-            //IrsSeeder::class,
-            JadwalSeeder::class
+            JadwalSeeder::class,
+            //IrsSeeder::class
         ]);
     }
 }

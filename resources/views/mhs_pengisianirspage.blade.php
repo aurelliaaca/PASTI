@@ -116,15 +116,6 @@
             <div id="selected-matkul" class="w-full mt-4">
                 <!-- Info for selected courses will be added dynamically here -->
             </div>
-
-            <div class="grid grid-cols-2 w-full flex space-x-2">
-                <button id="reset-btn" class="bg-white text-teal-700 p-2 rounded-lg items-center space-x-2">
-                    <span class="text-base font-semibold italic">RESET</span>
-                </button>
-                <button id="ajukan-btn" class="bg-amber-400 text-white p-2 rounded-lg items-center space-x-2">
-                    <span class="text-base font-semibold italic">AJUKAN</span>
-                </button>
-            </div>
         </div>
         </div>
     
@@ -146,12 +137,11 @@
                             </tr>
                         </thead>
                         <tbody id="jadwalTableBody">
-                        <!-- Jadwal akan ditampilkan di sini setelah pemilihan mata kuliah -->
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
+        </div>..
 
     </div>
     </div>
@@ -258,6 +248,122 @@ document.addEventListener('DOMContentLoaded', function() {
     defaultButton.classList.add('bg-amber-400');
     toggleContent('BuatIRS');
 });
+function updateIRSTable() {
+    const nim = '{{ $mahasiswa->nim }}';
+    fetch(`/get-irs-data/${nim}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('irsTableBody');
+            tbody.innerHTML = ''; // Bersihkan tabel
+
+            // Kelompokkan data berdasarkan hari
+            const groupedByHari = {};
+            data.forEach(item => {
+                if (!groupedByHari[item.hari]) {
+                    groupedByHari[item.hari] = [];
+                }
+                groupedByHari[item.hari].push(item);
+            });
+
+            // Render data ke tabel
+            Object.entries(groupedByHari).forEach(([hari, irsList]) => {
+                irsList.forEach((irs, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white';
+                    
+                    let html = '';
+                    if (index === 0) {
+                        html += `<td rowspan="${irsList.length}" class="border px-4 py-2">${hari}</td>`;
+                    }
+                    
+                    html += `
+                        <td class="border px-4 py-2">${irs.nama}</td>
+                        <td class="border px-4 py-2">${irs.kodemk}</td>
+                        <td class="border px-4 py-2">${irs.sks}</td>
+                        <td class="border px-4 py-2">${irs.jam_mulai}</td>
+                        <td class="border px-4 py-2">${irs.kelas}</td>
+                        <td class="border px-4 py-2">${irs.status_verifikasi}</td>
+                    `;
+                    
+                    row.innerHTML = html;
+                    tbody.appendChild(row);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Panggil fungsi update setiap kali ada perubahan
+document.addEventListener('DOMContentLoaded', function() {
+    // Update pertama kali saat halaman dimuat
+    updateIRSTable();
+    
+    // Update setelah tombol reset diklik
+    document.getElementById('reset-btn').addEventListener('click', function() {
+        // ... kode reset yang sudah ada ...
+        setTimeout(updateIRSTable, 500); // Update setelah reset
+    });
+    
+    // Update setelah memilih jadwal baru
+    const pilihButtons = document.querySelectorAll('.pilih-jadwal');
+    pilihButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            setTimeout(updateIRSTable, 500); // Update setelah memilih jadwal
+        });
+    });
+});
+
+document.getElementById('ajukan-btn').addEventListener('click', function () {
+    const nim = '{{ $mahasiswa->nim }}'; // Pastikan ini digantikan dengan nilai NIM yang benar dari server
+
+    // Mengirimkan permintaan AJAX menggunakan Fetch API
+    fetch('/ajukan-semua-IRS', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token CSRF untuk keamanan
+        },
+        body: JSON.stringify({ nim: nim })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Berhasil mengajukan IRS.');
+        } else {
+            alert(data.message || 'Terjadi kesalahan.');
+        }
+    })
+    .catch(error => {
+        alert('Terjadi kesalahan saat mengajukan IRS: ' + error);
+    });
+});
+
+document.getElementById('reset-btn').addEventListener('click', function () {
+    const nim = '{{ $mahasiswa->nim }}'; // Gantikan dengan NIM mahasiswa yang benar
+    const smt = '{{ $mahasiswa->smt }}'; // Gantikan dengan semester mahasiswa yang benar
+
+    // Mengirimkan permintaan AJAX menggunakan Fetch API untuk reset data IRS
+    fetch('/reset-irs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token CSRF untuk keamanan
+        },
+        body: JSON.stringify({ nim: nim, smt: smt })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Berhasil mereset IRS.');
+        } else {
+            alert(data.message || 'Terjadi kesalahan saat mereset data.');
+        }
+    })
+    .catch(error => {
+        alert('Terjadi kesalahan saat mereset data IRS: ' + error);
+    });
+});
+
 
 document.getElementById('matkul-dropdown').addEventListener('change', function () {
     const opsiDipilih = this.options[this.selectedIndex];
@@ -380,6 +486,8 @@ document.getElementById('matkul-dropdown').addEventListener('change', function (
                                                         alert('Anda sudah memilih mata kuliah ini.');
                                                     } else if (response.sks_over_limit) {
                                                         alert('Anda sudah melebihi batas SKS yang dapat diambil.');
+                                                    } else if (response.jadwal_bentrok) {
+                                                        alert('Jadwal sudah ada pada hari dan jam yang sama.');
                                                     } else {
                                                         // Lanjutkan untuk menyimpan jadwal
                                                         $.ajax({
