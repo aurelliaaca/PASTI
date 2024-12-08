@@ -22,10 +22,8 @@ class Jadwal_mata_kuliah extends Model
         'hari',
         'jam_mulai',
         'jam_selesai',
-        'ruang_id',
+        'namaruang',
         'kelas',
-        'hari',
-        'kodemk',
         'kuota',
         'koordinator_nip',
         'pengampu1_nip',
@@ -46,9 +44,9 @@ class Jadwal_mata_kuliah extends Model
     }
 
     //relasi dengan ruang
-    public function plottingRuang()
+    public function ruangan()
     {
-        return $this->belongsTo(PlottingRuang::class, 'ruang_id', 'id');
+        return $this->belongsTo(Ruangan::class, 'namaruang', 'namaruang');
     }
 
     //relasi dengan dosen
