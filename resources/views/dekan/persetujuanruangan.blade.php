@@ -24,6 +24,21 @@
     <div class="bg-white shadow-lg rounded-lg">
         <div id="content-jadwal" class="p-4">
             <!-- Alert Sukses -->
+            @if(session('success'))
+                <div id="alert-success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Sukses!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div id="alert-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Gagal!</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+
+            <!-- Alert Sukses -->
             <div id="success-alert" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <strong class="font-bold">Sukses!</strong>
                 <span class="block sm:inline">Semua ruangan untuk program studi tersebut telah disetujui.</span>
@@ -45,27 +60,29 @@
                 <div class="table-responsive">
                     <table class="table table-striped w-full text-teal-800 font-black">
                         <tbody>
-                        @foreach($programStudiList as $index => $programStudi)
+                            @foreach($ruanganByProdi as $namaprodi => $ruangans)
                         <tr>
                             <td class="pb-2 pt-0">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <button class="toggle-button bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="{{ $index }}">+</button>
-                                        {{ $programStudi }}
+                                        <button class="toggle-button bg-teal-500 text-white w-10 py-2 rounded-lg mr-1" data-id="{{ $namaprodi }}" onclick="toggleSetujui('{{ $namaprodi }}')">+</button>
+                                        {{ ucfirst($namaprodi) }}
                                     </div>
-                                    <!-- Form untuk Tombol Setujui Semua -->
-                                    <form action="{{ route('setujuiSemua') }}" method="POST" class="inline">
-                                        @csrf
-                                        <input type="hidden" name="program_studi_id" value="{{ $index }}">
-                                        <button type="submit" id="approveBtn-{{ $index }}" class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg flex justify-end items-center hidden">
-                                            <i class="fa fa-check text-white mr-2"></i>
-                                            <strong class="text-white">SETUJUI SEMUA</strong>
-                                        </button>
-                                    </form>
+                                    <!-- Tombol Setujui -->
+                                    <div id="setujuiSemua-{{ $namaprodi }}" style="display: none;">
+                                        <form action="{{ route('setujui.semua.ruang') }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="namaprodi" value="{{ $namaprodi }}">
+                                            <button type="submit" class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg flex justify-end items-center">
+                                                <i class="fa fa-check text-white mr-2"></i>
+                                                <strong class="text-white">SETUJUI SEMUA</strong>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr class="ruangan-table" id="ruangan-{{ $index }}" style="display: none;">
+                        <tr class="ruangan-table" id="ruangan-{{ $namaprodi }}" style="display: none;">
                             <td colspan="4">
                                 <div class="border rounded-md">
                                     <div class="table-responsive p-2">
@@ -78,7 +95,7 @@
                                                     <th class="font-normal border border-gray-300" style="width: 20%;">Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="ruanganTableBody-{{ $index }}">
+                                            <tbody id="ruanganTableBody-{{ $namaprodi }}">
                                                 @foreach($ruangans as $ruangan)
                                                 <tr class="border-b border-gray-200">
                                                     <td class="border border-gray-300">{{ $ruangan->gedung }}</td>
@@ -130,56 +147,6 @@
         });
     });
 
-    function showApprovalAlert(message, type) {
-        const alertBox = $('#approval-alert');
-        const alertMessage = $('#approval-alert-message');
-        
-        alertMessage.text(message);
-        
-        // Set warna berdasarkan tipe alert
-        if (type === 'success') {
-            alertBox.removeClass('bg-red-100 border-red-400 text-red-700')
-                    .addClass('bg-green-100 border-green-400 text-green-700');
-        } else if (type === 'danger') {
-            alertBox.removeClass('bg-green-100 border-green-400 text-green-700')
-                    .addClass('bg-red-100 border-red-400 text-red-700');
-        }
-        
-        alertBox.removeClass('hidden'); // Menampilkan alert
-        setTimeout(() => alertBox.addClass('hidden'), 3000); // Menyembunyikan alert setelah 3 detik
-    }
-
-    function setujuisemua(url, namaprodi) {
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                namaprodi: namaprodi,
-                _token: $('meta[name="csrf-token"]').attr('content') // Pastikan CSRF token disertakan
-            },
-            success: function(response) {
-                console.log(response); // Log respons untuk debugging
-                if (response.success === true) {
-                    showAlert(response.message, 'success');
-
-                    // Perbarui status di tabel untuk semua entri dengan namaprodi yang sama
-                    $(`#plottingRuangTableBody tr`).each(function() {
-                        const row = $(this);
-                        const prodiCell = row.find('td:first'); // Asumsikan kolom pertama adalah prodi
-
-                        if (prodiCell.data('namaprodi') === namaprodi) {
-                            row.find('span').removeClass('bg-red-100 text-red-800').addClass('bg-green-100 text-green-800').text('telah disetujui');
-                        }
-                    });
-                } else {
-                    showAlert(response.message, 'danger');
-                }
-            },
-            error: function() {
-                showAlert('Terjadi kesalahan saat menyetujui semua plotting ruang.', 'danger');
-            }
-        });
-    }
 
     function toggleApproveButton() {
     const approveButton = document.getElementById('approveAllButton');
@@ -190,22 +157,94 @@
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleButtons = document.querySelectorAll('.toggle-button');
 
-    toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const targetElement = document.querySelector(targetId);
 
-            if (targetElement.classList.contains('hidden')) {
-                targetElement.classList.remove('hidden');
+function approveAllRooms(namaprodi) {
+    console.log("Mengirim namaprodi:", namaprodi);
+    $.ajax({
+        url: "{{ route('setujui.semua.ruang') }}", // Rute untuk menyetujui semua ruangan
+        type: 'POST',
+        data: {
+            namaprodi: namaprodi,
+            _token: $('meta[name="csrf-token"]').attr('content') // Pastikan CSRF token disertakan
+        },
+        success: function(response) {
+            // Menampilkan alert menggunakan Tailwind CSS
+            const alertContainer = document.getElementById('alert-container');
+            if (response.success) {
+                alertContainer.innerHTML = `<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Sukses!</strong>
+                    <span class="block sm:inline">${response.message}</span>
+                </div>`;
             } else {
-                targetElement.classList.add('hidden');
+                alertContainer.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Gagal!</strong>
+                    <span class="block sm:inline">${response.message}</span>
+                </div>`;
             }
-        });
+
+            // Perbarui status di tabel untuk semua entri dengan namaprodi yang sama
+            $(`#plottingRuangTableBody tr`).each(function() {
+                const row = $(this);
+                const prodiCell = row.find('td:first'); // Asumsikan kolom pertama adalah prodi
+
+                if (prodiCell.data('namaprodi') === namaprodi) {
+                    row.find('span').removeClass('bg-red-100 text-red-800').addClass('bg-green-100 text-green-800').text('sudah disetujui');
+                }
+            });
+        },
+        error: function() {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">Terjadi kesalahan saat menyetujui semua ruangan.</span>
+            </div>`;
+        }
     });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Menghilangkan alert sukses setelah 3 detik
+    const successAlert = document.getElementById('alert-success');
+    if (successAlert) {
+        setTimeout(() => {
+            successAlert.style.display = 'none';
+        }, 3000); // 3000 ms = 3 detik
+    }
+
+    // Menghilangkan alert error setelah 3 detik
+    const errorAlert = document.getElementById('alert-error');
+    if (errorAlert) {
+        setTimeout(() => {
+            errorAlert.style.display = 'none';
+        }, 3000); // 3000 ms = 3 detik
+    }
 });
+
+function toggleSetujui(namaprodi) {
+    const setujuiButton = document.getElementById('setujuiSemua-' + namaprodi);
+    
+    // Toggle tampilan tombol Setujui Semua
+    if (setujuiButton.style.display === 'none' || setujuiButton.style.display === '') {
+        setujuiButton.style.display = 'block'; // Tampilkan tombol
+    } else {
+        setujuiButton.style.display = 'none'; // Sembunyikan tombol
+    }
+}
+
+function toggleCourses(button) {
+    const kodeprodi = button.getAttribute('data-id');
+    const coursesRow = document.getElementById('courses-' + kodeprodi);
+    
+    // Toggle tampilan jadwal mata kuliah
+    if (coursesRow.style.display === 'none' || coursesRow.style.display === '') {
+        coursesRow.style.display = 'table-row'; // Tampilkan jadwal
+        button.textContent = '-'; // Ubah tombol menjadi "-"
+    } else {
+        coursesRow.style.display = 'none'; // Sembunyikan jadwal
+        button.textContent = '+'; // Ubah tombol kembali menjadi "+"
+    }
+}
 
 </script>
 
