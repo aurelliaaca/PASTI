@@ -3,22 +3,14 @@
 namespace App\Http\Controllers;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
-use App\Models\PlottingRuang;
 
 class RuanganController extends Controller
 {
 
     public function index()
     {
-        $ruangans = Ruangan::with('plottingRuangs')
-        ->get()
-        ->sortBy(function($ruangan) {
-            return $ruangan->plottingRuangs->where('status', 'sudah disetujui')->isNotEmpty();
-        });
-
-        // Convert the sorted collection back to a query for pagination
-        $ruangans = $ruangans->values(); // Reset the keys after sorting
         $perPage = 10;
+        $ruangans = Ruangan::all();
         $currentPage = request()->get('page', 1);
         $currentItems = $ruangans->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginatedRuangans = new \Illuminate\Pagination\LengthAwarePaginator($currentItems, $ruangans->count(), $perPage, $currentPage, [
@@ -34,14 +26,12 @@ class RuanganController extends Controller
     {
         // Validasi data
         $validated = $request->validate([
-            'gedung' => 'required|string|max:255',
-            'ruang' => 'required|string|max:255',
-            'kapasitas' => 'required|integer',
+            'prodi' => 'required|string|max:255',
         ]);
     
-        // Mengecek apakah kombinasi gedung dan ruang sudah ada
+        // Mengecek apakah kombinasi gedung dan namaruang sudah ada
         $existingRuang = Ruangan::where('gedung', $request->gedung)
-                                ->where('ruang', $request->ruang)
+                                ->where('namaruang', $request->namaruang)
                                 ->first();
     
         if ($existingRuang) {
@@ -51,14 +41,15 @@ class RuanganController extends Controller
                 'message' => 'Ruangan ini sudah ada di gedung yang sama.'
             ]);
         }
-    
+
         // Simpan data ke database jika tidak ada duplikasi
         $ruang = Ruangan::create([
+            'kodeprodi' => $request->kodeprodi,
             'gedung' => $request->gedung,
-            'ruang' => $request->ruang,
+            'namaruang' => $request->namaruang,
             'kapasitas' => $request->kapasitas,
         ]);
-    
+
         // Mengembalikan response JSON untuk AJAX
         return response()->json([
             'success' => true,
