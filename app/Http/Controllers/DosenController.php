@@ -115,7 +115,7 @@ class DosenController extends Controller
 
         // Cari semua data IRS berdasarkan NIM
         $affectedRows = IRS::where('nim', $nim)->update([
-            'status_verifikasi' => 'Diproses', // 'Belum disetujui', 'Diproses', 'Sudah disetujui'
+            'status_verifikasi' => 'Belum disetujui', // 'Belum disetujui', 'Diproses', 'Sudah disetujui'
             'tanggal_disetujui' => null,  // Mengosongkan tanggal persetujuan
         ]);
 
@@ -128,25 +128,55 @@ class DosenController extends Controller
         return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil ditolak.");
     }
 
-    public function setujuiSemuaIRS(Request $request){
+    public function setujuiSemuaIRS(Request $request)
+    {
+        $useremail = Auth::user()->email;
+        $dosenwali = Dosen::where('email', $useremail)->first();
+    
+        if (!$dosenwali) {
+            return redirect()->back()->with('error', 'Dosen tidak ditemukan.');
+        }
+    
         try {
-            // Logika untuk menyetujui semua ruangan
-            Irs::where('status_verifikasi', 'Diproses')->update(['status_verifikasi' => 'Sudah disetujui', 'tanggal_disetujui' => now()]);
-
-            return redirect()->back()->with('success', 'Semua IRS telah disetujui.');
+            // Ambil daftar NIM mahasiswa yang dibimbing oleh dosen wali ini
+            $nimwali = Mahasiswa::where('dosenwali', $dosenwali->nip)->pluck('nim');
+    
+            // Update status IRS hanya untuk mahasiswa yang termasuk dalam daftar NIM wali
+            Irs::whereIn('nim', $nimwali)
+                ->update([
+                    'status_verifikasi' => 'Sudah disetujui',
+                    'tanggal_disetujui' => now(),
+                ]);
+    
+            return redirect()->back()->with('success', 'Semua IRS telah disetujui untuk mahasiswa di bawah bimbingan Anda.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyetujui IRS.');
         }
     }
     
+    
     public function resetIRS(Request $request){
+        $useremail = Auth::user()->email;
+        $dosenwali = Dosen::where('email', $useremail)->first();
+    
+        if (!$dosenwali) {
+            return redirect()->back()->with('error', 'Dosen tidak ditemukan.');
+        }
+    
         try {
-            // Logika untuk menyetujui semua ruangan
-            Irs::where('status_verifikasi', 'Sudah disetujui')->update(['status_verifikasi' => 'Diproses', 'tanggal_disetujui' => now()]);
-
-            return redirect()->back()->with('success', 'Semua IRS telah disreset.');
+            // Ambil daftar NIM mahasiswa yang dibimbing oleh dosen wali ini
+            $nimwali = Mahasiswa::where('dosenwali', $dosenwali->nip)->pluck('nim');
+    
+            // Update status IRS hanya untuk mahasiswa yang termasuk dalam daftar NIM wali
+            Irs::whereIn('nim', $nimwali)
+                ->update([
+                    'status_verifikasi' => 'Belum disetujui',
+                    'tanggal_disetujui' => now(),
+                ]);
+    
+            return redirect()->back()->with('success', 'Semua IRS telah direset untuk mahasiswa di bawah bimbingan Anda.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat reset IRS.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mereset IRS.');
         }
     }
 }
