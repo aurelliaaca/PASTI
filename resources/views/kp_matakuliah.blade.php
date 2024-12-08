@@ -21,53 +21,59 @@
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-r from-teal-600 to-amber-500">
-    <!-- <a href="{{ url()->previous() }}" class="absolute top-4 left-7 flex items-center gap-2 bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-        <i class="fas fa-arrow-left"></i>
-        <span class="font-medium">Kembali</span>
-    </a> -->
 
-    <div class="max-w-7xl mx-auto p-4 min-h-screen">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h1 class="text-2xl font-bold text-teal-800 mb-4">Daftar Mata Kuliah</h1>
-            
-            <!-- Button untuk Menambah Mata Kuliah -->
-            <div class="mb-4">
-                <button onclick="showTambahModal()" class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800">
-                    Tambah Mata Kuliah
-                </button>
-            </div>
+        <div class="bg-white shadow-lg rounded-lg">
+            <div id="content-matakuliah" class="p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-xl font-semibold text-teal-800 mb-0">MATA KULIAH</h1>
+                    <div class="flex items-center">
+                        <button class="btn bg-teal-500 btn-icon-text mr-2 p-2 rounded-lg" onclick="showTambahModal()">
+                            <i class="fas fa-plus text-white"></i>
+                            <strong class="text-white">Tambah Mata Kuliah</strong>
+                        </button>
+                    </div>
+                </div>
 
-            <!-- Tabel Mata Kuliah -->
-            <div class="overflow-x-auto">
-                <table class="w-full border text-center table-auto">
-                    <thead class="bg-teal-700 text-white">
-                        <tr>
-                            <th class="border px-4 py-2">No</th>
-                            <th class="border px-4 py-2">Kode</th>
-                            <th class="border px-4 py-2">Mata Kuliah</th>
-                            <th class="border px-4 py-2">Semester</th>
-                            <th class="border px-4 py-2">SKS</th>
-                            <th class="border px-4 py-2">Status</th>
-                            <th class="border px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($matakuliah as $index => $mk)
-                        <tr class="{{ $index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100' }} hover:bg-gray-200">
-                            <td class="border px-4 py-2">{{ $index + 1 }}</td>
-                            <td class="border px-4 py-2">{{ $mk->kode }}</td>
-                            <td class="border px-4 py-2">{{ $mk->nama }}</td>
-                            <td class="border px-4 py-2">{{ $mk->semester }}</td>
-                            <td class="border px-4 py-2">{{ $mk->sks }}</td>
-                            <td class="border px-4 py-2">{{ $mk->status }}</td>
-                            <td class="border px-4 py-2">
-                                <button onclick="editMataKuliah('{{ $mk->kode }}', '{{ $mk->nama }}', '{{ $mk->semester }}', '{{ $mk->sks }}', '{{ $mk->status }}')" class="bg-amber-500 text-white px-3 py-1 rounded hover:bg-amber-700">Edit</button>
-                                <button onclick="hapusMataKuliah('{{ $mk->kode }}')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700">Hapus</button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <!-- Tabel -->
+                <div class="border rounded-md overflow-x-auto">
+                    <div class="table-responsive p-2">
+                        <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="font-bold text-sm px-4 py-2">No</th>
+                                    <th class="font-bold text-sm px-4 py-2">Kode</th>
+                                    <th class="font-bold text-sm px-4 py-2">Mata Kuliah</th>
+                                    <th class="font-bold text-sm px-4 py-2">Semester</th>
+                                    <th class="font-bold text-sm px-4 py-2">SKS</th>
+                                    <th class="font-bold text-sm px-4 py-2">Status</th>
+                                    <th class="font-bold text-sm px-4 py-2">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($matakuliah as $index => $mk)
+                                <tr class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                                    <td class="text-sm px-4 py-2">{{ $index + 1 }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $mk->kode }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $mk->nama }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $mk->semester }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $mk->sks }}</td>
+                                    <td class="text-sm px-4 py-2">{{ $mk->status }}</td>
+                                    <td class="text-sm px-4 py-2 text-center">
+                                        <button onclick="editMataKuliah('{{ $mk->kode }}', '{{ $mk->nama }}', '{{ $mk->semester }}', '{{ $mk->sks }}', '{{ $mk->status }}')" 
+                                                class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg">
+                                            Edit
+                                        </button>
+                                        <button onclick="hapusMataKuliah('{{ $mk->kode }}')" 
+                                                class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg">
+                                            Hapus
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

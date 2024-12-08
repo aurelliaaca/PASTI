@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('koordinator_nip');
             $table->string('pengampu1_nip')->nullable();
             $table->string('pengampu2_nip')->nullable();
-            $table->enum('status', ['belum disetujui', 'diproses', 'sudah disetujui'])->default('belum disetujui');
+            $table->enum('status', ['belum disetujui', 'menunggu persetujuan', 'sudah disetujui'])->default('belum disetujui');
             
             // Foreign keys
             $table->foreign('kodemk')->references('kode')->on('matakuliah');
