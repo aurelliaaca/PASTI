@@ -18,6 +18,8 @@ class Irs extends Model
         'jadwalid',
         'nim',
         'smt',
+        // nambahin queue buat batas kuota
+        'queue',
         'status_verifikasi',
         'tanggal_disetujui',
     ];
