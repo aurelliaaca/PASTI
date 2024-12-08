@@ -274,13 +274,13 @@
     }
 
     // Menangani perubahan pada input "namaruang"
-    $('#namaruang').on('input', function() {
-        var namaruangValue = $(this).val();
+    document.getElementById('namaruang').addEventListener('input', function() {
+        var namaruangValue = this.value;
         if (namaruangValue.length > 0) {
-            var gedungValue = namaruangValue.charAt(0).toUpperCase(); // Ambil huruf pertama dan ubah ke huruf besar
-            $('#gedung').val(gedungValue); // Isi otomatis input "Gedung"
+            var gedungValue = namaruangValue.charAt(0).toUpperCase(); 
+            document.getElementById('gedung').value = gedungValue; 
         } else {
-            $('#gedung').val(''); // Kosongkan input "Gedung" jika "namaruang" kosong
+            document.getElementById('gedung').value = ''; 
         }
     });
 
@@ -307,8 +307,7 @@
                             updatedRow.find('td:eq(0)').text(response.data.gedung);
                             updatedRow.find('td:eq(1)').text(response.data.namaruang);
                             updatedRow.find('td:eq(2)').text(response.data.kapasitas);
-                            showAlert('Ruangan berhasil diedit!', 'success'); // Alert sukses edit
-                        } else {
+                            showAlert('Ruangan berhasil diedit!', 'success'); 
                             showAlert('Nama ruang harus berbeda untuk mengedit.', 'warning');
                             return;
                         }
@@ -323,16 +322,16 @@
                         newRow += '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>';
                         newRow += '</td></tr>';
 
-                        $('#ruanganTableBody').append(newRow); // Menambahkan baris baru ke dalam tabel
-                        showAlert('Ruangan berhasil ditambahkan!', 'success'); // Alert sukses tambah
+                        $('#ruanganTableBody').append(newRow); 
+                        showAlert('Ruangan berhasil ditambahkan!', 'success'); 
                     }
-                    closeTambahForm(); // Menutup form setelah proses selesai
+                    closeTambahForm(); 
                 } else {
                     showAlert(response.message || 'Terjadi kesalahan, silakan coba lagi.', 'danger');
                 }
             },
             error: function (xhr, status, error) {
-                showAlert('Terjadi kesalahan, silakan coba lagi.', 'danger');
+                showAlert('Terjadi kesalahan, ruangan sudah ada silakan coba lagi.', 'danger');
             }
         });
     });

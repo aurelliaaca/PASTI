@@ -92,12 +92,9 @@
               </tr>
             </thead>
             <tbody id="plottingRuangTableBody">
-              @foreach($ruangans as $ruangan)
-                @php
-                    $rowClass = $ruangan->status == 'belum disetujui' ? 'bg-red-100' : 'bg-white';
-                @endphp
-                <tr id="plotting_{{ $ruangan->id }}" class="{{ $rowClass }} odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
-                    <td>{{ $ruangan->programStudi ? $ruangan->programStudi->namaprodi : 'N/A' }}</td>
+              @foreach($ruangansForTable as $ruangan)
+                <tr id="plotting_{{ $ruangan->id }}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                    <td>{{ $ruangan->namaprodi }}</td>
                     <td>{{ $ruangan->gedung }}</td>
                     <td>{{ $ruangan->namaruang }}</td>
                     <td>{{ $ruangan->kapasitas }}</td>
@@ -125,7 +122,7 @@
                 </button>
             </div>
             <div class="p-6">
-                <form id="plottingRuangForm" method="POST" action="{{ route('plotting-ruang.store') }}">
+                <form id="plottingRuangForm" method="POST" action="{{ route('storePlottingRuang') }}">
                     @csrf
                     <div class="mb-4">
                         <label for="prodi" class="block">Program Studi</label>
@@ -138,7 +135,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="ruangan_id" class="block">Ruangan</label>
-                        @foreach($ruangans as $ruangan)
+                        @foreach($ruangansForForm as $ruangan)
                             <div class="flex items-center mb-2">
                                 <input class="form-check-input h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500" type="checkbox" id="ruangan_{{ $ruangan->id }}" name="ruangan_id[]" value="{{ $ruangan->id }}">
                                 <label class="ml-2 text-sm text-gray-700" for="ruangan_{{ $ruangan->id }}">
@@ -204,7 +201,7 @@
             const formData = new FormData(form);
 
             $.ajax({
-                url: '/plotting-ruang/store',
+                url: '/plottingruang/store',
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -219,7 +216,7 @@
                         // Tambahkan baris baru ke tabel tanpa refresh
                         response.data.forEach(ruangan => {
                             const newRow = `<tr id="plotting_${ruangan.id}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
-                                <td>${ruangan.kodeprodi || 'N/A'}</td>
+                                <td>${ruangan.namaprodi}</td>
                                 <td>${ruangan.gedung}</td>
                                 <td>${ruangan.namaruang}</td>
                                 <td>${ruangan.kapasitas}</td>
@@ -254,7 +251,7 @@
 
                     data.forEach(ruangan => {
                         const newRow = `<tr id="plotting_${ruangan.id}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
-                            <td>${ruangan.kodeprodi}</td>
+                            <td>${ruangan.namaprodi}</td>
                             <td>${ruangan.gedung}</td>
                             <td>${ruangan.namaruang}</td>
                             <td>${ruangan.kapasitas}</td>
@@ -267,9 +264,28 @@
                         </tr>`;
                         tableBody.append(newRow);
                     });
+
+                    // Panggil fungsi untuk menghapus data ruangan yang sudah ditambahkan dari form
+                    removeUsedRoomData(data);
+                    form.reset(); // Reset form setelah data dimuat
                 },
                 error: function() {
                     showAlert('Gagal memuat data plotting ruang.', 'danger');
+                }
+            });
+        }
+
+        function removeUsedRoomData(data) {
+            const usedRoomIds = data.map(ruangan => ruangan.id); // Ambil ID ruangan dari data yang dimuat
+            console.log('Used Room IDs:', usedRoomIds); // Log ID yang akan dihapus
+
+            usedRoomIds.forEach(id => {
+                const inputElement = document.querySelector(`#roomInput_${id}`); // Ganti dengan selector yang sesuai
+                if (inputElement) {
+                    inputElement.value = ''; // Hapus nilai dari input
+                    console.log(`Cleared input for room ID: ${id}`); // Log untuk konfirmasi
+                } else {
+                    console.log(`Input not found for room ID: ${id}`); // Log jika input tidak ditemukan
                 }
             });
         }
