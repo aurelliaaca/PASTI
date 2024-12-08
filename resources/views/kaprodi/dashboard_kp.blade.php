@@ -71,7 +71,7 @@
                   <i class="far fa-envelope text-2xl"></i>
               </div>
               <div class="flex-1 pl-3.5 pr-4 text-left">
-                <p class="text-sm">[29/06 - 11.00] Dekan - Menyetujui Jadwal Perkuliahan.</p>
+                <p class="text-sm">Notifikasi</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
@@ -90,7 +90,7 @@
                 <i class="far fa-envelope text-2xl"></i>
               </div>
               <div class="flex-1 pl-3.5 pr-4 text-left">
-                <p class="text-sm">[25/06 - 09.30] Dekan - Menolak Jadwal Perkuliahan.</p>
+                <p class="text-sm">Notifikasi</p>
               </div>
               <div class="flex space-x-2">
                 <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">

@@ -20,4 +20,9 @@ class Ruangan extends Model
     {
         return $this->belongsTo(Prodi::class, 'kodeprodi', 'namaprodi');
     }
+
+    public function jadwalMataKuliah()
+    {
+        return $this->hasMany(Jadwal_mata_kuliah::class, 'namaruang', 'namaruang');
+    }
 }

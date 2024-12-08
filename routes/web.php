@@ -120,16 +120,17 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard2', [HomeController::class, 'dashboardKaprodi'])->name('dashboard.kaprodi2');
     Route::get('dosen/dashboard3', [HomeController::class, 'dashboardDosen'])->name('dashboard.dosen3');
     Route::get('/user2', [HomeController::class, 'user2'])->name('user2');
-    //Route::get('/kp_penjadwalan', function () {return view('kp_penjadwalan');})->name('kp_penjadwalan');
     Route::get('/kp_matakuliah', function () {return view('kp_matakuliah');})->name('kp_matakuliah');
-    // Route::get('/kp_penjadwalan', [KaprodiController::class, "buatJadwal"])->name('Penjadwalan');
+    // Route untuk bagian penjadwalan
     Route::get('/kp_penjadwalan', [KaprodiController::class, 'showPenjadwalanForm'])->name('penjadwalan');
     Route::post('/kp_penjadwalan/store', [KaprodiController::class, 'store'])->name('kp.jadwal.store');
-    Route::put('/kp_penjadwalan/{id}', [KaprodiController::class, 'update'])->name('kp.jadwal.update');
-    Route::delete('/kp_penjadwalan/{id}', [KaprodiController::class, 'destroy'])->name('kp.jadwal.delete');
     Route::put('/kp_penjadwalan/ajukan/{id}', [KaprodiController::class, 'ajukan'])->name('kp.jadwal.ajukan');
+    Route::post('/kaprodi/jadwal/ajukan-semua', [KaprodiController::class, 'ajukanSemuaJadwal'])
+    ->name('kaprodi.jadwal.ajukan-semua');
+    Route::get('/kp_penjadwalan/delete/{jadwalid}', [KaprodiController::class, 'destroyJadwal'])->name('jadwal.destroy');
+    Route::get('/kp_penjadwalan/edit/{jadwalid}', [KaprodiController::class, 'edit'])->name('jadwal.edit');
+    Route::put('/kp_penjadwalan/update/{jadwalid}', [KaprodiController::class, 'update'])->name('jadwal.update');
     // Route untuk mendapatkan detail matakuliah
-    // Route::get('/get-mata-kuliah-data/{kode}', [KaprodiController::class, 'getMatkul']);
     Route::prefix('kp_matakuliah')->group(function () {
         Route::get('/', [KaprodiController::class, 'matkul'])->name('Matakuliah');
         Route::post('/', [KaprodiController::class, 'storeMatkul'])->name('matakuliah.store');
@@ -137,6 +138,8 @@ Route::middleware(['auth', 'kaprodi'])->group(function () {
         Route::delete('/{kode}', [KaprodiController::class, 'destroyMK'])->name('matakuliah.destroy');
         Route::put('/{kode}', [KaprodiController::class, 'updateMK'])->name('matakuliah.update');
     });
+
+    
 });
 
 // Ini tolong jangan digeser
@@ -288,6 +291,8 @@ Route::get('/profile', function() {
 //     return redirect()->route('login');
 // })->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/kp_penjadwalan/store', [KaprodiController::class, 'store'])->name('kp.jadwal.store');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::post('/kp_penjadwalan/store', [KaprodiController::class, 'store'])->name('kp.jadwal.store');
+// });
+
+// Route::delete('/jadwal/{id}', [KaprodiController::class, 'destroyJadwal'])->name('jadwal.destroy');

@@ -5,7 +5,7 @@
         <header class="bg-gradient-to-r from-teal-800 to-teal-600 p-4 flex justify-between rounded-xl">
             <div class="flex items-center">
                 <!-- Logo and Title as a Button -->
-                <a href="{{ url()->previous() }}" class="flex items-center">
+                <a href="javascript:void(0)" onclick="goBack()" class="flex items-center">
                     <img alt="University logo" class="h-12 w-11 mr-4 cursor-pointer" src="{{ asset('image/LogoUNDIP.png') }}"/>
                     <div>
                         <div class="text-amber-400 font-black italic text-xl cursor-pointer">
@@ -73,5 +73,9 @@
                 dropdownMenu.classList.remove('visible');
             }
         });
+
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </body>
