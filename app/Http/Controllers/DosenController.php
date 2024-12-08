@@ -66,6 +66,15 @@ class DosenController extends Controller
         if (!$mahasiswa) {
             abort(404, 'Mahasiswa not found');
         }
+        $daysOrder = [
+            'Senin' => 1,
+            'Selasa' => 2,
+            'Rabu' => 3,
+            'Kamis' => 4,
+            'Jumat' => 5,
+            'Sabtu' => 6,
+            'Minggu' => 7,
+        ];
 
         // Ambil data IRS yang diajukan oleh mahasiswa beserta relasi Jadwal
         $irs = Irs::join('jadwal_mata_kuliah', 'irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid') // yang ini harus disesuaiin lagi
@@ -73,6 +82,8 @@ class DosenController extends Controller
             ->where('irs.nim', $nim)
             ->select('Irs.*', 'matakuliah.kode as kodemk', 'matakuliah.nama as namamk', 'jadwal_mata_kuliah.kelas as kelas', 
             'jadwal_mata_kuliah.hari as hari', 'jadwal_mata_kuliah.jam_mulai as start', 'jadwal_mata_kuliah.jam_selesai as finish', 'matakuliah.sks as sks')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
+            ->orderBy('jam_mulai')
             ->get();
 
         // Mengambil IPS terakhir dan menentukan SKS maksimal yang dapat diambil

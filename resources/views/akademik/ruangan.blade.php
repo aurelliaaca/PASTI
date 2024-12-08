@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -245,11 +246,17 @@
                 success: function(response) {
                     if (response.success) {
                         showAlert('Data berhasil dihapus!', 'success');
-                        document.querySelector(`#ruanganTableBody tr[data-id="${deleteId}"]`).remove();
+                        closeDeleteModal();
+                        // Tambahkan timeout sebentar agar alert terlihat
+                        setTimeout(function() {
+                            window.location.reload(); // Refresh halaman
+                        }, 1000); // Delay 
+                        // document.querySelector(`#ruanganTableBody tr[data-id="${deleteId}"]`).remove();
                     } else {
                         showAlert('Terjadi kesalahan saat menghapus data!', 'danger');
+                        closeDeleteModal();
                     }
-                    closeDeleteModal();
+                    
                 },
                 error: function(xhr) {
                     console.error('Error:', xhr);
@@ -381,6 +388,8 @@
             alertDiv.remove();
         }, 2000);
     }
+
+
 </script>
 </body>
 </html>

@@ -13,7 +13,7 @@ class Ruangan extends Model
         'gedung',
         'namaruang',
         'kapasitas',
-        'status'
+        'status',
     ];   
 
     public function prodi()

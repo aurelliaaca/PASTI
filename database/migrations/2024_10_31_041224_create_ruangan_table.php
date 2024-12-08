@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('kapasitas');
             $table->boolean('is_plotted')->default(false);
             $table->string('status')->default('belum disetujui');
+            $table->string('created_at')->nullable();
             $table->timestamp('tanggal_disetujui')->nullable(); 
         });
     }
@@ -31,6 +32,7 @@ return new class extends Migration
         Schema::table('ruangan', function (Blueprint $table) {
             $table->dropColumn('tanggal_disetujui');
             $table->dropColumn('namaprodi');
+            $table->dropColumn('created_at');
         });
         Schema::dropIfExists('ruangan');
     }
