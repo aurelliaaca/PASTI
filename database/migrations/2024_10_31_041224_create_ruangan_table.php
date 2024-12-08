@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('ruangan', function (Blueprint $table) {
             $table->id();
-            $table->string('namaprodi');
+            $table->string('namaprodi')->nullable();
             $table->string('gedung');
             $table->string('namaruang')->unique();
             $table->integer('kapasitas');
-            $table->string('status')->default('Belum disetujui');
-            $table->timestamps();
+            $table->boolean('is_plotted')->default(false);
+            $table->string('status')->default('belum disetujui');
+            $table->timestamp('tanggal_disetujui')->nullable(); 
         });
     }
 
@@ -27,6 +28,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('ruangan', function (Blueprint $table) {
+            $table->dropColumn('tanggal_disetujui');
+            $table->dropColumn('namaprodi');
+        });
         Schema::dropIfExists('ruangan');
     }
 };
