@@ -19,11 +19,11 @@
 </head>
 <body class="min-h-screen">
     
-    <!-- Main Content Section -->
-    <div class="bg-teal-800/80 p-4 flex items-center justify-between rounded-xl">
-    <div class="flex items-center">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        
+<div class="main-container">
+      <!-- Main Content Section -->
+      <div class="flex justify-center items-center bg-teal-800 bg-opacity-80 p-4 rounded-lg shadow-lg w-full">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+
         <!-- Left Section (Profile) -->
         @foreach ($akademiks as $bak)
         <div class="col-span-1 bg-teal-900 text-white p-4 rounded-lg">
@@ -63,81 +63,30 @@
         </div>
         @endforeach
 
-        
-        <!-- Right Section (Notifications) -->
-        <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
-          <div class="space-y-4">
-
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div class="flex items-center">
-                  <!-- Icon Align Left -->
-                  <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                  <!-- Teks Rata Kiri dengan Padding -->
-                  <p class="text-sm text-left text-justify pl-3.5 pr-4">[21/07 - 11.31] Pengajuan IRS Anda telah berhasil disetujui. Silakan periksa kembali jadwal kuliah dan pastikan semua mata kuliah yang dipilih sudah sesuai.</p>
-              </div>
-              <div class="flex space-x-2">
-                  <!-- Buttons -->
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Hapus</span>
-                      <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Tinjau</span>
-                      <i class="far fa-paper-plane"></i>
-                  </button>
-              </div>
-          </div>
+          <!-- Right Section (Notifications) -->
+          <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
+                <div class="space-y-2">
+                    <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
+                        <div>
+                            <i class="far fa-envelope text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-left pl-3.5 pr-4">Notifikasi</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                                <span class="text-sm">Hapus</span>
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                            <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                                <span class="text-sm">Tinjau</span>
+                                <i class="far fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div class="flex items-center">
-                  <!-- Icon Align Left -->
-                  <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                  <!-- Teks Rata Kiri dengan Padding -->
-                  <p class="text-sm text-left text-justify pl-3.5 pr-4">[20/07 - 20.28] Pengajuan IRS Anda telah berhasil diproses. Mohon untuk menunggu proses verifikasi dari pihak akademik. Silahkan pantau status pengajuan Anda secara berkala melalui sistem.</p>
-              </div>
-              <div class="flex space-x-2">
-                  <!-- Buttons -->
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Hapus</span>
-                      <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Tinjau</span>
-                      <i class="far fa-paper-plane"></i>
-                  </button>
-              </div>
-          </div>
-
-          <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div class="flex items-center">
-                  <!-- Icon Align Left -->
-                  <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                  <!-- Teks Rata Kiri dengan Padding -->
-                  <p class="text-sm text-left text-justify pl-3.5 pr-4">[19/07 - 12.48] Terima kasih, pembayaran UKT Anda telah berhasil. Simpan bukti pembayaran ini untuk keperluan administrasi lebih lanjut.
-                  </p>
-              </div>
-              <div class="flex space-x-2">
-                  <!-- Buttons -->
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Hapus</span>
-                      <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                      <span class="text-sm">Tinjau</span>
-                      <i class="far fa-paper-plane"></i>
-                  </button>
-              </div>
-          </div>
-
-            
-          </div>
-        </div>
 
         <!-- Container for Centered Buttons -->
         <div class="col-span-3 flex justify-center space-x-4">
@@ -159,6 +108,7 @@
                 <span class="text-2xl">Periode Akses IRS</span>
             </a>
         </div>
+
       </div>
     </div>
 </div>

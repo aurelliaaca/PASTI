@@ -65,78 +65,28 @@
           
           <!-- Right Section (Notifications) -->
           <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                <!-- pie chart -->
-                  <div class="col-span-1 text-white rounded-lg">
-                      <h2 class="text-center font-semibold text-xl items-center">Persetujuan Alokasi Jadwal</h2>
-                      <canvas id="myPieChart" class="p-4"></canvas>
-                  </div>
-                  <!-- notification -->
-              <div class="col-span-2 text-white p-0 rounded-lg">
-                  <div class="space-y-4">
-                      <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-                          <div>
-                              <i class="far fa-envelope text-2xl"></i>
-                          </div>
-                          <div class="flex-1">
-                              <p class="text-sm text-left pl-3.5 pr-4">[11/07 - 15.33] Kaprodi Informatika - Mengajukan Jadwal Kuliah.</p>
-                          </div>
-                          <div class="flex space-x-2">
-                              <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                                  <span class="text-sm">Hapus</span>
-                                  <i class="far fa-trash-alt"></i>
-                              </button>
-                              <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                                  <span class="text-sm">Tinjau</span>
-                                  <i class="far fa-paper-plane"></i>
-                              </button>
+                <div class="space-y-2">
+                    <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
+                        <div>
+                            <i class="far fa-envelope text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-left pl-3.5 pr-4">Notifikasi</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                                <span class="text-sm">Hapus</span>
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                            <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                                <span class="text-sm">Tinjau</span>
+                                <i class="far fa-paper-plane"></i>
+                            </button>
                         </div>
                     </div>
-              
-              <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-                <div>
-                  <i class="far fa-envelope text-2xl"></i>
                 </div>
-                <div class="flex-1">
-                  <p class="text-sm text-left pl-3.5 pr-4">[8/07 - 08.46] Kaprodi Matematika - Merevisi Jadwal Kuliah.</p>
-                </div>
-                <div class="flex space-x-2">
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                    <span class="text-sm">Hapus</span>
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                    <span class="text-sm">Tinjau</span>
-                    <i class="far fa-paper-plane"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-                <div>
-                  <i class="far fa-envelope text-2xl"></i>
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm text-left pl-3.5 pr-4">[4/07 - 12.52] Kaprodi Biologi - Mengajukan Jadwal Kuliah.</p>
-                </div>
-                <div class="flex space-x-2">
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                    <span class="text-sm">Hapus</span>
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                    <span class="text-sm">Tinjau</span>
-                    <i class="far fa-paper-plane"></i> 
-                  </button>
-                </div>
-              </div>
             </div>
-          </div>
-          </div>
-          </div>
-
-          
-
+            
           <!-- Container for Centered Buttons -->
           <div class="col-span-3 flex justify-center space-x-4 mt-4">
               <!-- Persetujuan Ruangan Button -->

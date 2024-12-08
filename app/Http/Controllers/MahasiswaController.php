@@ -272,7 +272,7 @@ public function cekJadwal(Request $request)
         // Cek apakah total SKS yang dipilih melebihi batas
         if (($sksTerpilih + $mataKuliahSks) > $sksMax) {
             return response()->json([
-                'error' => 'Total SKS melebihi batas beban SKS.',
+                'error' => 'Anda sudah melebihi batas SKS yang dapat diambil.',
                 'sks_over_limit' => true,
                 'jadwal_bentrok' => false,
                 'max_sks' => $sksMax
