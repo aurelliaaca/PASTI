@@ -46,13 +46,10 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::post('/mahasiswa/store', [MahasiswaController::class, 'store']);
     Route::post('/save-jadwal', [MahasiswaController::class, 'store']);
     Route::post('/batalkan-jadwal', [MahasiswaController::class, 'batalkanJadwal'])->name('batalkan.jadwal');
-        Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
+    Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
 // Pastikan route ini sesuai dengan nama yang digunakan di form
 Route::post('/ajukan-semua-IRS', [MahasiswaController::class, 'ajukanSemuaIRS'])->name('ajukanSemuaIrs');
 Route::post('/reset-irs', [MahasiswaController::class, 'resetIrs'])->name('resetIrs');
-Route::post('/batal-jadwal', [MahasiswaController::class, 'batalJadwal'])->name('batalJadwal');
-Route::get('/cek-status-jadwal/{jadwalId}/{nim}', [MahasiswaController::class, 'cekStatusJadwal']);
-
 
 
 
@@ -94,7 +91,7 @@ Route::middleware(['auth', 'dosen'])->group(function () {
     Route::post('dosen/setujui-irs', [DosenController::class, 'setujuiIRS'])->name('setujuiIRS');
     Route::post('dosen/tolak-irs', [DosenController::class, 'tolakIRS'])->name('tolakIRS');
     Route::post('dosen/setujui-semua-IRS', [DosenController::class, 'setujuiSemuaIRS'])->name('setujuiSemuaIrs');
-    Route::post('dosen/reset-IRS', [DosenController::class, 'resetIRS'])->name('resetIrs');
+    Route::post('dosen/reset-IRS', [DosenController::class, 'resetIrs'])->name('resetIrsDosen');
     
 });
 
@@ -113,10 +110,14 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     Route::get('/plottingruang', [BAKController::class, 'plotruang'])->name('plottingruang');
     Route::get('/plotting-ruang/data', [BAKController::class, 'getData'])->name('plotting-ruang.data');
     Route::post('/plottingruang/store', [BAKController::class, 'storePlottingRuang'])->name('storePlottingRuang');
+    Route::post('/plottingruang/ajukan', [BAKController::class, 'ajukanPlotting'])->name('plottingruang.ajukan');
     
     // Rute untuk periode
     Route::get('/periode', [BAKController::class, 'showJadwal'])->name('periode');
     Route::post('/periode/store', [BAKController::class, 'storePeriode'])->name('periode.store');
+
+    // Rute untuk menghapus jadwal
+    Route::delete('/jadwal/{id}', [BAKController::class, 'destroyJadwal'])->name('jadwal.destroy');
 });
 
 

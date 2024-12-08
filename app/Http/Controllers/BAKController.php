@@ -13,7 +13,7 @@ class BAKController extends Controller
     public function ruangan()
     {
         $perPage = 10;
-        $ruangans = Ruangan::orderByRaw("CASE WHEN status = 'sudah disetujui' THEN 1 ELSE 0 END, created_at DESC")->get();
+        $ruangans = Ruangan::all();
         $currentPage = request()->get('page', 1);
         $currentItems = $ruangans->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginatedRuangans = new \Illuminate\Pagination\LengthAwarePaginator($currentItems, $ruangans->count(), $perPage, $currentPage, [
@@ -48,7 +48,7 @@ class BAKController extends Controller
     {
         // Ambil semua data jadwal
         $jadwals = JadwalIrs::all();
-        return view('periode', compact('jadwals')); // Kirim data ke view
+        return view('akademik.periode', compact('periode')); // Kirim data ke view
     }
 
     //ruangan
@@ -223,5 +223,18 @@ public function update(Request $request, $id)
         $jadwal->delete();
 
         return response()->json(['success' => true]);
+    }
+
+    public function ajukanPlotting(Request $request)
+    {
+    // Ambil semua ruangan yang perlu diajukan
+    $ruangans = Ruangan::where('status', 'belum disetujui')->get();
+
+    foreach ($ruangans as $ruangan) {
+        $ruangan->status = 'menunggu persetujuan';
+        $ruangan->save();
+    }
+
+    return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
     }
 }
