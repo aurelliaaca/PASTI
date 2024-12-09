@@ -84,24 +84,25 @@
                         </tr>
                         <tr class="ruangan-table" id="ruangan-{{ $namaprodi }}" style="display: none;">
                             <td colspan="4">
-                                <div class="border rounded-md">
-                                    <div class="table-responsive p-2">
-                                        <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse border border-gray-300">
-                                            <thead class="bg-gray-100">
+                                <div class="py-2">
+                                    <div class="border rounded-md">
+                                        <div class="table-responsive table-striped">
+                                            <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse ">
+                                            <thead>
                                                 <tr>
-                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Gedung</th>
-                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Ruang</th>
-                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Kapasitas</th>
-                                                    <th class="font-normal border border-gray-300" style="width: 20%;">Status</th>
+                                                    <th class="font-semibold" style="width: 20%;">Gedung</th>
+                                                    <th class="font-semibold" style="width: 20%;">Ruang</th>
+                                                    <th class="font-semibold" style="width: 20%;">Kapasitas</th>
+                                                    <th class="font-semibold" style="width: 20%;">Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="ruanganTableBody-{{ $namaprodi }}">
+                                            <tbody>
                                                 @foreach($ruangans as $ruangan)
-                                                <tr class="border-b border-gray-200">
-                                                    <td class="border border-gray-300">{{ $ruangan->gedung }}</td>
-                                                    <td class="border border-gray-300">{{ $ruangan->namaruang }}</td>
-                                                    <td class="border border-gray-300">{{ $ruangan->kapasitas }}</td>
-                                                    <td class="text-center py-2 border border-gray-300">
+                                                <tr id="ruanganTableBody-{{ $namaprodi }}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
+                                                    <td class="py-3 font-normal">{{ $ruangan->gedung }}</td>
+                                                    <td class="py-3 font-normal">{{ $ruangan->namaruang }}</td>
+                                                    <td class="py-3 font-normal">{{ $ruangan->kapasitas }}</td>
+                                                    <td class="text-center py-2 ">
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                             {{ $ruangan->status == 'menunggu persetujuan' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
                                                             {{ ucfirst($ruangan->status) }}

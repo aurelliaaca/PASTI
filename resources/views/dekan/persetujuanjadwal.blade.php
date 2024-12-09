@@ -102,7 +102,7 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach($jadwals as $jadwal)
-                                                    <tr id="jadwal_{{ $jadwal->jadwalid }}" class="odd:bg-teal-800/10 even:bg-white">
+                                                    <tr id="jadwal_{{ $jadwal->jadwalid }}" class="odd:bg-teal-800/10 even:bg-white mb-2 hover:bg-green-200 cursor-pointer">
                                                         <td class="py-3 font-normal">{{ $jadwal->matkul->semester }}</td>
                                                         <td class="py-3 font-normal">{{ $jadwal->matkul->nama }}</td>
                                                         <td class="py-3 font-normal">{{ $jadwal->kelas }}</td>
@@ -115,7 +115,7 @@
                                                             {{ optional($jadwal->pengampu1)->nama ?? 'N/A' }} /
                                                             {{ optional($jadwal->pengampu2)->nama ?? 'N/A' }}
                                                         </td>
-                                                        <td class="text-center py-2 border ">
+                                                        <td class="text-center py-2">
                                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                         @if($jadwal->status == 'sudah disetujui') bg-green-100 text-green-800 @else bg-yellow-100 text-red-800 @endif">
                                                                 {{ $jadwal->status }}

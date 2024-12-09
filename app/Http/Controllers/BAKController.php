@@ -6,6 +6,7 @@ use App\Models\JadwalIrs;
 use Illuminate\Http\Request;
 use App\Models\Ruangan;
 use App\Models\Prodi;
+use Illuminate\Validation\Rule;
 
 class BAKController extends Controller
 {
@@ -34,7 +35,7 @@ class BAKController extends Controller
         
         // Ambil semua data ruangan yang belum disetujui dan belum di-plot untuk form
         $ruangansForForm = Ruangan::where('is_plotted', false)
-                                  ->where('status', '!=', 'disetujui')
+                                  ->where('status', '!=', 'sudah disetujui')
                                   ->get();
         
         // Ambil semua data program studi
@@ -75,6 +76,7 @@ class BAKController extends Controller
 
     public function updateRuangan(Request $request, $id)
     {
+    // Validasi data yang diterima
         $validatedData = $request->validate([
             'gedung' => 'required|string|max:255',
             'namaruang' => 'required|string|max:255',
@@ -152,6 +154,22 @@ class BAKController extends Controller
 
         return response()->json($ruangans);
     }
+
+
+
+    public function ajukanPlotting(Request $request)
+    {
+        // Ambil semua ruangan yang perlu diajukan dengan status 'belum disetujui' dan 'namaprodi' tidak null
+        $ruangans = Ruangan::where('status', 'belum disetujui')
+                            ->whereNotNull('namaprodi')
+                            ->get();
+
+        foreach ($ruangans as $ruangan) {
+            $ruangan->status = 'menunggu persetujuan';
+            $ruangan->save();
+        }
+
+        return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
 
     // Menampilkan data jadwal untuk halaman bak_jadwal
     public function index()
@@ -251,17 +269,6 @@ public function updatePeriode(Request $request, $id)
             ]);
         }
     }
+  }
 
-    public function ajukanPlotting(Request $request)
-    {
-    // Ambil semua ruangan yang perlu diajukan
-    $ruangans = Ruangan::where('status', 'belum disetujui')->get();
 
-    foreach ($ruangans as $ruangan) {
-        $ruangan->status = 'menunggu persetujuan';
-        $ruangan->save();
-    }
-
-    return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
-    }
-}
