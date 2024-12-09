@@ -71,15 +71,24 @@ class KaprodiController extends Controller
             }
 
             // Pengecekan irisan jadwal mata kuliah wajib
-            $irisan = Jadwal_mata_kuliah::where('kelas', $request->kelas)
+            $irisan = Jadwal_mata_kuliah::where(function ($query) use ($request) {
+                $query->where('kelas', $request->kelas)
+                       ->orWhere('namaruang', $request->namaruang);
+                })
                 ->where('hari', $request->hari)
                 ->where(function ($query) use ($request) {
-                    $query->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
-                        ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
-                        ->orWhere(function ($subQuery) use ($request) {
-                            $subQuery->where('jam_mulai', '<=', $request->jam_mulai)
-                                ->where('jam_selesai', '>=', $request->jam_selesai);
-                        });
+                    $query->where(function ($q) use ($request) {
+                        $q->where('jam_mulai', '<=', $request->jam_mulai)
+                          ->where('jam_selesai', '>', $request->jam_mulai);
+                    })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('jam_mulai', '<', $request->jam_selesai)
+                          ->where('jam_selesai', '>=', $request->jam_selesai);
+                    })
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('jam_mulai', '>=', $request->jam_mulai)
+                          ->where('jam_selesai', '<=', $request->jam_selesai);
+                    });
                 })
                 ->exists();
 
