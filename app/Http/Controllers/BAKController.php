@@ -170,7 +170,7 @@ class BAKController extends Controller
         }
 
         return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
-
+    }
     // Menampilkan data jadwal untuk halaman bak_jadwal
     public function index()
     {
