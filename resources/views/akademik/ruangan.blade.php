@@ -84,7 +84,7 @@
                                     <td class="text-sm px-4 py-2">{{ $ruangan->namaruang }}</td>
                                     <td class="text-sm px-4 py-2">{{ $ruangan->kapasitas }}</td>
                                     <td class="text-sm px-4 py-2 text-center">
-                                        @if($ruangan->status !== 'sudah disetujui')
+                                        @if(!in_array($ruangan->status, ['menunggu persetujuan', 'sudah disetujui']))
                                             <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
                                             <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRuangan({{ $ruangan->id }})">Hapus</button>
                                         @else
@@ -331,6 +331,7 @@
                         showAlert('Ruangan berhasil ditambahkan!', 'success'); 
                     }
                     closeTambahForm(); 
+                    window.location.reload();
                 } else {
                     showAlert(response.message || 'Terjadi kesalahan, silakan coba lagi.', 'danger');
                 }
