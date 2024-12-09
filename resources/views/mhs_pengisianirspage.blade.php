@@ -99,7 +99,7 @@
                 <div class="flex">
                     <p class="text-sm align-top w-[300px] font-semibold">SKS TERPILIH</p>
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
-                    <p class="text-sm align-middle w-full">{{ $sksTerpilih }}</p>
+                    <p id="sksTerpilih" class="text-sm align-middle w-full">{{ $sksTerpilih }}</p>
                 </div>
                 </div>
             </div>
@@ -450,7 +450,8 @@ function deleteJadwal(btn, id) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Ambil data jadwal yang sudah ada dari controller
-    const jadwalLain = {!! json_encode($jadwalLain) !!}; // Data jadwal dengan kode_mk yang sama
+    const jadwal = {!! json_encode($jadwal) !!}; // Data jadwal dengan kode_mk yang sama
+    let sksTerpilih = parseInt('{{ $sksTerpilih }}'); // Inisialisasi SKS terpilih
 
     const jamRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
     const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -476,8 +477,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('jadwalTableBody').appendChild(row);
     });
 
-    // Menambahkan data jadwalLain ke dalam tabel
-    jadwalLain.forEach(jadwal => {
+    // Menambahkan data jadwal ke dalam tabel
+    jadwal.forEach(jadwal => {
         const jamMulai = jadwal.jam_mulai.substr(0, 2);
         const row = document.querySelector(`.row-${parseInt(jamMulai)}`);
         if (row) {
@@ -508,8 +509,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="flex justify-center gap-1" style="font-size: 10px;">
                         <p class="text-center" style="width: 30%;">Kelas ${jadwal.kelas}</p>
-                        <p class="text-center" style="width: 30%;">${jadwal.jam_mulai}</p>
-                        <p class="text-center" style="width: 30%;">${jadwal.kuota}</p>
+                        <p class="text-center" style="width: 30%;">Kuota: ${jadwal.kuota}</p>
+                    </div> 
+                    <div class="flex justify-center gap-1" style="font-size: 10px;">
+                        <p class="text-center" style="width: 100%;">${jadwal.jam_mulai}-${jadwal.jam_selesai}</p>
                     </div>
                 `;
                 
@@ -544,8 +547,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                         jadwalButton.classList.add('bg-teal-100/80');
                                         // Update tampilan jadwal lain dengan kode MK yang sama
                                         updateRelatedJadwalButtons(jadwal.kodemk, 'teal');
-                                        // Update tabel IRS
-                                        updateIRSTable();
+                                        // Kurangi SKS terpilih
+                                        sksTerpilih -= jadwal.sks;
+                                        updateSksTerpilih();
                                     } else {
                                         alert(response.message);
                                     }
@@ -596,8 +600,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 jadwalButton.classList.add('bg-amber-100/80');
                                                 // Update tampilan jadwal lain dengan kode MK yang sama
                                                 updateRelatedJadwalButtons(jadwal.kodemk, 'red');
-                                                // Update tabel IRS
-                                                updateIRSTable();
+                                                // Tambah SKS terpilih
+                                                sksTerpilih += jadwal.sks;
+                                                updateSksTerpilih();
                                             } else {
                                                 alert('Terjadi kesalahan saat memilih jadwal.');
                                             }
@@ -616,13 +621,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
 
-                if (!cell.querySelector('.jadwal-button')) {
-                    jadwalButton.classList.add('jadwal-button');
-                    cell.appendChild(jadwalButton);
-                }
+                // Tambahkan tombol ke dalam sel, tanpa menghapus yang sudah ada
+                cell.appendChild(jadwalButton);
             }
         }
     });
+
+    // Fungsi untuk memperbarui tampilan SKS terpilih
+    function updateSksTerpilih() {
+        document.getElementById('sksTerpilih').textContent = sksTerpilih;
+    }
+
+    // Inisialisasi tampilan SKS terpilih
+    updateSksTerpilih();
 });
 
 // Fungsi untuk mengupdate warna button jadwal yang terkait

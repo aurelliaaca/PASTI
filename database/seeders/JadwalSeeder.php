@@ -104,7 +104,7 @@ class JadwalSeeder extends Seeder
                 'koordinator_nip' => $koordinator,
                 'pengampu1_nip' => $pengampu1,
                 'pengampu2_nip' => $pengampu2,
-                'kuota' => 1,
+                'kuota' => 2,
                 'status' => 'belum disetujui',
                 'jam_selesai' => Carbon::createFromTimeString($jamMulai)->addMinutes($durasi)->format('H:i')
             ];
