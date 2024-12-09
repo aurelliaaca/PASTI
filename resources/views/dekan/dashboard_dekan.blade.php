@@ -65,6 +65,22 @@
           
           <!-- Right Section (Notifications) -->
           <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
+            <div class="grid grid-cols-1 gap-4 w-full items-center">
+              <!-- pie chart -->
+                <div class="col-span-1 text-white rounded-lg flex p-4 flex-row justify-center">
+                    <div class="flex-col">
+                    <h2 class="text-center font-semibold text-xl items-center">Persetujuan Ruangan</h2>
+                    <canvas id="myPieChart1" class="text-sm p-1"></canvas>
+                    </div>
+                    <div class="flex-col">  
+                    <h2 class="text-center font-semibold text-xl items-center">Persetujuan Jadwal</h2>
+                    <canvas id="myPieChart2" class="text-xs p-1"></canvas>
+                    </div>
+                        
+                </div>
+
+                
+          <div class="col-span-3 bg-teal-900 text-white p-4 rounded-lg">
                 <div class="space-y-2">
                     <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
                         <div>
@@ -86,12 +102,13 @@
                     </div>
                 </div>
             </div>
-            
+          </div>
+          </div>
           <!-- Container for Centered Buttons -->
           <div class="col-span-3 flex justify-center space-x-4 mt-4">
               <!-- Persetujuan Ruangan Button -->
               <a href="{{ route('persetujuanruangan') }}" class="bg-yellow-500 text-white px-8 py-5 rounded-lg flex items-center space-x-2 hover:bg-yellow-600">
-                <i class="fa fa-building text-3xl"></i>
+                <i class="fa fa-city text-3xl"></i>
                 <span class="text-2xl">Persetujuan Alokasi Ruangan</span>
             </a>
 
@@ -101,37 +118,34 @@
                   <span class="text-2xl">Persetujuan Jadwal</span>
               </a>
           </div>
-
       </div>
     </div>
   </div>
   <script>
     
-  const data = {
-            labels: ['Belum Disetujui', 'Sudah Disetujui'], // Categories
+        // Data untuk pie chart pertama
+        const data1 = {
+            labels: ['Sudah Disetujui', 'Menunggu Persetujuan', 'Belum Disetujui'],
             datasets: [{
-                label: 'Approval Status',
-                data: [40, 60], // 40% not approved, 60% approved
-                backgroundColor: ['#14B8A6', '#FFBB1C'], // Teal for not approved, Amber for approved
-                hoverOffset: 4,
-                borderWidth: 0, // Remove stroke/border
+                data: [{{ $sudahDisetujui }}, {{ $menungguPersetujuan }}, {{ $belumDisetujui }}],
+                backgroundColor: ['#14B8A6', '#FFBB1C', '#FF0000'],
+                borderWidth: 0,
             }]
         };
 
-        const config = {
-            type: 'pie', // Pie chart type
-            data: data,
+        const config1 = {
+            type: 'pie',
+            data: data1,
             options: {
                 plugins: {
                     legend: {
                         labels: {
-                            color: 'white' // Make legend labels white
+                            color: 'white'
                         }
                     },
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                // Make tooltip label text white
                                 return tooltipItem.label + ': ' + tooltipItem.raw + '%';
                             }
                         }
@@ -140,9 +154,44 @@
             }
         };
 
-        // Create the pie chart
-        const ctx = document.getElementById('myPieChart').getContext('2d');
-        const myPieChart = new Chart(ctx, config);
+        // Create the first pie chart
+        const ctx1 = document.getElementById('myPieChart1').getContext('2d');
+        const myPieChart1 = new Chart(ctx1, config1);
+
+        // Data untuk pie chart kedua
+        const data2 = {
+            labels: ['Sudah Disetujui', 'Menunggu Persetujuan', 'Belum Disetujui'],
+            datasets: [{
+                data: [{{ $sudahDisetujui1 }}, {{ $menungguPersetujuan1 }}, {{ $belumDisetujui1 }}],
+                backgroundColor: ['#14B8A6', '#FFBB1C', '#FF0000'],
+                borderWidth: 0,
+            }]
+        };
+
+        const config2 = {
+            type: 'pie',
+            data: data2,
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Create the second pie chart
+        const ctx2 = document.getElementById('myPieChart2').getContext('2d');
+        const myPieChart2 = new Chart(ctx2, config2);
     </script>
 </body>
 </html>

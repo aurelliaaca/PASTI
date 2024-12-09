@@ -85,11 +85,11 @@
                                     <td class="text-sm px-4 py-2">{{ $ruangan->kapasitas }}</td>
                                     <td class="text-sm px-4 py-2 text-center">
                                         @if($ruangan->status !== 'sudah disetujui')
-                                            <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRuangan({{ $ruangan->id }})">Hapus</button>
                                             <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $ruangan->id }})">Edit</button>
+                                            <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRuangan({{ $ruangan->id }})">Hapus</button>
                                         @else
-                                            <button class="btn btn-secondary" disabled>Hapus</button>
                                             <button class="btn btn-secondary" disabled>Edit</button>
+                                            <button class="btn btn-secondary" disabled>Hapus</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -325,10 +325,8 @@
                         newRow += '<td>' + response.data.namaruang + '</td>';
                         newRow += '<td>' + response.data.kapasitas + '</td>';
                         newRow += '<td class="text-center py-2">';
-                        newRow += '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg mr-1" onclick="deleteRuangan(' + response.data.id + ')">Hapus</button>';
                         newRow += '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>';
-                        newRow += '</td></tr>';
-
+                        newRow += '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg mr-1" onclick="deleteRuangan(' + response.data.id + ')">Hapus</button>';
                         $('#ruanganTableBody').append(newRow); 
                         showAlert('Ruangan berhasil ditambahkan!', 'success'); 
                     }
@@ -338,29 +336,39 @@
                 }
             },
             error: function (xhr, status, error) {
-                showAlert('Terjadi kesalahan, ruangan sudah ada silakan coba lagi.', 'danger');
+                if (xhr.status === 422) {
+                    // Tampilkan pesan kesalahan validasi
+                    var errors = xhr.responseJSON.errors;
+                    for (var key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            showAlert(errors[key][0], 'danger');
+                        }
+                    }
+                } else {
+                    showAlert('Terjadi kesalahan, nama ruangan sudah ada silakan coba lagi.', 'danger');
+                }
             }
         });
     });
 
     // Fungsi untuk mengedit baris data
     function editRow(button, id) {
-        var row = $(button).closest('tr');
-        var ruang = row.find('td:eq(1)').text();
-        var kapasitas = row.find('td:eq(2)').text();
+    var row = $(button).closest('tr');
+    var namaruang = row.find('td:eq(1)').text();
+    var kapasitas = row.find('td:eq(2)').text();
 
-        // Menampilkan popup form untuk edit
-        $('#overlay').show();
-        $('#ruang').val(ruang);
-        $('#kapasitas').val(kapasitas);
-        $('#tambahForm').attr('action', '/ruang/' + id); // Update action URL untuk edit
-        $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Menambahkan metode PUT untuk update
-        document.getElementById('overlay').style.display = 'flex';
+    // Menampilkan popup form untuk edit
+    $('#overlay').show();
+    $('#namaruang').val(namaruang); // Menggunakan .val() untuk mengatur nilai
+    $('#kapasitas').val(kapasitas); // Menggunakan .val() untuk mengatur nilai
+    $('#tambahForm').attr('action', `/ruangan/${id}`); // Update action URL untuk edit
+    $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Menambahkan metode PUT untuk update
+    document.getElementById('overlay').style.display = 'flex';
 
-        // Isi otomatis input "Gedung" berdasarkan "Ruang"
-        var gedungValue = ruang.charAt(0).toUpperCase();
-        $('#gedung').val(gedungValue).prop('readonly', true); // Kunci input "Gedung"
-    }
+    // Isi otomatis input "Gedung" berdasarkan "Ruang"
+    var gedungValue = namaruang.charAt(0).toUpperCase();
+    $('#gedung').val(gedungValue).prop('readonly', true); // Kunci input "Gedung"
+}
 
     // Fungsi untuk menampilkan alert dengan gaya Tailwind CSS
     function showAlert(message, type) {

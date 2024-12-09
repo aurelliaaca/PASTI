@@ -137,14 +137,16 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-2">
+                        <input type="checkbox" id="selectAll" class="form-check-input h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500">
+                        <label for="selectAll" class="ml-2 text-sm font-medium text-gray-700">Select All</label>
+                    </div>
+                    <div class="mb-2">
                         <label for="ruangan_id" class="block">Ruangan</label>
                         @foreach($ruangansForForm as $ruangan)
-                            <div class="flex items-center mb-2">
+                            <div class="mb-2">
                                 <input class="form-check-input h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500" type="checkbox" id="ruangan_{{ $ruangan->id }}" name="ruangan_id[]" value="{{ $ruangan->id }}">
-                                <label class="ml-2 text-sm text-gray-700" for="ruangan_{{ $ruangan->id }}">
-                                    {{ $ruangan->namaruang }} - Kapasitas: {{ $ruangan->kapasitas }}
-                                </label>
+                                <label for="ruangan_{{ $ruangan->id }}" class="ml-2 text-sm text-gray-700">{{ $ruangan->namaruang }} - Kapasitas: {{ $ruangan->kapasitas }}</label>
                             </div>
                         @endforeach
                     </div>
@@ -233,6 +235,8 @@
                             </tr>`;
                             $('#plottingRuangTableBody').append(newRow);
                         });
+                        // Panggil fungsi untuk menghapus data ruangan yang sudah ditambahkan dari form
+                        removeUsedRoomData(response.data);
                         // Reset form setelah sukses
                         form.reset();
                     } else {
@@ -332,6 +336,13 @@
 
             closeModalButton.addEventListener('click', function() {
                 modal.classList.add('hidden');
+            });
+        });
+
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('input[name="ruangan_id[]"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
             });
         });
     </script>
