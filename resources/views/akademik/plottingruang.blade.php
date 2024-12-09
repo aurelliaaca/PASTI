@@ -239,6 +239,7 @@
                         removeUsedRoomData(response.data);
                         // Reset form setelah sukses
                         form.reset();
+                        window.location.reload();
                     } else {
                         showAlert(response.message || 'Terjadi kesalahan saat memproses ruangan.', 'danger');
                     }
@@ -275,7 +276,8 @@
 
                     // Panggil fungsi untuk menghapus data ruangan yang sudah ditambahkan dari form
                     removeUsedRoomData(data);
-                    form.reset(); // Reset form setelah data dimuat
+                    form.reset();
+                    window.location.reload();
                 },
                 error: function() {
                     showAlert('Gagal memuat data plotting ruang.', 'danger');

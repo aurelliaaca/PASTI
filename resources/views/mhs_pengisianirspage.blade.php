@@ -340,6 +340,7 @@ document.getElementById('ajukan-btn').addEventListener('click', function () {
     .then(data => {
         if (data.status === 'success') {
             alert('Berhasil mengajukan IRS.');
+            window.location.reload();
         } else {
             alert(data.message || 'Terjadi kesalahan.');
         }
@@ -368,6 +369,7 @@ document.getElementById('reset-btn').addEventListener('click', function () {
     .then(data => {
         if (data.status === 'success') {
             alert('Berhasil mereset IRS.');
+            window.location.reload();
         } else {
             alert(data.message || 'Terjadi kesalahan saat mereset data.');
         }
@@ -550,6 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         // Kurangi SKS terpilih
                                         sksTerpilih -= jadwal.sks;
                                         updateSksTerpilih();
+                                        window.location.reload();
                                     } else {
                                         alert(response.message);
                                     }
@@ -603,6 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 // Tambah SKS terpilih
                                                 sksTerpilih += jadwal.sks;
                                                 updateSksTerpilih();
+                                                window.location.reload();
                                             } else {
                                                 alert('Terjadi kesalahan saat memilih jadwal.');
                                             }
