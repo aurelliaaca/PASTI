@@ -77,6 +77,7 @@ Route::middleware(['auth', 'dekan'])->group(function () {
     Route::get('/user1', [HomeController::class, 'user1'])->name('user1');
     Route::post('/setujui-semua-ruang', [DekanController::class, 'approveAllRooms'])->name('setujui.semua.ruang');
     Route::post('/setujui-semua-jadwal', [DekanController::class, 'approveAllJadwal'])->name('setujui.semua.jadwal');
+    Route::get('/dekan/dashboard2', [DekanController::class, 'showDashboard'])->name('dashboard.dekan2');
     // Route::get('/user1', function () {return view('user1');})->name('user1');
 });
 

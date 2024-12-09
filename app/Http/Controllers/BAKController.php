@@ -6,6 +6,7 @@ use App\Models\JadwalIrs;
 use Illuminate\Http\Request;
 use App\Models\Ruangan;
 use App\Models\Prodi;
+use Illuminate\Validation\Rule;
 
 class BAKController extends Controller
 {
@@ -34,7 +35,7 @@ class BAKController extends Controller
         
         // Ambil semua data ruangan yang belum disetujui dan belum di-plot untuk form
         $ruangansForForm = Ruangan::where('is_plotted', false)
-                                  ->where('status', '!=', 'disetujui')
+                                  ->where('status', '!=', 'sudah disetujui')
                                   ->get();
         
         // Ambil semua data program studi
@@ -47,7 +48,7 @@ class BAKController extends Controller
     public function showJadwal()
     {
         // Ambil semua data jadwal
-        $jadwals = JadwalIrs::all();
+        $periode = JadwalIrs::all();
         return view('akademik.periode', compact('periode')); // Kirim data ke view
     }
 
@@ -75,6 +76,7 @@ class BAKController extends Controller
 
     public function updateRuangan(Request $request, $id)
     {
+    // Validasi data yang diterima
         $validatedData = $request->validate([
             'gedung' => 'required|string|max:255',
             'namaruang' => 'required|string|max:255',
@@ -153,88 +155,21 @@ class BAKController extends Controller
         return response()->json($ruangans);
     }
 
-    // Menampilkan data jadwal untuk halaman bak_jadwal
-    public function index()
-    {
-        $jadwals = JadwalIrs::all();  // Ambil semua data jadwal
-        return view('bak_jadwal', compact('jadwals')); // Kirim data ke view
-    }
-
-    // Menyimpan jadwal baru
-    public function storejadwal(Request $request)
-{
-    // Validasi data
-    $validated = $request->validate([
-        'keterangan' => 'required|string|max:255',
-        'jadwal_mulai' => 'required|date',
-        'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
-    ]);
-
-    // Simpan data ke database
-    $jadwal = JadwalIrs::create([
-        'keterangan' => $request->keterangan,
-        'jadwal_mulai' => $request->jadwal_mulai,
-        'jadwal_berakhir' => $request->jadwal_berakhir,
-    ]);
-
-    // Mengembalikan response JSON untuk AJAX
-    return response()->json([
-        'success' => true,
-        'is_edit' => false, // Menandakan bahwa ini adalah create, bukan edit
-        'data' => $jadwal
-    ]);
-}
-
-   // Menyimpan perubahan jadwal
-public function update(Request $request, $id)
-{
-    // Validasi data
-    $validated = $request->validate([
-        'keterangan' => 'required|string|max:255',
-        'jadwal_mulai' => 'required|date',
-        'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
-    ]);
-
-    // Temukan jadwal berdasarkan ID
-    $jadwal = JadwalIrs::findOrFail($id);
-
-    // Perbarui data jadwal
-    $jadwal->update([
-        'keterangan' => $request->keterangan,
-        'jadwal_mulai' => $request->jadwal_mulai,
-        'jadwal_berakhir' => $request->jadwal_berakhir,
-    ]);
-
-    return response()->json([
-        'success' => true,
-        'is_edit' => true, // Menandakan bahwa ini adalah update, bukan create
-        'data' => $jadwal
-    ]);
-}
-
-
-    // Menghapus jadwal
-    public function destroy($id)
-    {
-        // Temukan jadwal berdasarkan ID
-        $jadwal = JadwalIrs::findOrFail($id);
-
-        // Hapus data jadwal
-        $jadwal->delete();
-
-        return response()->json(['success' => true]);
-    }
 
     public function ajukanPlotting(Request $request)
     {
-    // Ambil semua ruangan yang perlu diajukan
-    $ruangans = Ruangan::where('status', 'belum disetujui')->get();
+        // Ambil semua ruangan yang perlu diajukan dengan status 'belum disetujui' dan 'namaprodi' tidak null
+        $ruangans = Ruangan::where('status', 'belum disetujui')
+                            ->whereNotNull('namaprodi')
+                            ->get();
 
-    foreach ($ruangans as $ruangan) {
-        $ruangan->status = 'menunggu persetujuan';
-        $ruangan->save();
+        foreach ($ruangans as $ruangan) {
+            $ruangan->status = 'menunggu persetujuan';
+            $ruangan->save();
+        }
+
+        return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
     }
 
-    return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
-    }
+
 }

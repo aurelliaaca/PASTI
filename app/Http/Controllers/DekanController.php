@@ -8,6 +8,7 @@ use App\Models\Jadwal_mata_kuliah;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Dekan;
 
 class DekanController extends Controller
 {
@@ -25,7 +26,9 @@ class DekanController extends Controller
     public function showJadwal()
     {
         $prodis = Prodi::all();
-        $jadwals = Jadwal_mata_kuliah::with(['prodi', 'matkul', 'ruangan', 'koordinator'])->get();
+        $jadwals = Jadwal_mata_kuliah::with(['prodi', 'matkul', 'ruangan', 'koordinator'])
+                    ->whereIn('status', ['menunggu persetujuan', 'sudah disetujui'])
+                    ->get();
 
         $jadwalByProdi = [];
         foreach ($jadwals as $jadwal) {
@@ -78,5 +81,26 @@ class DekanController extends Controller
         }
 
         return redirect()->back()->with('success', "Semua jadwal untuk prodi tersebut berhasil disetujui.");
+    }
+
+    public function showDashboard()
+    {
+        // Data untuk chart pertama
+        $belumDisetujui = Ruangan::where('status', 'belum disetujui')->count();
+        $sudahDisetujui = Ruangan::where('status', 'sudah disetujui')->count();
+        $menungguPersetujuan = Ruangan::where('status', 'menunggu persetujuan')->count();
+
+        // Data untuk chart kedua
+        $belumDisetujui1 = Jadwal_mata_kuliah::where('status', 'belum disetujui')->count();
+        $sudahDisetujui1 = Jadwal_mata_kuliah::where('status', 'sudah disetujui')->count();
+        $menungguPersetujuan1 = Jadwal_mata_kuliah::where('status', 'menunggu persetujuan')->count();
+
+        $dekans = Dekan::with('dosen')->get();
+
+        return view('dekan.dashboard_dekan', compact(
+            'belumDisetujui', 'sudahDisetujui', 'menungguPersetujuan',
+            'belumDisetujui1', 'sudahDisetujui1', 'menungguPersetujuan1',
+            'dekans'
+        ));
     }
 }
