@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Jadwal')
+@section('title', 'Periode')
 
 @section('content')
 <html>
@@ -88,7 +88,11 @@
                                     <td>{{ $jadwal->jadwal_berakhir }}</td>
                                     <td class="text-center py-2">
                                         <button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg" onclick="deleteRow(this, {{ $jadwal->id }})">Hapus</button>
-                                        <button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, {{ $jadwal->id }})">Edit</button>
+                                        <button 
+                                            class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" 
+                                            onclick="editRow(this, {{ $jadwal->id }})">
+                                            Edit
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -102,8 +106,9 @@
     <!-- Overlay untuk popup -->
     <div id="overlay" class="overlay">
         <div class="popup-form">
-            <form id="tambahForm" action="{{ route('periode.store') }}" method="POST">
+            <form id="tambahForm" action="{{ route('simpanPeriode') }}" method="POST">
                 @csrf
+                <!-- Placeholder untuk input hidden _method (ditambahkan secara dinamis oleh JavaScript) -->
                 <h2 class="text-lg font-semibold mb-4 text-center">Tambah Jadwal Periode</h2>
                 <div class="mb-4">
                     <label class="block">Keterangan</label>
@@ -124,12 +129,23 @@
             </form>
         </div>
     </div>
+
+    <!-- Popup untuk notifikasi berhasil -->
+    <div id="successPopup" class="overlay">
+    <div class="popup-form text-center">
+        <h2 class="text-lg font-semibold mb-4 text-green-700">Berhasil!</h2>
+        <p class="text-gray-700">Periode berhasil diatur.</p>
+        <button onclick="closeSuccessPopup()" class="mt-4 px-4 py-2 bg-teal-500 text-white rounded-lg">Tutup</button>
+    </div>
+</div>
+
+
 <script>
     // Fungsi untuk menambah form
     function addRow() {
         document.getElementById('overlay').style.display = 'flex';
         $('#tambahForm').trigger('reset'); // Reset form
-            $('#tambahForm').attr('action', '{{ route('periode.store') }}'); // Reset action URL untuk tambah
+            $('#tambahForm').attr('action', '{{ route('simpanPeriode') }}'); // Reset action URL untuk tambah
             $('#tambahForm').find('input[name="_method"]').remove(); // Remove hidden method field jika ada
     }
 
@@ -138,78 +154,135 @@
         $('#overlay').hide(); // Menyembunyikan overlay
     }
 
-    // Menangani pengiriman form untuk tambah atau edit jadwal
-    // Fungsi untuk menangani pengiriman form
-    $('#tambahForm').on('submit', function (e) {
-        e.preventDefault();  // Mencegah pengiriman form default
-        var formData = new FormData(this);
-        var actionUrl = $(this).attr('action'); // Dapatkan URL form action
+    function showSuccessPopup() {
+        document.getElementById('successPopup').style.display = 'flex';
+    }
 
-        $.ajax({
+    function closeSuccessPopup() {
+        document.getElementById('successPopup').style.display = 'none';
+    }
+
+    document.getElementById('tambahForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Mencegah form submit secara default
+
+        const form = this;
+        const formData = new FormData(form);
+        var actionUrl = $(this).attr('action');
+
+        // Kirim data menggunakan AJAX
+        fetch(form.action, {
             url: actionUrl,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    // Jika ini adalah update, kita perlu mengganti row yang ada
-                    if (response.is_edit) {
-                        var updatedRow = $('#jadwal_' + response.data.id);
-                        updatedRow.find('td:eq(0)').text(response.data.keterangan);
-                        updatedRow.find('td:eq(1)').text(response.data.jadwal_mulai);
-                        updatedRow.find('td:eq(2)').text(response.data.jadwal_berakhir);
-                    } else {
-                        // Jika ini adalah tambah jadwal, tambahkan baris baru
-                        var newRow = '<tr id="jadwal_' + response.data.id + '" class="odd:bg-teal-800/10 even:bg-white mb-2">';
-                        newRow += '<td>' + response.data.keterangan + '</td>';
-                        newRow += '<td>' + response.data.jadwal_mulai + '</td>';
-                        newRow += '<td>' + response.data.jadwal_berakhir + '</td>';
-                        newRow += '<td class="text-center py-2">';
-                        newRow += '<button class="btn btn-sm btn-danger delete-btn bg-amber-400 w-20 text-white p-2 rounded-lg mr-1" onclick="deleteRow(this, ' + response.data.id + ')">Hapus</button>';
-                        newRow += '<button class="btn btn-sm btn-primary edit-btn bg-teal-500 w-20 text-white p-2 rounded-lg" onclick="editRow(this, ' + response.data.id + ')">Edit</button>';
-                        newRow += '</td></tr>';
-                        $('#jadwalTableBody').append(newRow);
-                    }
-                    closeTambahForm(); // Menutup form setelah proses selesai
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Tampilkan popup sukses
+                    showSuccessPopup();
+
+                    // Reset form
+                    form.reset();
+
+                    // Tutup form tambah
+                    closeTambahForm();
+                    
+                } else {
+                    alert('Gagal menyimpan data: ' + (data.message || 'Kesalahan tidak diketahui.'));
                 }
-            }
-        });
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menyimpan data.');
+            });
     });
 
-    // Fungsi untuk mengedit jadwal
-    function editRow(btn, id) {
-        var row = $(btn).closest('tr');
-        var keterangan = row.find('td').eq(0).text();
-        var jadwalMulai = row.find('td').eq(1).text();
-        var jadwalBerakhir = row.find('td').eq(2).text();
 
+    // Fungsi untuk mengedit periode
+    function editRow(button, id) {
+        // Ambil elemen baris (tr) berdasarkan tombol yang ditekan
+        var row = $(button).closest('tr');
+
+        // Ambil data dari kolom dalam baris
+        var keterangan = row.find('td:eq(0)').text();
+        var jadwalMulai = row.find('td:eq(1)').text();
+        var jadwalBerakhir = row.find('td:eq(2)').text();
+
+        // Tampilkan data di form edit
         $('#overlay').show();
         $('#keterangan').val(keterangan);
         $('#jadwal_mulai').val(jadwalMulai);
         $('#jadwal_berakhir').val(jadwalBerakhir);
-        $('#tambahForm').attr('action', '/jadwal/' + id); // Update action URL untuk edit
-        $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Tambahkan method PUT untuk update
-        document.getElementById('overlay').style.display = 'flex';  // Menampilkan overlay
-    }
 
-    // Fungsi untuk menghapus jadwal
-    function deleteRow(btn, id) {
-        if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+        // Update data periode melalui AJAX ketika tombol submit ditekan
+        $('#tambahForm').off('submit').on('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            
+
             $.ajax({
-                url: '/jadwal/' + id,
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
+                url: `/periode/${id}`, // URL endpoint untuk update periode
+                type: 'PUT', // Method PUT untuk mengupdate data
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function (response) {
                     if (response.success) {
-                        $(btn).closest('tr').remove();
+                        // Update baris tabel dengan data baru
+                        row.find('td:eq(0)').text(response.data.keterangan);
+                        row.find('td:eq(1)').text(response.data.jadwal_mulai);
+                        row.find('td:eq(2)').text(response.data.jadwal_berakhir);
+                        $('#tambahForm').attr('action', `/periode/${id}`);
+
+                        showAlert('Periode berhasil diperbarui!', 'success');
+                        closeTambahForm();
+                    } else {
+                        showAlert(response.message || 'Gagal memperbarui data.', 'danger');
                     }
+                },
+                error: function (xhr) {
+                    showAlert('Terjadi kesalahan saat memperbarui data.', 'danger');
+                    console.error(xhr.responseText);
                 }
             });
-        }
+        });
+
+        // Tampilkan popup form untuk proses edit
+        document.getElementById('overlay').style.display = 'flex';
     }
+
+
+    // Fungsi untuk menghapus jadwal
+    function deleteRow(button, id) {
+    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+        fetch(`/periode/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Hapus baris tabel
+                const row = button.closest('tr');
+                row.remove();
+
+                alert('Data berhasil dihapus.');
+            } else {
+                alert('Gagal menghapus data: ' + (data.message || 'Kesalahan tidak diketahui.'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus data.');
+        });
+    }
+}
 </script>
 </body>
 </html>

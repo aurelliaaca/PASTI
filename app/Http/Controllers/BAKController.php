@@ -156,6 +156,7 @@ class BAKController extends Controller
     }
 
 
+
     public function ajukanPlotting(Request $request)
     {
         // Ambil semua ruangan yang perlu diajukan dengan status 'belum disetujui' dan 'namaprodi' tidak null
@@ -169,7 +170,105 @@ class BAKController extends Controller
         }
 
         return response()->json(['success' => true, 'message' => 'Semua plotting ruang berhasil diajukan.']);
+
+    // Menampilkan data jadwal untuk halaman bak_jadwal
+    public function index()
+    {
+        $jadwals = JadwalIrs::all();  // Ambil semua data jadwal
+        return view('bak_jadwal', compact('jadwals')); // Kirim data ke view
+    }
+
+    // Periode
+    // Menyimpan jadwal baru
+    public function simpanPeriode(Request $request)
+{
+    $validated = $request->validate([
+        'keterangan' => 'required|string|max:255',
+        'jadwal_mulai' => 'required|date',
+        'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
+    ]);
+
+    try {
+        // Simpan data ke database
+        $periode = JadwalIrs::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => $periode,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ]);
+    }
+}
+
+
+   // Menyimpan perubahan jadwal
+public function editPeriode($id)
+{
+    try {
+        $periode = JadwalIrs::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'jadwal' => $periode]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Periode tidak ditemukan',
+        ]);
+    }
+}
+
+public function updatePeriode(Request $request, $id)
+{
+    try {
+        $validated = $request->validate([
+            'keterangan' => 'required|string|max:255',
+            'jadwal_mulai' => 'required|date',
+            'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
+        ]);
+
+        $periode = JadwalIrs::findOrFail($id);
+        $periode->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => $periode,
+            'message' => 'Data berhasil diperbarui.',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+        ]);
     }
 
 
 }
+
+
+    // Menghapus jadwal
+    public function hapusPeriode($id)
+    {
+        try {
+            // Cari dan hapus data berdasarkan ID
+            $periode = JadwalIrs::findOrFail($id);
+            $periode->delete();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+  }
+
+
