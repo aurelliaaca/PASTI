@@ -114,10 +114,10 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     
     // Rute untuk periode
     Route::get('/periode', [BAKController::class, 'showJadwal'])->name('periode');
-    Route::post('/periode/store', [BAKController::class, 'storePeriode'])->name('periode.store');
-
-    // Rute untuk menghapus jadwal
-    Route::delete('/jadwal/{id}', [BAKController::class, 'destroyJadwal'])->name('jadwal.destroy');
+    Route::post('/periode/store', [BAKController::class, 'simpanPeriode'])->name('simpanPeriode');
+    Route::delete('/periode/{id}', [BAKController::class, 'hapusPeriode'])->name('hapusPeriode');
+    Route::get('/periode/{id}', [BAKController::class, 'editPeriode'])->name('editPeriode');
+    Route::put('/periode/{id}', [PeriodeController::class, 'updatePeriode'])->name('updatePeriode');
 });
 
 
