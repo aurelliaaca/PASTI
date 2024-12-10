@@ -141,8 +141,8 @@
 
 
 <script>
-    // Fungsi untuk menambah form
-    function addRow() {
+// Fungsi untuk menambah form
+function addRow() {
         document.getElementById('overlay').style.display = 'flex';
         $('#tambahForm').trigger('reset'); // Reset form
             $('#tambahForm').attr('action', '{{ route('simpanPeriode') }}'); // Reset action URL untuk tambah
@@ -154,135 +154,63 @@
         $('#overlay').hide(); // Menyembunyikan overlay
     }
 
-    function showSuccessPopup() {
-        document.getElementById('successPopup').style.display = 'flex';
-    }
+    // Menangani pengiriman form untuk tambah atau edit jadwal
+    // Fungsi untuk menangani pengiriman form
+    $('#tambahForm').on('submit', function (e) {
+        e.preventDefault();  // Mencegah pengiriman form default
+        var formData = new FormData(this);
+        var actionUrl = $(this).attr('action'); // Dapatkan URL form action
 
-    function closeSuccessPopup() {
-        document.getElementById('successPopup').style.display = 'none';
-    }
-
-    document.getElementById('tambahForm').addEventListener('submit', function (e) {
-        e.preventDefault(); // Mencegah form submit secara default
-
-        const form = this;
-        const formData = new FormData(form);
-        var actionUrl = $(this).attr('action');
-
-        // Kirim data menggunakan AJAX
-        fetch(form.action, {
+        $.ajax({
             url: actionUrl,
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Tampilkan popup sukses
-                    showSuccessPopup();
-
-                    // Reset form
-                    form.reset();
-
-                    // Tutup form tambah
-                    closeTambahForm();
-                    
-                } else {
-                    alert('Gagal menyimpan data: ' + (data.message || 'Kesalahan tidak diketahui.'));
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    // Memuat ulang bagian tabel setelah update
+                    $('#jadwalTableBody').load(location.href + ' #jadwalTableBody > *');
+                    closeTambahForm(); // Menutup form setelah proses selesai
                 }
-                
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menyimpan data.');
-            });
+            }
+        });
     });
 
+    // Fungsi untuk mengedit jadwal
+    function editRow(btn, id) {
+        var row = $(btn).closest('tr');
+        var keterangan = row.find('td').eq(0).text();
+        var jadwalMulai = row.find('td').eq(1).text();
+        var jadwalBerakhir = row.find('td').eq(2).text();
 
-    // Fungsi untuk mengedit periode
-    function editRow(button, id) {
-        // Ambil elemen baris (tr) berdasarkan tombol yang ditekan
-        var row = $(button).closest('tr');
-
-        // Ambil data dari kolom dalam baris
-        var keterangan = row.find('td:eq(0)').text();
-        var jadwalMulai = row.find('td:eq(1)').text();
-        var jadwalBerakhir = row.find('td:eq(2)').text();
-
-        // Tampilkan data di form edit
         $('#overlay').show();
         $('#keterangan').val(keterangan);
         $('#jadwal_mulai').val(jadwalMulai);
         $('#jadwal_berakhir').val(jadwalBerakhir);
-
-        // Update data periode melalui AJAX ketika tombol submit ditekan
-        $('#tambahForm').off('submit').on('submit', function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            
-
-            $.ajax({
-                url: `/periode/${id}`, // URL endpoint untuk update periode
-                type: 'PUT', // Method PUT untuk mengupdate data
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.success) {
-                        // Update baris tabel dengan data baru
-                        row.find('td:eq(0)').text(response.data.keterangan);
-                        row.find('td:eq(1)').text(response.data.jadwal_mulai);
-                        row.find('td:eq(2)').text(response.data.jadwal_berakhir);
-                        $('#tambahForm').attr('action', `/periode/${id}`);
-
-                        showAlert('Periode berhasil diperbarui!', 'success');
-                        closeTambahForm();
-                    } else {
-                        showAlert(response.message || 'Gagal memperbarui data.', 'danger');
-                    }
-                },
-                error: function (xhr) {
-                    showAlert('Terjadi kesalahan saat memperbarui data.', 'danger');
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-
-        // Tampilkan popup form untuk proses edit
-        document.getElementById('overlay').style.display = 'flex';
+        $('#tambahForm').attr('action', '/periode/' + id); // Update action URL untuk edit
+        $('#tambahForm').append('<input type="hidden" name="_method" value="PUT">'); // Tambahkan method PUT untuk update
+        document.getElementById('overlay').style.display = 'flex';  // Menampilkan overlay
     }
-
 
     // Fungsi untuk menghapus jadwal
-    function deleteRow(button, id) {
-    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-        fetch(`/periode/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Hapus baris tabel
-                const row = button.closest('tr');
-                row.remove();
-
-                alert('Data berhasil dihapus.');
-            } else {
-                alert('Gagal menghapus data: ' + (data.message || 'Kesalahan tidak diketahui.'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat menghapus data.');
-        });
+    function deleteRow(btn, id) {
+        if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+            $.ajax({
+                url: '/periode/' + id,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $(btn).closest('tr').remove();
+                    }
+                }
+            });
+        }
     }
-}
+
 </script>
 </body>
 </html>

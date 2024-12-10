@@ -118,7 +118,7 @@ Route::middleware(['auth', 'akademik'])->group(function () {
     Route::post('/periode/store', [BAKController::class, 'simpanPeriode'])->name('simpanPeriode');
     Route::delete('/periode/{id}', [BAKController::class, 'hapusPeriode'])->name('hapusPeriode');
     Route::get('/periode/{id}', [BAKController::class, 'editPeriode'])->name('editPeriode');
-    Route::put('/periode/{id}', [PeriodeController::class, 'updatePeriode'])->name('updatePeriode');
+    Route::put('/periode/{id}', [BAKController::class, 'updatePeriode'])->name('updatePeriode');
 });
 
 

@@ -44,14 +44,6 @@ class BAKController extends Controller
         return view('akademik.plottingruang', compact('ruangansForTable', 'ruangansForForm', 'programStudis'));
     }
 
-    //jadwal
-    public function showJadwal()
-    {
-        // Ambil semua data jadwal
-        $periode = JadwalIrs::all();
-        return view('akademik.periode', compact('periode')); // Kirim data ke view
-    }
-
     //ruangan
     public function store(Request $request)
     {
@@ -122,7 +114,6 @@ class BAKController extends Controller
         return view('akademik.edit_ruangan', compact('ruangan'));
     }
 
-
     public function storePlottingRuang(Request $request)
     {
         $validatedData = $request->validate([
@@ -154,9 +145,6 @@ class BAKController extends Controller
 
         return response()->json($ruangans);
     }
-
-
-
     public function ajukanPlotting(Request $request)
     {
         // Ambil semua ruangan yang perlu diajukan dengan status 'belum disetujui' dan 'namaprodi' tidak null
@@ -178,79 +166,79 @@ class BAKController extends Controller
         return view('bak_jadwal', compact('jadwals')); // Kirim data ke view
     }
 
-    // Periode
-    // Menyimpan jadwal baru
+    // PERIODE
+    public function showJadwal()
+    {
+        // Ambil semua data jadwal
+        $periode = JadwalIrs::all();
+        return view('akademik.periode', compact('periode')); // Kirim data ke view
+    }
     public function simpanPeriode(Request $request)
-{
-    $validated = $request->validate([
-        'keterangan' => 'required|string|max:255',
-        'jadwal_mulai' => 'required|date',
-        'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
-    ]);
-
-    try {
-        // Simpan data ke database
-        $periode = JadwalIrs::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'data' => $periode,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage(),
-        ]);
-    }
-}
-
-
-   // Menyimpan perubahan jadwal
-public function editPeriode($id)
-{
-    try {
-        $periode = JadwalIrs::findOrFail($id);
-
-        return response()->json([
-            'success' => true,
-            'jadwal' => $periode]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Periode tidak ditemukan',
-        ]);
-    }
-}
-
-public function updatePeriode(Request $request, $id)
-{
-    try {
+    {
+        // Validasi data
         $validated = $request->validate([
             'keterangan' => 'required|string|max:255',
             'jadwal_mulai' => 'required|date',
             'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
         ]);
 
-        $periode = JadwalIrs::findOrFail($id);
-        $periode->update($validated);
+        // Simpan data ke database
+        $jadwal = JadwalIrs::create([
+            'keterangan' => $request->keterangan,
+            'jadwal_mulai' => $request->jadwal_mulai,
+            'jadwal_berakhir' => $request->jadwal_berakhir,
+        ]);
 
+        // Mengembalikan response JSON untuk AJAX
         return response()->json([
             'success' => true,
-            'data' => $periode,
-            'message' => 'Data berhasil diperbarui.',
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+            'is_edit' => false, // Menandakan bahwa ini adalah create, bukan edit
+            'data' => $jadwal
         ]);
     }
 
+  
+    public function editPeriode($id)
+    {
+        try {
+            $periode = JadwalIrs::findOrFail($id);
 
-}
+            return response()->json([
+                'success' => true,
+                'jadwal' => $periode]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Periode tidak ditemukan',
+            ]);
+        }
+    }
 
+    public function updatePeriode(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'keterangan' => 'required|string|max:255',
+            'jadwal_mulai' => 'required|date',
+            'jadwal_berakhir' => 'required|date|after_or_equal:jadwal_mulai',
+        ]);
 
-    // Menghapus jadwal
+        // Temukan jadwal berdasarkan ID
+        $jadwal = JadwalIrs::findOrFail($id);
+
+        // Perbarui data jadwal
+        $jadwal->update([
+            'keterangan' => $request->keterangan,
+            'jadwal_mulai' => $request->jadwal_mulai,
+            'jadwal_berakhir' => $request->jadwal_berakhir,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'is_edit' => true, // Menandakan bahwa ini adalah update, bukan create
+            'data' => $jadwal
+        ]);
+    }
+
     public function hapusPeriode($id)
     {
         try {
