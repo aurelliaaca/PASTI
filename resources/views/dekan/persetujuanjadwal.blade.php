@@ -60,7 +60,7 @@
                         <tbody>
                         @foreach ($jadwalByProdi as $kodeprodi => $jadwals)
                         <tr>
-                            <td class="pb-2 pt-0">
+                            <td class="pb-2 pt-2">
                                 <div class="flex justify-between items-center">
                                           <!-- Menampilkan Jadwal Mata Kuliah berdasarkan namaprodi -->
                                     <div>
@@ -109,7 +109,7 @@
                                                         <td class="py-3 font-normal">{{ $jadwal->matkul->sks }}</td>
                                                         <td class="py-3 font-normal">{{ $jadwal->hari }}</td>
                                                         <td class="py-3 font-normal">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
-                                                        <td class="py-3 font-normal pl-2">{{ $jadwal->ruangan->namaruang ?? 'N/A'}}</td>
+                                                        <td class="py-3 font-normal pl-2">{{ $jadwal->ruangan->namaruang }}</td>
                                                         <td class="py-3 font-normal pl-2">
                                                             {{ $jadwal->koordinator->nama }} /
                                                             {{ optional($jadwal->pengampu1)->nama ?? 'N/A' }} /
