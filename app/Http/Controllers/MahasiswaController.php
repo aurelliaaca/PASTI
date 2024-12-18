@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
 use App\Models\Irs;
 use App\Models\histori_irs;
+use App\Models\JadwalIrs;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Jadwal_mata_kuliah;
 use Illuminate\Http\Request;
@@ -85,8 +87,25 @@ class MahasiswaController extends Controller
             ->get();
 
         $irsBySemester = $myIrs->groupBy('smt');
+        
+        // Menggabungkan pengecekan periode pertama dan kedua
+        $periodePengisian = JadwalIrs::whereIn('keterangan', ['Periode Pengisian IRS', 'Periode Perubahan IRS', 'Periode Pembatalan IRS'])->get();
+        $currentDate = Carbon::now();
+        $isPeriodePengisian = false;
+        $periodeAktif = null; // Variabel untuk menyimpan periode aktif
+
+        foreach ($periodePengisian as $periode) {
+            $startPeriode = Carbon::parse($periode->jadwal_mulai);
+            $endPeriode = Carbon::parse($periode->jadwal_berakhir);
+
+            if ($currentDate->between($startPeriode, $endPeriode)) {
+                $isPeriodePengisian = true;
+                $periodeAktif = $periode->keterangan; // Simpan keterangan periode aktif
+                break; // Keluar dari loop jika sudah ditemukan periode yang aktif
+            }
+        }
                 
-        return view('mhs_pengisianirspage', compact( 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable' ,'jadwal', 'myIrs', 'irsBySemester'));
+        return view('mhs_pengisianirspage', compact( 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable' ,'jadwal', 'myIrs', 'irsBySemester', 'isPeriodePengisian', 'periodeAktif'));
     }
 
 
@@ -126,6 +145,19 @@ class MahasiswaController extends Controller
             'nim' => 'required',
             'smt' => 'required',
         ]);
+
+        // Cek apakah mahasiswa sudah memiliki IRS dengan status selain "Belum disetujui"
+        $existingIrs = Irs::where('nim', $request->nim)
+                          ->where('smt', $request->smt)
+                          ->where('status_verifikasi', '!=', 'Belum disetujui')
+                          ->exists();
+
+        if ($existingIrs) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah memiliki IRS yang disetujui atau sedang diproses.',
+            ], 400);
+        }
 
         // Tentukan nilai queue berdasarkan nilai terbesar yang ada di jadwalid yang sama
         $lastQueue = Irs::where('jadwalid', $request->jadwalid)
@@ -374,12 +406,13 @@ class MahasiswaController extends Controller
             // menghapus data IRS berdasarkan nim dan smt saat ini
             $deleted = Irs::where('nim', $mahasiswa->nim)
                 ->where('smt', $request->smt)
+                ->where('status_verifikasi', 'Belum disetujui')
                 ->delete();
 
             if ($deleted) {
                 return response()->json(['status' => 'success', 'message' => 'Data IRS berhasil direset.']);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'Tidak ada data IRS yang ditemukan untuk direset.']);
+                return response()->json(['status' => 'error', 'message' => 'Tidak dapat mereset IRS.']);
             }
 
         } catch (\Exception $e) {
@@ -399,6 +432,7 @@ class MahasiswaController extends Controller
             $deleted = Irs::where('nim', $validated['nim'])
                 ->where('jadwalid', $validated['jadwalid'])
                 ->where('smt', $validated['smt'])
+                ->where('status_verifikasi', 'Belum disetujui')
                 ->delete();
 
             if ($deleted) {
@@ -409,7 +443,7 @@ class MahasiswaController extends Controller
             } else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Jadwal tidak ditemukan.'
+                    'message' => 'Tidak dapat membatalkan jadwal karena Anda sudah memiliki IRS yang disetujui atau sedang diproses.'
                 ]);
             }
         } catch (\Exception $e) {

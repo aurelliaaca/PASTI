@@ -14,8 +14,9 @@ class JadwalIrsSeeder extends Seeder
     public function run(): void
     {
         $jadwal_irs = [
-            ['keterangan' => 'Periode 1', 'jadwal_mulai' => '2024-01-01', 'jadwal_berakhir' => '2024-01-10'],
-            ['keterangan' => 'Periode 2', 'jadwal_mulai' => '2024-01-10', 'jadwal_berakhir' => '2024-01-20'],
+            ['keterangan' => 'Periode Pengisian IRS', 'jadwal_mulai' => '2024-12-01', 'jadwal_berakhir' => '2025-01-01'],
+            ['keterangan' => 'Periode Perubahan IRS', 'jadwal_mulai' => '2025-01-08', 'jadwal_berakhir' => '2025-01-22'],
+            ['keterangan' => 'Periode Pembatalan IRS', 'jadwal_mulai' => '2025-01-29', 'jadwal_berakhir' => '2025-02-05'],
         ];
 
         foreach ($jadwal_irs as $j) {
