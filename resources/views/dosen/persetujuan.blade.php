@@ -68,11 +68,9 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <p class=""> {{ $mahasiswa->nim }} </p>
+                                <p class=""> {{ $mahasiswa->smtIrs }} </p>
                             </td>
                             <td class="px-6 py-4 text-center"> {{ $mahasiswa->smt }} </td>
-
-                            <!-- yang ini masih boongan -->
                             <td class="px-6 py-4 text-center"> {{ $mahasiswa->status }} </td>
                             <td class="px-6 py-4 text-center">
                                 <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" 
@@ -109,7 +107,7 @@
         <p class="mb-4">Apakah Anda yakin ingin menolak atau membuka semua akses IRS?</p>
         <div class="flex justify-end space-x-4">
             <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-            <form id="rejectForm" action="{{ route('resetIrs') }}" method="POST">
+            <form id="rejectForm" action="{{ route('resetIrsDosen') }}" method="POST">
                 @csrf
                 <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Buka Akses</button>
             </form>

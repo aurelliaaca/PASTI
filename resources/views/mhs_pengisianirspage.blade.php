@@ -216,9 +216,9 @@
                                         <td class="border px-4 py-2">{{ $irs->namaruang }}</td>
                                         <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
                                         <td class="border px-4 py-2">
-                                            <button class="bg-amber-400 text-white p-2 px-4 rounded-lg">
-                                                <span class="text-base font-semibold italic">Hapus</span>
-                                            </button>
+                                        <button id="hapus-btn" class="bg-teal-600 text-white p-2 px-4 rounded-lg">
+                                            <span class="text-base font-semibold italic">hapus</span>
+                                        </button>
                                         </td>
                                     </tr>
                                 @endforeach
