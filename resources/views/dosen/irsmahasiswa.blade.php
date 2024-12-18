@@ -37,7 +37,7 @@
             <span class="text-white font-semibold italic text-center">IRS</span>
         </button>
         <button class="a flex-1 bg-teal-700 text-teal-800 p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400 whitespace-nowrap flex justify-center items-center" data-filter=".KHS">
-            <span class="text-white font-semibold italic text-center">History IRS</span>
+            <span class="text-white font-semibold italic text-center">Histori IRS</span>
         </button>
     </div>
   </div>
@@ -46,6 +46,7 @@
 <div class="grid grid-cols-8 gap-4 w-full">
 
 <!-- Left Section (Profile) -->
+<div class="col-span-2 bg-teal-700/0">
 <div class="col-span-2 bg-teal-700 text-white p-4 rounded-lg">
   <div class="flex flex-col items-center space-y-2">
     <img alt="Profile Picture" class="rounded-full mb-4" src="{{ asset('image/profil.png') }}" width="100" height="100"/>
@@ -85,7 +86,7 @@
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Total SKS</p>
           <p class="text-sm align-top w-[10px] font-semibold">:</p>
-          <p class="text-sm align-middle w-full">50</p>
+          <p class="text-sm align-middle w-full">{{ $totalsks }}</p>
         </div>
         <div class="flex">
           <p class="text-sm align-top w-[120px] font-semibold">Beban SKS Maks</p>
@@ -105,21 +106,22 @@
 
       <!-- Tombol Tolak -->
       <button id="rejectButton" 
-          class="bg-white text-amber-400 p-3 rounded-lg flex justify-center items-center w-full {{ $irs->where('status_verifikasi', 'Sudah disetujui')->count() == 0 ? 'cursor-not-allowed opacity-50' : '' }}" 
-          {{ $irs->where('status_verifikasi', 'Sudah disetujui')->count() == 0 ? 'disabled' : '' }}>
+          class="bg-white text-amber-400 p-3 rounded-lg flex justify-center items-center w-full {{ $irs->whereIn('status_verifikasi', ['Sudah disetujui', 'Mengajukan perubahan'])->count() > 0 ? '' : 'disabled' }}" 
+          {{ $irs->whereIn('status_verifikasi', ['Sudah disetujui', 'Mengajukan perubahan'])->count() > 0 ? '' : 'disabled' }}>
         <span class="text-base font-semibold italic">BUKA AKSES</span>
       </button>
 
       <!-- Tombol Setujui -->
       <button id="approveButton" 
-          class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full {{ $irs->where('status_verifikasi', 'Sudah disetujui')->count() > 0 ? 'cursor-not-allowed opacity-50' : '' }}" 
-          {{ $irs->where('status_verifikasi', 'Sudah disetujui')->count() > 0 ? 'disabled' : '' }}>
+          class="bg-amber-400 text-white p-3 rounded-lg flex justify-center items-center w-full {{ $irs->whereIn('status_verifikasi', ['Belum disetujui', 'Diproses'])->count() > 0 ? '' : 'disabled' }}" 
+          {{ $irs->whereIn('status_verifikasi', ['Belum disetujui', 'Diproses'])->count() > 0 ? '' : 'disabled' }}>
         <span class="text-base font-semibold italic">SETUJUI</span>
       </button>
     </form>
     </div>
   </div>
 </div>
+</div> 
 
 <!-- Right Section IRS or KHS -->
 <div class="col-span-6 w-full h-full overflow-auto">
@@ -156,68 +158,102 @@
 
   <!-- History IRS Content -->
   <div class="KHS" style="display: none;"> <!-- Masih pakai KHS biar tidak perlu merubah javascripnya -->
-    <div class="bg-white text-teal-900 p-4 rounded-lg">
-      <div class="space-y-4">
-        <h2 class="text-xl font-bold text-teal-800">Isian Rencana Semester (IRS)</h2>
-      </div>
+  <div class="bg-white shadow-lg rounded-lg">
+        <div class="p-4">
 
-      <!-- Tabel -->
-      <div class="border rounded-md p-2">
-        <div class="table-responsive">
-          <table class="table table-striped w-full text-teal-800 font-black flex items-center">
-            <tbody>
-              <!-- Ikon drop -->
-              <tr>
-                <td class="pb-2 pt-0">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <!-- Tombol ikon drop -->
-                      <button class="toggle-button btn btn-primary bg-teal-500 text-white w-10 py-2 rounded-lg mr-2">+</button>
-                      <span class="text-base">Semester 1 (Sudah disetujui)</span>
-                    </div>
-                    <!-- Tombol cetak -->
-                    <button class="bg-amber-400 text-white px-3 py-2 rounded-lg flex justify-center items-center">
-                      <span class="text-sm font-semibold italic">Cetak IRS</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+            <!-- Header dan Tombol -->
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">Histori IRS</h1>
+            </div>
 
-              <!-- Tabel History IRS persemester -->
-              <tr class="khs-table" id="khs-1" style="display: none;">
-                <td colspan="4">
-                  <div class="border rounded-md">
-                    <div class="table-responsive p-2 table-striped">
-                      <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
-                          <thead>
-                              <tr>
-                                <th class="font-normal" style="width: 20%;">Kode</th>
-                                <th class="font-normal" style="width: 20%;">Mata Kuliah</th>
-                                <th class="font-normal" style="width: 20%;">Kelas</th>
-                                <th class="font-normal" style="width: 20%;">Jadwal</th>
-                                <th class="font-normal" style="width: 20%;">SKS</th>
-                                <th class="font-normal" style="width: 20%;">Ruang</th>
-                              </tr>
-                          </thead>
-                          <tbody id="KHSTableBody-1">
-                              <tr>
-                                <td>SPAIK</td>
-                                <td>Statistika</td>
-                                <td>C</td>
-                                <td>Senin, 09.00 - 13.00</td>
-                                <td>2</td>
-                                <td>E101</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <!-- Tabel -->
+            <div class="border rounded-md p-2">
+              <div class="table-responsive">
+                <table class="table table-striped w-full text-teal-800 font-black">
+                    <tbody>
+                      @php
+                          // Mengurutkan irsBySemester berdasarkan kunci semester (smt) sebagai integer
+                          $sortedIrsBySemester = $irsBySemester->sortKeysUsing(function($key1, $key2) {
+                              return intval($key1) <=> intval($key2);
+                          });
+                      @endphp
+
+                      @foreach($sortedIrsBySemester as $smt => $irs)
+                      <tr>
+                        <td class="pb-0 pt-0">
+                          <div class="flex items-center justify-between">
+                              <div>
+                                <button class="toggle-button bg-teal-500 text-white w-10 py-2 mb-2 rounded-lg mr-1" data-id="{{ $smt }}" onclick="toggleSetujui('{{ $smt }}')">+</button>
+                                Semester {{ ucfirst($smt) }}
+                              </div>
+                              <button id="cetak-btn" class="items-center bg-amber-400 text-white p-2 px-4 rounded-lg" data-id="{{ $smt }}" style="display: none;">
+                                <span class="text-base font-semibold italic">CETAK IRS</span>
+                              </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="irs-table" id="irs-{{ $smt }}" style="display: none;">
+                        <td colspan="4">
+                          <div class="py-2">
+                            <div class="border rounded-md">
+                              <div class="table-responsive table-striped">
+                                <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse ">
+                                  <thead>
+                                    <tr>
+                                    <th class="font-bold px-4 py-2" style="width: 15%;">Hari</th>
+                                    <th class="font-bold px-4 py-2" style="width: 20%;">Nama Mata Kuliah</th>
+                                    <th class="font-bold px-4 py-2" style="width: 15%;">Kode</th>
+                                    <th class="font-bold px-4 py-2" style="width: 5%;">SMT</th>
+                                    <th class="font-bold px-4 py-2" style="width: 5%;">SKS</th>
+                                    <th class="font-bold px-4 py-2" style="width: 10%;">Jam</th>
+                                    <th class="font-bold px-4 py-2" style="width: 15%;">Kelas</th>
+                                    <th class="font-bold px-4 py-2" style="width: 15%;">Ruangan</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    @php
+                                      // Array urutan hari dari Senin hingga Sabtu
+                                      $hariUrutan = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+                                      // Grouping irsTable by 'hari'
+                                      $groupedByHari = $irs->groupBy('hari');
+
+                                      // Urutkan grup berdasarkan hari sesuai urutan yang diinginkan
+                                      $groupedByHari = $groupedByHari->sortBy(function ($value, $key) use ($hariUrutan) {
+                                          return array_search($key, $hariUrutan);
+                                      });
+                                    @endphp
+
+                                    @foreach ($groupedByHari as $hari => $irsList)
+                                      @foreach ($irsList as $index => $myirs)
+                                        <tr class="bg-white">
+                                          @if ($index == 0)
+                                            <!-- Rowspan untuk Hari -->
+                                            <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
+                                          @endif    
+                                          <td class="py-3 border font-normal text-left pl-2 justify-center">{{ $myirs->nama }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->kodemk }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->smt }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->sks }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->jam_mulai }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->kelas }}</td>
+                                          <td class="py-3 border font-normal">{{ $myirs->namaruang }}</td>
+                                        </tr>
+                                      @endforeach
+                                    @endforeach
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                </table>
+              </div>
+            </div>
         </div>
-      </div>
     </div>
 
   </div>
@@ -299,26 +335,68 @@
     toggleContent('IRS');
   });
 
-  // Buat tabel dropdown
   document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.toggle-button');
 
-    buttons.forEach((button, index) => {
+    buttons.forEach(button => {
         button.addEventListener('click', function () {
-            // Cari tabel KHS yang terkait dengan tombol berdasarkan urutan tombol
-            const khsTable = document.querySelectorAll('.khs-table')[index];
+            const id = this.getAttribute('data-id');
+            const table = document.getElementById(`irs-${id}`);
+            const cetakButton = document.querySelector(`#cetak-btn[data-id="${id}"]`);
 
-            // Toggle visibility dari tabel
-            if (khsTable.style.display === 'none' || khsTable.style.display === '') {
-                khsTable.style.display = 'table-row'; // Tampilkan tabel
-                this.textContent = '-'; // Ubah tombol menjadi tanda "-"
+            // Toggle visibility of ruangan table and cetak button
+            if (table.style.display === 'none' || table.style.display === '') {
+                table.style.display = 'table-row';
+                cetakButton.style.display = 'block'; // Tampilkan tombol cetak
+                this.textContent = '-';
             } else {
-                khsTable.style.display = 'none'; // Sembunyikan tabel
-                this.textContent = '+'; // Ubah tombol menjadi tanda "+"
+                table.style.display = 'none';
+                cetakButton.style.display = 'none'; // Sembunyikan tombol cetak
+                this.textContent = '+';
             }
         });
     });
-  });
+
+    // Event listener untuk tombol cetak
+    const cetakButtons = document.querySelectorAll('#cetak-btn');
+    cetakButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const contentToPrint = document.getElementById(`irs-${id}`).innerHTML;
+            printContent(contentToPrint);
+        });
+    });
+});
+
+function printContent(content) {
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>Cetak IRS</title>');
+    printWindow.document.write('<style>');
+    printWindow.document.write('body{font-family: Arial, sans-serif; margin: 5px;}');
+    printWindow.document.write('table {width: 100%; border-collapse: collapse; margin-top: 20px;}');
+    printWindow.document.write('th, td {font-size: 8px; border: 1px solid black; padding: 10px; text-align: center; font-size: 12px;}');
+    printWindow.document.write('h1 {text-align: center; margin-bottom: 30px; font-size: 16px;}');
+    printWindow.document.write('h2 {font-weight: normal; text-align: center; margin-bottom: 0px; font-size: 16px;}');
+    printWindow.document.write('h3 {font-weight: normal; text-align: center; margin-top: 0px; font-size: 16px;}');
+    printWindow.document.write('p {margin: 5px 0; font-size: 12px;}');
+    printWindow.document.write('</style>');
+    printWindow.document.write('</head><body>');
+    
+    // Tambahkan judul dan informasi mahasiswa
+    printWindow.document.write('<h2>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI</h2>');
+    printWindow.document.write('<h3>FAKULTAS SAINS DAN MATEMATIKA UNIVERSITAS DIPONEGORO</h3>');
+    printWindow.document.write('<h1>ISIAN RENCANA MAHASISWA</h1>');
+    printWindow.document.write('<p><strong>Nama:</strong> {{ $mahasiswa->nama }}</p>');
+    printWindow.document.write('<p><strong>NIM:</strong> {{ $mahasiswa->nim }}</p>');
+    printWindow.document.write('<p><strong>Program Studi:</strong> {{ $mahasiswa->prodi }}</p>');
+    
+    // Tambahkan konten tabel
+    printWindow.document.write(content);
+    
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
 
   // setujui
   document.getElementById('approveButton').addEventListener('click', function () {
@@ -356,78 +434,6 @@
       const modal = document.getElementById('rejectModal');
       modal.classList.add('hidden');
   });
-
-  // // Fungsi Setujui IRS
-  // function setujuiIRS(nim) {
-  //     Swal.fire({
-  //       title: 'Setujui IRS?',
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonText: 'Setujui',
-  //       cancelButtonText: 'Batal'
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         $.ajax({
-  //           url: "{{ route('setujuiIRS') }}",
-  //           method: "POST",
-  //           data: {
-  //             _token: "{{ csrf_token() }}",
-  //             nim: nim
-  //           },
-  //           success: function(response) {
-  //             Swal.fire('Berhasil!', 'IRS telah disetujui.', 'success')
-  //               .then(() => location.reload());
-  //           },
-  //           error: function(error) {
-  //             Swal.fire('Gagal!', 'Terjadi kesalahan.', 'error');
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-
-
-  // // Buka Akses IRS
-  // function bukaAksesIRS() {
-  //   Swal.fire({
-  //     title: 'Konfirmasi',
-  //       text: "Apakah Anda yakin ingin membuka akses pengisian IRS?",
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       confirmButtonText: 'Ya, Buka!',
-  //       cancelButtonText: 'Batal'
-  //   }).then((result) => {
-  //     if (result.isConfirmed){
-  //       $.ajax({
-  //         url: "{{ route('tolakIRS') }}",
-  //         type: "POST",
-  //         data: {
-  //           _token: $('meta[name="csrf-token"]').attr('content')
-  //         },
-  //         success: function(response) {
-  //           if(response.status == 'success') {
-  //             Swal.fire(
-  //                 'Berhasil!',
-  //                 'Akses IRS berhasil dibuka.',
-  //                 'success'
-  //             ).then(() => {
-  //                 location.reload();
-  //             });
-  //           }
-  //         },
-  //         error: function(xhr) {
-  //           Swal.fire(
-  //               'Gagal!',
-  //               'Gagal membuka akses pengisian IRS: ' + (xhr.responseJSON?.message || 'Terjadi kesalahan'),
-  //               'error'
-  //           );
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
 
   // Tambahkan listener untuk pesan flash
   document.addEventListener('DOMContentLoaded', function() {

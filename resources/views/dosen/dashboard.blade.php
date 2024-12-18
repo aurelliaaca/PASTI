@@ -66,25 +66,29 @@
         <!-- Right Section (Notifications) -->
         <div class="col-span-2 bg-teal-900 text-white p-4 rounded-lg">
           <div class="space-y-4">
-            <div class="bg-teal-800 p-4 rounded-lg flex justify-between items-center">
-              <div>
-                  <i class="far fa-envelope text-2xl"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-left pl-3.5 pr-4">Notifikasi</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Hapus</span>
-                  <i class="far fa-trash-alt"></i>
-                </button>
-                <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
-                  <span class="text-sm">Tinjau</span>
-                  <i class="far fa-paper-plane"></i>
-                </button>
-              </div>
+          <div class="bg-teal-800 p-4 rounded-lg mt-4">
+            <p class="text-lg font-semibold">Notifikasi</p>
+            <div class="space-y-2 mt-4">
+              @foreach($mahasiswaWithChanges as $mahasiswa)
+                <div class="flex justify-between items-center bg-teal-700 p-3 rounded-lg">
+                  <div class="flex-1">
+                    <p class="text-sm">{{ $mahasiswa->nama }} (NIM: {{ $mahasiswa->nim }})</p>
+                    <p class="text-sm">Status: {{ $mahasiswa->status_verifikasi }}</p>
+                  </div>
+                  <div class="flex space-x-2">
+                  <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                                <span class="text-sm">Tinjau </span>
+                                <i class="far fa-paper-plane"></i>
+                            </a>
+                    <button class="bg-white text-teal-800 p-2 rounded flex items-center space-x-2">
+                      <span class="text-sm">Hapus</span>
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              @endforeach
             </div>
-            
+          </div>
           </div>
         </div>
 

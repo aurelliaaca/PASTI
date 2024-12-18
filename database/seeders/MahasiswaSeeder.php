@@ -89,7 +89,7 @@ class MahasiswaSeeder extends Seeder
             [
                 'nama' => 'Nabila Najma Manika',
                 'nim' => '24060123140172',
-                'smt' => 4,
+                'smt' => 1,
                 'IPK' => 2.98,
                 'IPS_Sebelumnya' => 2.75,
                 'telp' => '085899577422',
