@@ -9,6 +9,7 @@ use App\Models\Dosen;
 use App\Models\Irs;
 use App\Models\Jadwal_mata_kuliah;
 use App\Models\Matkul;
+//use App\Models\histori_irs;
 
 class DosenController extends Controller
 {
@@ -33,7 +34,7 @@ class DosenController extends Controller
         
         $mahasiswaperwalian = Mahasiswa::join('Irs', 'mahasiswa.nim', '=', 'irs.nim')
             ->where('dosenwali', $dosenwali->nip)
-            ->select('mahasiswa.*', 'status_verifikasi as status')
+            ->select('mahasiswa.*', 'status_verifikasi as status', 'irs.smt as smtIrs')
             ->distinct('mahasiswa.nim') //setiap nim cuma muncul sekali
             ->get();
     
@@ -97,9 +98,16 @@ class DosenController extends Controller
             ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
             ->sum('matakuliah.sks');
 
+        // $myIrs = histori_irs::join('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
+        // ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+        // ->where('histori_irs.nim', $mahasiswa->nim)
+        // ->where('histori_irs.status_verifikasi', 'Sudah disetujui')
+        // ->get();
+
+        // $irsBySemester = $myIrs->groupBy('smt');
+
         // Tampilkan halaman IRS dengan data mahasiswa
         return view('dosen.irsmahasiswa', compact('mahasiswa', 'irs', 'sksTerpilih', 'sksMax'));
-
     }
 
     public function setujuiIRS(Request $request)
@@ -138,7 +146,7 @@ class DosenController extends Controller
         }
 
         // Kembali ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', "Semua IRS untuk NIM $nim berhasil ditolak.");
+        return redirect()->back()->with('success', "Akses IRS untuk NIM $nim berhasil dibuka.");
     }
 
     public function setujuiSemuaIRS(Request $request)
