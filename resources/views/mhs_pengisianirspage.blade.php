@@ -26,11 +26,14 @@
     <!-- Existing header and navigation remains the same -->
     <!-- Header dengan Tombol -->
     <div class="flex w-full mb-4">
-    <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl shadow-sm hover:bg-orange-400" data-filter="BuatIRS">
+    <button class="btn flex-1 bg-amber-400 text-white p-2 rounded-tl-xl rounded-bl-xl border-r border-teal-500 shadow-sm hover:bg-orange-400" data-filter="BuatIRS">
         <span class="font-semibold italic text-center">Buat IRS</span>
     </button>
-        <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl rounded-br-xl shadow-sm hover:bg-orange-400" data-filter="IRS">
+    <button class="btn flex-1 bg-teal-700 text-white p-2 shadow-sm hover:bg-orange-400" data-filter="IRS">
         <span class="font-semibold italic text-center">IRS</span>
+    </button>
+    <button class="btn flex-1 bg-teal-700 text-white p-2 rounded-tr-xl border-l border-teal-500 rounded-br-xl shadow-sm hover:bg-orange-400" data-filter="HistoriIRS">
+        <span class="font-semibold italic text-center">Histori IRS</span>
     </button>
     </div>
     
@@ -160,6 +163,9 @@
                         <button id="ajukan-btn" class="bg-teal-600 text-white p-2 px-4 rounded-lg">
                             <span class="text-base font-semibold italic">AJUKAN</span>
                         </button>
+                        <button id="perubahan-btn" class="bg-teal-600 text-white p-2 px-4 rounded-lg">
+                            <span class="text-base font-semibold italic">AJUKAN PERUBAHAN</span>
+                        </button>
                     </div>
                 </div>
             <div class="border rounded-md">
@@ -167,49 +173,57 @@
                 <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse">
                     <thead>
                         <tr>
-                            <th class="font-bold px-4 py-2" style="width: 15%;">Hari</th>
-                            <th class="font-bold px-4 py-2" style="width: 20%;">Nama Mata Kuliah</th>
-                            <th class="font-bold px-4 py-2" style="width: 10%;">Kode</th>
-                            <th class="font-bold px-4 py-2" style="width: 10%;">SKS</th>
-                            <th class="font-bold px-4 py-2" style="width: 15%;">Jam</th>
-                            <th class="font-bold px-4 py-2" style="width: 15%;">Kelas</th>
-                            <th class="font-bold px-4 py-2" style="width: 15%;">Status</th>
+                        <th class="font-bold px-4 py-2" style="width: 10%;">Hari</th>
+                        <th class="font-bold px-4 py-2" style="width: 20%;">Nama Mata Kuliah</th>
+                        <th class="font-bold px-4 py-2" style="width: 10%;">Kode</th>
+                        <th class="font-bold px-4 py-2" style="width: 7%;">SMT</th>
+                        <th class="font-bold px-4 py-2" style="width: 7%;">SKS</th>
+                        <th class="font-bold px-4 py-2" style="width: 10%;">Jam</th>
+                        <th class="font-bold px-4 py-2" style="width: 7%;">Kelas</th>
+                        <th class="font-bold px-4 py-2" style="width: 10%;">Ruangan</th>
+                        <th class="font-bold px-4 py-2" style="width: 10%;">Status</th>
+                        <th class="font-bold px-4 py-2" style="width: 15%;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="irsTableBody">
-    @php
-        // Array urutan hari dari Senin hingga Sabtu
-        $hariUrutan = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                            @php
+                                // Array urutan hari dari Senin hingga Sabtu
+                                $hariUrutan = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        // Grouping irsTable by 'hari'
-        $groupedByHari = $irsTable->groupBy('hari');
+                                // Grouping irsTable by 'hari'
+                                $groupedByHari = $irsTable->groupBy('hari');
 
-        // Urutkan grup berdasarkan hari sesuai urutan yang diinginkan
-        $groupedByHari = $groupedByHari->sortBy(function ($value, $key) use ($hariUrutan) {
-            return array_search($key, $hariUrutan);
-        });
-    @endphp
+                                // Urutkan grup berdasarkan hari sesuai urutan yang diinginkan
+                                $groupedByHari = $groupedByHari->sortBy(function ($value, $key) use ($hariUrutan) {
+                                    return array_search($key, $hariUrutan);
+                                });
+                            @endphp
 
-    @foreach ($groupedByHari as $hari => $irsList)
-        @foreach ($irsList as $index => $irs)
-            <tr class="bg-white">
-                @if ($index == 0)
-                    <!-- Rowspan untuk Hari -->
-                    <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
-                @endif
-                <!-- Data untuk mata kuliah -->
-                <td class="border px-4 py-2">{{ $irs->nama }}</td>
-                <td class="border px-4 py-2">{{ $irs->kodemk }}</td>
-                <td class="border px-4 py-2">{{ $irs->sks }}</td>
-                <td class="border px-4 py-2">{{ $irs->jam_mulai }}</td>
-                <td class="border px-4 py-2">{{ $irs->kelas }}</td>
-                <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
-            </tr>
-        @endforeach
-    @endforeach
-</tbody>
-
-
+                            @foreach ($groupedByHari as $hari => $irsList)
+                                @foreach ($irsList as $index => $irs)
+                                    <tr class="bg-white">
+                                        @if ($index == 0)
+                                            <!-- Rowspan untuk Hari -->
+                                            <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
+                                        @endif
+                                        <!-- Data untuk mata kuliah -->
+                                        <td class="border px-4 py-2">{{ $irs->nama }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->kodemk }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->smt }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->sks }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->jam_mulai }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->kelas }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->namaruang }}</td>
+                                        <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
+                                        <td class="border px-4 py-2">
+                                            <button class="bg-amber-400 text-white p-2 px-4 rounded-lg">
+                                                <span class="text-base font-semibold italic">Hapus</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -217,27 +231,129 @@
     </div>
   </div>
 
+  <div class="HistoriIRS" style="display: none;">
+  <div class="bg-white shadow-lg rounded-lg">
+        <div class="p-4">
+
+            <!-- Header dan Tombol -->
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-xl font-semibold text-teal-800 mb-0">Histori IRS</h1>
+            </div>
+
+            <!-- Tabel -->
+            <div class="border rounded-md p-2">
+                <div class="table-responsive">
+                    <table class="table table-striped w-full text-teal-800 font-black">
+                        <tbody>
+                            @php
+                                // Mengurutkan irsBySemester berdasarkan kunci semester (smt) sebagai integer
+                                $sortedIrsBySemester = $irsBySemester->sortKeysUsing(function($key1, $key2) {
+                                    return intval($key1) <=> intval($key2);
+                                });
+                            @endphp
+
+                            @foreach($sortedIrsBySemester as $smt => $irs)
+                        <tr>
+                            <td class="pb-0 pt-0">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <button class="toggle-button bg-teal-500 text-white w-10 py-2 mb-2 rounded-lg mr-1" data-id="{{ $smt }}" onclick="toggleSetujui('{{ $smt }}')">+</button>
+                                        Semester {{ ucfirst($smt) }}
+                                    </div>
+                                    <button id="cetak-btn" class="items-center bg-amber-400 text-white p-2 px-4 rounded-lg" data-id="{{ $smt }}" style="display: none;">
+                                        <span class="text-base font-semibold italic">CETAK IRS</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="irs-table" id="irs-{{ $smt }}" style="display: none;">
+                            <td colspan="4">
+                                <div class="py-2">
+                                    <div class="border rounded-md">
+                                        <div class="table-responsive table-striped">
+                                            <table class="table text-teal-800 table-auto w-full text-center rounded-lg border-collapse ">
+                                            <thead>
+                                                <tr>
+                                                <th class="font-bold px-4 py-2" style="width: 15%;">Hari</th>
+                                                <th class="font-bold px-4 py-2" style="width: 25%;">Nama Mata Kuliah</th>
+                                                <th class="font-bold px-4 py-2" style="width: 10%;">Kode</th>
+                                                <th class="font-bold px-4 py-2" style="width: 7%;">SMT</th>
+                                                <th class="font-bold px-4 py-2" style="width: 7%;">SKS</th>
+                                                <th class="font-bold px-4 py-2" style="width: 10%;">Jam</th>
+                                                <th class="font-bold px-4 py-2" style="width: 7%;">Kelas</th>
+                                                <th class="font-bold px-4 py-2" style="width: 15%;">Ruangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    // Array urutan hari dari Senin hingga Sabtu
+                                                    $hariUrutan = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+                                                    // Grouping irsTable by 'hari'
+                                                    $groupedByHari = $irs->groupBy('hari');
+
+                                                    // Urutkan grup berdasarkan hari sesuai urutan yang diinginkan
+                                                    $groupedByHari = $groupedByHari->sortBy(function ($value, $key) use ($hariUrutan) {
+                                                        return array_search($key, $hariUrutan);
+                                                    });
+                                                @endphp
+
+                                                @foreach ($groupedByHari as $hari => $irsList)
+                                                    @foreach ($irsList as $index => $myirs)
+                                                        <tr class="bg-white">
+                                                            @if ($index == 0)
+                                                                <!-- Rowspan untuk Hari -->
+                                                                <td rowspan="{{ count($irsList) }}" class="border px-4 py-2">{{ $hari }}</td>
+                                                            @endif    
+                                                            <td class="py-3 border font-normal text-left pl-2 justify-center">{{ $myirs->nama }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->kodemk }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->smt }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->sks }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->jam_mulai }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->kelas }}</td>
+                                                            <td class="py-3 border font-normal">{{ $myirs->namaruang }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.btn');
     const buatirsContent = document.querySelector('.BuatIRS');
     const irsContent = document.querySelector('.IRS');
+    const historiirsContent = document.querySelector('.HistoriIRS');
 
     // Fungsi untuk mengatur tampilan konten
     function toggleContent(filter) {
+      buatirsContent.style.display = 'none';
+      irsContent.style.display = 'none';
+      historiirsContent.style.display = 'none';
+
       if (filter === 'BuatIRS') {
         buatirsContent.style.display = 'block';
-        irsContent.style.display = 'none';
       } else if (filter === 'IRS') {
-        buatirsContent.style.display = 'none';
         irsContent.style.display = 'block';
+      } else if (filter === 'HistoriIRS') {
+        historiirsContent.style.display = 'block';
       }
     }
 
     buttons.forEach(button => {
       button.addEventListener('click', function() {
-        // Menghapus titik dari data-filter
         const filter = this.getAttribute('data-filter');
         
         // Mengatur warna background button
@@ -253,11 +369,73 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Set tampilan default (IRS)
-    const defaultButton = document.querySelector('.a[data-filter="BuatIRS"]');
-    defaultButton.classList.add('bg-amber-400');
+    // Set tampilan default (BuatIRS)
     toggleContent('BuatIRS');
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.toggle-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const table = document.getElementById(`irs-${id}`);
+            const cetakButton = document.querySelector(`#cetak-btn[data-id="${id}"]`);
+
+            // Toggle visibility of ruangan table and cetak button
+            if (table.style.display === 'none' || table.style.display === '') {
+                table.style.display = 'table-row';
+                cetakButton.style.display = 'block'; // Tampilkan tombol cetak
+                this.textContent = '-';
+            } else {
+                table.style.display = 'none';
+                cetakButton.style.display = 'none'; // Sembunyikan tombol cetak
+                this.textContent = '+';
+            }
+        });
+    });
+
+    // Event listener untuk tombol cetak
+    const cetakButtons = document.querySelectorAll('#cetak-btn');
+    cetakButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const contentToPrint = document.getElementById(`irs-${id}`).innerHTML;
+            printContent(contentToPrint);
+        });
+    });
+});
+
+function printContent(content) {
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>Cetak IRS</title>');
+    printWindow.document.write('<style>');
+    printWindow.document.write('body{font-family: Arial, sans-serif; margin: 5px;}');
+    printWindow.document.write('table {width: 100%; border-collapse: collapse; margin-top: 20px;}');
+    printWindow.document.write('th, td {font-size: 8px; border: 1px solid black; padding: 10px; text-align: center; font-size: 12px;}');
+    printWindow.document.write('h1 {text-align: center; margin-bottom: 30px; font-size: 16px;}');
+    printWindow.document.write('h2 {font-weight: normal; text-align: center; margin-bottom: 0px; font-size: 16px;}');
+    printWindow.document.write('h3 {font-weight: normal; text-align: center; margin-top: 0px; font-size: 16px;}');
+    printWindow.document.write('p {margin: 5px 0; font-size: 12px;}');
+    printWindow.document.write('</style>');
+    printWindow.document.write('</head><body>');
+    
+    // Tambahkan judul dan informasi mahasiswa
+    printWindow.document.write('<h2>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET DAN TEKNOLOGI</h2>');
+    printWindow.document.write('<h3>FAKULTAS SAINS DAN MATEMATIKA UNIVERSITAS DIPONEGORO</h3>');
+    printWindow.document.write('<h1>ISIAN RENCANA MAHASISWA</h1>');
+    printWindow.document.write('<p><strong>Nama:</strong> {{ $mahasiswa->nama }}</p>');
+    printWindow.document.write('<p><strong>NIM:</strong> {{ $mahasiswa->nim }}</p>');
+    printWindow.document.write('<p><strong>Program Studi:</strong> {{ $mahasiswa->prodi }}</p>');
+    
+    // Tambahkan konten tabel
+    printWindow.document.write(content);
+    
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+
 function updateIRSTable() {
     const nim = '{{ $mahasiswa->nim }}';
     fetch(`/get-irs-data/${nim}`)
@@ -347,6 +525,36 @@ document.getElementById('ajukan-btn').addEventListener('click', function () {
     })
     .catch(error => {
         alert('Terjadi kesalahan saat mengajukan IRS: ' + error);
+    });
+}
+});
+
+
+
+document.getElementById('perubahan-btn').addEventListener('click', function () {
+    if (confirm('Apakah Anda yakin ingin mengajukan perubahan irs?')) {
+    const nim = '{{ $mahasiswa->nim }}'; // Pastikan ini digantikan dengan nilai NIM yang benar dari server
+
+    // Mengirimkan permintaan AJAX menggunakan Fetch API
+    fetch('/perubahan-semua-IRS', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token CSRF untuk keamanan
+        },
+        body: JSON.stringify({ nim: nim })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Berhasil mengajukan perubahan IRS.');
+            window.location.reload();
+        } else {
+            alert(data.message || 'Terjadi kesalahan.');
+        }
+    })
+    .catch(error => {
+        alert('Terjadi kesalahan saat mengajukan perubahan IRS: ' + error);
     });
 }
 });

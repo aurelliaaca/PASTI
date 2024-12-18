@@ -49,6 +49,7 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::post('/hapus-jadwal', [MahasiswaController::class, 'hapusJadwal']);
 // Pastikan route ini sesuai dengan nama yang digunakan di form
 Route::post('/ajukan-semua-IRS', [MahasiswaController::class, 'ajukanSemuaIRS'])->name('ajukanSemuaIrs');
+Route::post('/perubahan-semua-IRS', [MahasiswaController::class, 'perubahanSemuaIRS'])->name('perubahanSemuaIrs');
 Route::post('/reset-irs', [MahasiswaController::class, 'resetIrs'])->name('resetIrs');
 
 

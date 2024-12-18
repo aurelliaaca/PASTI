@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('irs', function (Blueprint $table) {
+        Schema::create('histori_irs', function (Blueprint $table) {
             $table->unsignedBigInteger('jadwalid');
             $table->string('nim', 14);
             $table->integer('smt');
-            $table->enum('status_verifikasi',['Belum disetujui', 'Diproses', 'Sudah disetujui', 'Mengajukan perubahan'])->default('Belum disetujui');
-            $table->integer('queue')->nullable();
+            $table->enum('status_verifikasi',['Belum disetujui', 'Diproses', 'Sudah disetujui', 'Mengajukan perubahan'])->default('Sudah disetujui');
             $table->timestamp('tanggal_disetujui')->nullable();
 
             $table->foreign('jadwalid')->references('jadwalid')->on('jadwal_mata_kuliah')->ondelete('cascade');
-            //ca ini aku comment dulu karena tipe data jadwalid kita beda
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('irs');
+        Schema::dropIfExists('histori_irs');
     }
 };
