@@ -68,9 +68,9 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <p class=""> {{ $mahasiswa->smtIrs }} </p>
+                                <p class=""> {{ $mahasiswa->nim }} </p>
                             </td>
-                            <td class="px-6 py-4 text-center"> {{ $mahasiswa->smt }} </td>
+                            <td class="px-6 py-4 text-center"> {{ $mahasiswa->smtIrs }} </td>
                             <td class="px-6 py-4 text-center"> {{ $mahasiswa->status }} </td>
                             <td class="px-6 py-4 text-center">
                                 <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" 
@@ -106,7 +106,7 @@
         <h2 class="text-xl font-bold mb-4">Konfirmasi Reset IRS</h2>
         <p class="mb-4">Apakah Anda yakin ingin menolak atau membuka semua akses IRS?</p>
         <div class="flex justify-end space-x-4">
-            <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+            <button id="cancelButton2" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
             <form id="rejectForm" action="{{ route('resetIrsDosen') }}" method="POST">
                 @csrf
                 <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Buka Akses</button>
@@ -132,7 +132,7 @@
             modal.classList.remove('hidden');
         });
 
-        document.getElementById('cancelButton').addEventListener('click', function () {
+        document.getElementById('cancelButton2').addEventListener('click', function () {
             const modal = document.getElementById('rejectModal');
             modal.classList.add('hidden');
         });

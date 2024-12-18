@@ -9,22 +9,42 @@ use App\Models\Dosen;
 use App\Models\Irs;
 use App\Models\Jadwal_mata_kuliah;
 use App\Models\Matkul;
-//use App\Models\histori_irs;
+use App\Models\histori_irs;
+use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
 {
 
 
-    public function index(){
-        return view('dashboard_dosen');
+    public function index(Request $request){
+            // Ambil NIM atau informasi lain yang relevan jika diperlukan
+        $useremail = Auth::user()->email;
+        $dosenwali = Dosen::where('email', $useremail)->first();
+
+        // Ambil data mahasiswa yang status verifikasinya adalah "mengajukan perubahan"
+        $mahasiswaWithChanges = Mahasiswa::join('irs', 'mahasiswa.nim', '=', 'irs.nim')
+            ->where('irs.status_verifikasi', 'mengajukan perubahan')  // Filter status verifikasi
+            ->where('irs.dosenwali', $dosenwali->nip)  // Filter berdasarkan dosen wali
+            ->select('mahasiswa.nim', 'mahasiswa.nama', 'irs.status_verifikasi', 'irs.tanggal_pengajuan') // Pilih data yang diperlukan
+            ->get();
+        return view('dosen.dashboard', compact('mahasiswaWithChanges'));
     }
 
     public function showPerwalian()
     {
         $useremail = Auth::user()->email;
-        $dosenwali = Dosen::where('email',$useremail)->first();
-        $mahasiswaperwalian = Mahasiswa::where('dosenwali', $dosenwali->nip)->get();
-        return view('dosen.perwalian', compact('mahasiswaperwalian'));
+    $dosenwali = Dosen::where('email', $useremail)->first();
+    
+    $mahasiswaperwalian = Mahasiswa::leftJoin('histori_irs', 'mahasiswa.nim', '=', 'histori_irs.nim')  // Menggunakan left join
+        ->leftJoin('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')  // Menggunakan left join
+        ->leftJoin('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')  // Menggunakan left join
+        ->where('dosenwali', $dosenwali->nip)
+        ->select('mahasiswa.*')  // Pilih semua kolom dari mahasiswa
+        ->addSelect(DB::raw('IFNULL(SUM(matakuliah.sks), 0) as totalsks'))  // Menambahkan kolom totalsks dengan penanganan null
+        ->groupBy('mahasiswa.nim')  // Kelompokkan berdasarkan nim mahasiswa
+        ->get();
+    
+    return view('dosen.perwalian', compact('mahasiswaperwalian'));
     }
 
     public function showPersetujuanIRS()
@@ -98,16 +118,20 @@ class DosenController extends Controller
             ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
             ->sum('matakuliah.sks');
 
-        // $myIrs = histori_irs::join('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
-        // ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
-        // ->where('histori_irs.nim', $mahasiswa->nim)
-        // ->where('histori_irs.status_verifikasi', 'Sudah disetujui')
-        // ->get();
+        $myIrs = histori_irs::join('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
+        ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+        ->where('histori_irs.nim', $mahasiswa->nim)
+        ->where('histori_irs.status_verifikasi', 'Sudah disetujui')
+        ->get();
 
-        // $irsBySemester = $myIrs->groupBy('smt');
+        $irsBySemester = $myIrs->groupBy('smt');
+
+        $totalsks = $myIrs->sum(function($item) {
+            return $item->sks;  // Menjumlahkan SKS dari histori IRS
+        });
 
         // Tampilkan halaman IRS dengan data mahasiswa
-        return view('dosen.irsmahasiswa', compact('mahasiswa', 'irs', 'sksTerpilih', 'sksMax'));
+        return view('dosen.irsmahasiswa', compact('mahasiswa', 'irs', 'sksTerpilih', 'sksMax', 'myIrs', 'irsBySemester', 'totalsks'));
     }
 
     public function setujuiIRS(Request $request)

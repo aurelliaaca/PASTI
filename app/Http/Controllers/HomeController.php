@@ -32,12 +32,23 @@ class HomeController extends Controller
         //$dosens = Dosen::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
         $users = User::all();
 
+
         // Ambil data program studi yang terkait dengan dosen
         $dosens = Dosen::join('programstudi', 'dosen.kodeprodi', '=', 'programstudi.kodeprodi')
         ->where('dosen.email', $user->email) // Pastikan hanya dosen yang sedang login
         ->select('dosen.*', 'programstudi.namaprodi as nama_prodi') // Ambil nama prodi
         ->get();
-            return view('dosen.dashboard', compact('users','dosens')); // Kirim data ke view
+
+        // notifikasi pengajuan perubahan irs
+        $useremail = Auth::user()->email;
+        $dosenwali = Dosen::where('email', $useremail)->first();
+        $mahasiswaWithChanges = Mahasiswa::join('irs', 'mahasiswa.nim', '=', 'irs.nim')
+            ->where('irs.status_verifikasi', 'mengajukan perubahan')  // Filter status verifikasi
+            ->where('mahasiswa.dosenwali', $dosenwali->nip)  // Filter berdasarkan dosen wali
+            ->select('mahasiswa.nim', 'mahasiswa.nama', 'irs.status_verifikasi') // Pilih data yang diperlukan
+            ->distinct('mahasiswa.nim')
+            ->get();
+            return view('dosen.dashboard', compact('users','dosens', 'mahasiswaWithChanges')); // Kirim data ke view
     }
 
     public function dashboardAkademik()

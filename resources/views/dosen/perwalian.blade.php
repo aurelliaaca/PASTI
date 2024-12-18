@@ -68,7 +68,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center">{{ $mahasiswa->smt }}</td>
-                            <td class="px-6 py-4 text-center">50</td>
+                            <td class="px-6 py-4 text-center">{{ $mahasiswa->totalsks }}</td>
                             <td class="px-6 py-4 text-center">
                                 <a href="{{ route('IRS_Mahasiswa', ['nim' => $mahasiswa->nim]) }}" 
                                 class="text-teal-800 hover:underline">Lihat</a>
