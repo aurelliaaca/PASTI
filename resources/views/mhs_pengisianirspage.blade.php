@@ -104,6 +104,9 @@
                     <p class="text-sm align-top w-[20px] font-semibold">:</p>
                     <p id="sksTerpilih" class="text-sm align-middle w-full">{{ $sksTerpilih }}</p>
                 </div>
+                <div class="flex justify-between text-center items-center pt-2">
+                    <h1 class="text-xl font-semibold text-white mb-0 bg-teal-500 rounded p-2 w-full">{{ $periodeAktif }}</h1>
+                </div>
                 </div>
             </div>
 
@@ -124,7 +127,7 @@
     
     
         <!-- Tabel Jadwal -->
-        <div class="col-span-6">
+        <!-- <div class="col-span-6">
             <div class="bg-teal-800/80 text-teal-900 p-4 rounded-lg">
                 <div class="overflow-x-auto rounded-lg">
                     <table class="table-auto w-full text-center rounded-lg border-collapse">
@@ -144,8 +147,32 @@
                     </table>
                 </div>
             </div>
-        </div>..
-
+        </div> -->
+        <div class="col-span-6">
+            <div class="bg-teal-800/80 text-teal-900 p-4 rounded-lg">
+                <div class="overflow-x-auto rounded-lg">
+                    @if(!$isPeriodePengisian)
+                        <p class="text-center text-white">Akses pengisian IRS saat ini tidak tersedia.</p>
+                    @else
+                        <table class="table-auto w-full text-center rounded-lg border-collapse">
+                            <thead>
+                                <tr class="bg-teal-100/80">
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 5%;">Jam</th>
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 15.8%;">Senin</th>
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 15.8%;">Selasa</th>
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 15.8%;">Rabu</th>
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 15.8%;">Kamis</th>
+                                    <th class="px-4 py-2 border-r border-teal-500" style="width: 15.8%;">Jumat</th>
+                                    <th class="px-4 py-2" style="width: 15.8%;">Sabtu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jadwalTableBody">
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
     </div>
 
@@ -216,8 +243,8 @@
                                         <td class="border px-4 py-2">{{ $irs->namaruang }}</td>
                                         <td class="border px-4 py-2">{{ $irs->status_verifikasi }}</td>
                                         <td class="border px-4 py-2">
-                                        <button id="hapus-btn" class="bg-teal-600 text-white p-2 px-4 rounded-lg">
-                                            <span class="text-base font-semibold italic">hapus</span>
+                                        <button class="hapus-btn bg-teal-600 text-white p-2 px-4 rounded-lg" data-jadwalid="{{ $irs->jadwalid }}">
+                                            <span class="text-base font-semibold italic">Hapus</span>
                                         </button>
                                         </td>
                                     </tr>
@@ -588,76 +615,6 @@ document.getElementById('reset-btn').addEventListener('click', function () {
 }
 });
 
-
-
-
-// document.getElementById('batal-btn').addEventListener('click', function () {
-//     const nim = '{{ $mahasiswa->nim }}';
-//     const smt = '{{ $mahasiswa->smt }}';
-//     const jadwalid = this.getAttribute('data-jadwalid'); // Get the schedule ID from the button's data attribute
-
-//     fetch('/batal-jadwal', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for security
-//         },
-//         body: JSON.stringify({
-//             nim: nim,
-//             smt: smt,
-//             jadwalid: jadwalid,
-//         })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         // Check if the request was successful
-//         if (data.status === 'success') {
-//             alert('Jadwal berhasil dibatalkan!');
-//             document.querySelector(`#jadwal-${jadwalid}`).remove();
-//         } else {
-//             alert(data.message || 'Terjadi kesalahan saat membatalkan jadwal.');
-//         }
-//     })
-//     .catch(error => {
-//         alert('Terjadi kesalahan saat membatalkan jadwal: ' + error);
-//     });
-// });
-
-function deleteJadwal(btn, id) {
-    if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
-        // Get the necessary data, such as nim and smt
-        const nim = '{{ $mahasiswa->nim }}';  // Replace with actual student NIM
-        const smt = '{{ $mahasiswa->smt }}';  // Replace with actual student semester
-
-        // Send the request using Fetch API
-        fetch(`/batal-jadwal`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}', // CSRF token for security
-            },
-            body: JSON.stringify({
-                nim: nim,              // Student's NIM
-                smt: smt,              // Student's semester
-                jadwalid: id           // The schedule ID to be canceled
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Jadwal berhasil dibatalkan!');
-                // Remove the row from the table
-                $(btn).closest('tr').remove();
-            } else {
-                alert(data.message || 'Terjadi kesalahan saat membatalkan jadwal.');
-            }
-        })
-        .catch(error => {
-            alert('Terjadi kesalahan saat membatalkan jadwal: ' + error);
-        });
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     // Ambil data jadwal yang sudah ada dari controller
     const jadwal = {!! json_encode($jadwal) !!}; // Data jadwal dengan kode_mk yang sama
@@ -820,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             }
                                         },
                                         error: function() {
-                                            alert('Terjadi kesalahan saat menyimpan jadwal.');
+                                            alert('Tidak dapat memilih jadwal karena Anda sudah memiliki IRS yang disetujui atau sedang diproses.');
                                         }
                                     });
                                 }
@@ -857,6 +814,50 @@ function updateRelatedJadwalButtons(kodeMK, color) {
             button.classList.add(`bg-${color}-100/80`);
         }
     });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Event listener untuk tombol hapus
+    const hapusButtons = document.querySelectorAll('.hapus-btn');
+    hapusButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const jadwalid = this.getAttribute('data-jadwalid');
+            deleteJadwal(this, jadwalid);
+        });
+    });
+});
+
+function deleteJadwal(btn, id) {
+    if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+        const nim = '{{ $mahasiswa->nim }}';  // Gantikan dengan NIM mahasiswa yang benar
+        const smt = '{{ $mahasiswa->smt }}';  // Gantikan dengan semester mahasiswa yang benar
+
+        fetch(`/batal-jadwal`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token CSRF untuk keamanan
+            },
+            body: JSON.stringify({
+                nim: nim,
+                smt: smt,
+                jadwalid: id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Jadwal berhasil dibatalkan!');
+                $(btn).closest('tr').remove();
+                window.location.reload();
+            } else {
+                alert(data.message || 'Terjadi kesalahan saat membatalkan jadwal.');
+            }
+        })
+        .catch(error => {
+            alert('Terjadi kesalahan saat membatalkan jadwal: ' + error);
+        });
+    }
 }
 
 </script> 

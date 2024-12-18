@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="flex flex-grow justify-center items-center flex-col">
                                     <p class="font-semibold text-center">SKS</p>
-                                    <p class="font-semibold text-center text-2xl">97</p>
+                                    <p class="font-semibold text-center text-2xl">{{ $currentSKS }}</p>
                                 </div>
                             </div>
                         </div>

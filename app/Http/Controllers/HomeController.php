@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Bagian_akademik;
 use Illuminate\Support\Facades\Auth;  // Pastikan ini ada
 use App\Models\Mahasiswa;
+use App\Models\histori_irs;
 use App\Models\Dekan;
 use App\Models\Dosen;
 use App\Models\User;
@@ -15,14 +16,24 @@ class HomeController extends Controller
 {
     //
     public function dashboardMahasiswa()
-    {
-        $user = Auth::user();
+{
+    // Ambil user yang sedang login
+    $user = Auth::user();
 
     // Ambil data mahasiswa yang terhubung dengan user yang sedang login
-        $mahasiswas = Mahasiswa::where('email', $user->email)->get(); // Pastikan ada kolom 'user_id' di tabel mahasiswa
-        $users = User::all();
-            return view('mahasiswa.dashboard_mhs', compact('users','mahasiswas')); // Kirim data ke view
-    }
+    $mahasiswas = Mahasiswa::where('email', $user->email)->get();
+    $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+
+    // Hitung total SKS berdasarkan NIM mahasiswa
+    $currentSKS = histori_irs::where('nim', $mahasiswa->nim)
+    ->join('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
+    ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+    ->sum('matakuliah.sks')?? 0;
+
+    // Kirim data ke view
+    return view('mahasiswa.dashboard_mhs', compact('user', 'mahasiswas', 'currentSKS'));
+}
+
     
     public function dashboardDosen()
     {
