@@ -6,6 +6,7 @@ use App\Models\Matkul;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
 use App\Models\Irs;
+use App\Models\histori_irs;
 use App\Models\User;
 use App\Models\Jadwal_mata_kuliah;
 use Illuminate\Http\Request;
@@ -76,8 +77,16 @@ class MahasiswaController extends Controller
             ->orderBy('jadwal_mata_kuliah.hari')
             ->orderBy('jadwal_mata_kuliah.jam_mulai')
             ->get();
-        
-        return view('mhs_pengisianirspage', compact( 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable' ,'jadwal'));
+
+        $myIrs = histori_irs::join('jadwal_mata_kuliah', 'histori_irs.jadwalid', '=', 'jadwal_mata_kuliah.jadwalid')
+            ->join('matakuliah', 'jadwal_mata_kuliah.kodemk', '=', 'matakuliah.kode')
+            ->where('histori_irs.nim', $mahasiswa->nim)
+            ->where('histori_irs.status_verifikasi', 'Sudah disetujui')
+            ->get();
+
+        $irsBySemester = $myIrs->groupBy('smt');
+                
+        return view('mhs_pengisianirspage', compact( 'matkul', 'mahasiswa', 'sksMax', 'sksTerpilih', 'irsTable' ,'jadwal', 'myIrs', 'irsBySemester'));
     }
 
 
@@ -302,6 +311,52 @@ class MahasiswaController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat mengajukan IRS: ' . $e->getMessage()]);
         }
     }
+
+
+    public function perubahanSemuaIRS(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+
+            if (!$mahasiswa) {
+                return response()->json(['status' => 'error', 'message' => 'Mahasiswa tidak ditemukan!']);
+            }
+
+            $irsData = Irs::where('nim', $mahasiswa->nim)
+                ->where('smt', $mahasiswa->smt)
+                ->where('status_verifikasi', 'Sudah disetujui')
+                ->get();
+
+            if ($irsData->isEmpty()) {
+                return response()->json(['status' => 'error', 'message' => 'Tidak dapat mengajukan perubahan IRS.']);
+            }
+            foreach ($irsData as $irs) {
+                // // queue berdasarkan pengajuan
+                // $lastQueue = Irs::where('jadwalid', $irs->jadwalid)
+                //                 ->max('queue');
+                // $newQueue = $lastQueue ? $lastQueue + 1 : 1;
+
+                // update status IRS menjadi diproses
+                Irs::where('jadwalid', $irs->jadwalid)
+                    ->where('nim', $irs->nim)
+                    ->where('smt', $irs->smt)
+                    ->update([
+                        'status_verifikasi' => 'Mengajukan perubahan',
+                        // 'queue' => $newQueue,
+                    ]);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Perubahan IRS berhasil diajukan dan status diupdate.']);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat mengajukan IRS: ' . $e->getMessage()]);
+        }
+    }
+
 
     public function resetIrs(Request $request)
     {

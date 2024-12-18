@@ -23,13 +23,14 @@ class DosenSeeder extends Seeder
                 // 'prodi' => 'Informatika' //aku comment dulu ya mau pake kodeprodi
                 'kodeprodi' => 'E' //belum disambungin ke tabel prodi
             ],
-            // [
-            //     'nama' => 'Azizah Salsabila, S.Kom., M.Kom.',
-            //     'nip' => '198910182005012002',
-            //     'telp' => '089876543066',
-            //     'email' => 'azizah@dosen.com',
-            //     'alamat' => 'Jl. Setia Budi No. 11 Banyumanik, Semarang'
-            // ],
+            [
+                'nama' => 'Azizah Salsabila, S.Kom., M.Kom.',
+                'nip' => '198910182005012002',
+                'telp' => '089876543066',
+                'email' => 'azizah@dosen.com',
+                'alamat' => 'Jl. Setia Budi No. 11 Banyumanik, Semarang',
+                'kodeprodi' => 'E'
+            ],
             [
                 'nama' => 'Prof. Dr. Priyo, S.Si., M.T.',
                 'nip' => '196303161988101001',
@@ -48,20 +49,22 @@ class DosenSeeder extends Seeder
                 // 'prodi' => 'Informatika' //aku comment dulu ya mau pake kodeprodi
                 'kodeprodi' => 'A'  //belum disambungin ke tabel prodi
             ],
-            // [
-            //     'nama' => 'Dio Nicolin, S.Si., M.T.',
-            //     'nip' => '198907031988101001',
-            //     'telp' => '082334556778',
-            //     'email' => 'dio@dosen.com',
-            //     'alamat' => 'Jl. Timoho Timur No. 77 Tembalang, Semarang'
-            // ],
-            // [
-            //     'nama' => 'Anita Maharani, S.Kom., M.T.',
-            //     'nip' => '198705221234567890',
-            //     'telp' => '089887655433',
-            //     'email' => 'anita@dosen.com',
-            //     'alamat' => 'Jl. Diponegoro No. 97 Gajah Mungkur, Semarang'
-            // ],
+            [
+                'nama' => 'Dio Nicolin, S.Si., M.T.',
+                'nip' => '198907031988101001',
+                'telp' => '082334556778',
+                'email' => 'dio@dosen.com',
+                'alamat' => 'Jl. Timoho Timur No. 77 Tembalang, Semarang',
+                'kodeprodi' => 'E'
+            ],
+            [
+                'nama' => 'Anita Maharani, S.Kom., M.T.',
+                'nip' => '198705221234567890',
+                'telp' => '089887655433',
+                'email' => 'anita@dosen.com',
+                'alamat' => 'Jl. Diponegoro No. 97 Gajah Mungkur, Semarang',
+                'kodeprodi' => 'E'
+            ],
             // [
             //     'nama' => 'Sri Utami, S.Kom., M.Kom.',
             //     'nip' => '197905121234567891',

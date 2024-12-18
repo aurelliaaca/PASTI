@@ -75,7 +75,7 @@ class MahasiswaSeeder extends Seeder
             // ],
             [
                 'nama' => 'Aurellia Putri Budi',
-                'nim' => '24060123140168',
+                'nim' => '24060122140168',
                 'smt' => 3,
                 'IPK' => 2.35,
                 'IPS_Sebelumnya' => 2.10,

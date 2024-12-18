@@ -90,21 +90,24 @@ class UsersSeeder extends Seeder
                 'email' => 'niken@dosen.com',
                 'role' => '6' // Dekan + Dosen
             ],
-            // [
-            //     'password' => 'azizah123',
-            //     'email' => 'azizah@dosen.com',
-            //     'role' => '2'
-            // ],
-            // [
-            //     'password' => 'dio123',
-            //     'email' => 'dio@dosen.com',
-            //     'role' => '2'
-            // ],
-            // [
-            //     'password' => 'anita123',
-            //     'email' => 'anita@dosen.com',
-            //     'role' => '2'
-            // ],
+            [
+                'name' => 'azizah',
+                'password' => 'azizah123',
+                'email' => 'azizah@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'name' => 'dio',
+                'password' => 'dio123',
+                'email' => 'dio@dosen.com',
+                'role' => '2'
+            ],
+            [
+                'name' => 'anita',
+                'password' => 'anita123',
+                'email' => 'anita@dosen.com',
+                'role' => '2'
+            ],
             // [
             //     'password' => 'sri123',
             //     'email' => 'sri@dosen.com',

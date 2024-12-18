@@ -13,10 +13,10 @@ class RuanganSeeder extends Seeder
     public function run(): void
     {
         $ruangan = [
-            [ 'gedung' => 'E', 'namaruang' => 'E101', 'kapasitas' => 80, ],
-            [ 'gedung' => 'E', 'namaruang' => 'E102', 'kapasitas' => 90, ],
-            [ 'gedung' => 'E', 'namaruang' => 'E103', 'kapasitas' => 100, ],
-            [ 'gedung' => 'F', 'namaruang' => 'F201', 'kapasitas' => 110, ]
+            [ 'gedung' => 'E', 'namaruang' => 'E101', 'kapasitas' => 80, 'namaprodi' => 'Informatika', 'status' => 'sudah disetujui', 'is_plotted' => true],
+            [ 'gedung' => 'E', 'namaruang' => 'E102', 'kapasitas' => 90, 'namaprodi' => 'Informatika', 'status' => 'sudah disetujui', 'is_plotted' => true],
+            [ 'gedung' => 'E', 'namaruang' => 'E103', 'kapasitas' => 100, 'namaprodi' => 'Informatika', 'status' => 'sudah disetujui', 'is_plotted' => true],
+            [ 'gedung' => 'F', 'namaruang' => 'F201', 'kapasitas' => 110, 'namaprodi' => 'Informatika', 'status' => 'sudah disetujui', 'is_plotted' => true]
         ];
 
         foreach ($ruangan as $r) {
